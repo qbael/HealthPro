@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: auth-service
+
+  datasource:
+    url: jdbc:postgres://localhost:5000/health_pro
+    username: root
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 8080
