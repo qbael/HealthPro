@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Patient {
 
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotNull(message = "User không được để trống")

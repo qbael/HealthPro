@@ -58,15 +58,14 @@ CREATE TABLE patients
 
 CREATE TABLE clinics
 (
-    id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id      UUID UNIQUE  NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    clinic_name  VARCHAR(255) NOT NULL,
-    address      VARCHAR(255),
-    phone_number VARCHAR(10),
-    description  TEXT,
-    open_hour    VARCHAR(5)       DEFAULT '08:00',
-    close_hour   VARCHAR(5)       DEFAULT '17:00',
-    logo_url     VARCHAR(255)
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id     UUID UNIQUE  NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    clinic_name VARCHAR(255) NOT NULL,
+    address     VARCHAR(255),
+    description TEXT,
+    open_hour   VARCHAR(5)       DEFAULT '08:00',
+    close_hour  VARCHAR(5)       DEFAULT '17:00',
+    logo_url    VARCHAR(255)
 );
 
 CREATE TABLE doctors
@@ -139,7 +138,7 @@ CREATE TABLE appointments
     id                  UUID PRIMARY KEY   DEFAULT gen_random_uuid(),
     patient_id          UUID             NOT NULL REFERENCES patients (id) ON DELETE CASCADE,
     doctor_id           UUID             NOT NULL REFERENCES doctors (id) ON DELETE CASCADE,
-    clinic_specialty_id UUID             NOT NULL REFERENCES clinic_specialties (id) ON DELETE CASCADE,
+    clinic_specialty_id UUID REFERENCES clinic_specialties (id) ON DELETE CASCADE,
     appointment_type    appointment_type NOT NULL,
     appointment_date    DATE             NOT NULL,
     start_time          TIME             NOT NULL,
@@ -174,56 +173,56 @@ CREATE TABLE clinic_specialty_schedule_templates
 );
 
 CREATE
-OR REPLACE FUNCTION update_updated_at_column()
+    OR REPLACE FUNCTION update_updated_at_column()
     RETURNS TRIGGER AS
 $$
 BEGIN
     NEW.updated_at
-= CURRENT_TIMESTAMP;
-RETURN NEW;
+        = CURRENT_TIMESTAMP;
+    RETURN NEW;
 END;
 $$
-language 'plpgsql';
+    language 'plpgsql';
 
 CREATE TRIGGER update_users_updated_at
     BEFORE UPDATE
     ON users
     FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_doctor_schedule_updated_at
     BEFORE UPDATE
     ON doctor_schedule_templates
     FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_clinic_schedule_updated_at
     BEFORE UPDATE
     ON clinic_specialty_schedule_templates
     FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+EXECUTE FUNCTION update_updated_at_column();
 
 COMMENT
-ON TABLE users IS 'Base authentication table for all user types';
+    ON TABLE users IS 'Base authentication table for all user types';
 COMMENT
-ON TABLE doctors IS 'Doctor profiles and information';
+    ON TABLE doctors IS 'Doctor profiles and information';
 COMMENT
-ON TABLE patients IS 'Patient profiles and medical history';
+    ON TABLE patients IS 'Patient profiles and medical history';
 COMMENT
-ON TABLE clinics IS 'Medical clinic information';
+    ON TABLE clinics IS 'Medical clinic information';
 COMMENT
-ON TABLE appointments IS 'Patient appointment bookings';
+    ON TABLE appointments IS 'Patient appointment bookings';
 COMMENT
-ON TABLE doctor_available_slots IS 'Doctor availability schedule';
+    ON TABLE doctor_available_slots IS 'Doctor availability schedule';
 COMMENT
-ON TABLE doctor_schedule_templates IS 'Weekly recurring schedule templates for doctors';
+    ON TABLE doctor_schedule_templates IS 'Weekly recurring schedule templates for doctors';
 COMMENT
-ON TABLE clinic_specialty_schedule_templates IS 'Weekly recurring schedule templates for clinic specialties';
+    ON TABLE clinic_specialty_schedule_templates IS 'Weekly recurring schedule templates for clinic specialties';
 COMMENT
-ON COLUMN appointments.appointment_type IS 'Type of appointment: online, offline, or emergency';
+    ON COLUMN appointments.appointment_type IS 'Type of appointment: online, offline, or emergency';
 COMMENT
-ON COLUMN appointments.status IS 'Current status of the appointment';
+    ON COLUMN appointments.status IS 'Current status of the appointment';
 COMMENT
-ON COLUMN doctor_available_slots.appointment_type IS 'Type of time slot: regular, emergency, or break';
+    ON COLUMN doctor_available_slots.appointment_type IS 'Type of time slot: regular, emergency, or break';
 
 SELECT 'Database schema created successfully!' as message;

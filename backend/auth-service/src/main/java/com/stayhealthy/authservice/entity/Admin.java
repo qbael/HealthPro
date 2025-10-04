@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Admin {
 
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotNull(message = "User không được để trống")

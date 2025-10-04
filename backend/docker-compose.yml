@@ -46,39 +46,11 @@ services:
     networks:
       - internal
 
-  doctor-service-db:
-    image: postgres:latest
-    container_name: doctor-service-db
-    ports:
-      - "5003:5432"
-    environment:
-      POSTGRES_DB: health_pro
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-    volumes:
-      - doctor-service-db:/var/lib/postgresql/data
-    networks:
-      - internal
-
-  appointment-slot-service:
-    image: postgres:latest
-    container_name: appointment-slot-service
-    ports:
-      - "5004:5432"
-    environment:
-      POSTGRES_DB: health_pro
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-    volumes:
-      - appointment-slot-service:/var/lib/postgresql/data
-    networks:
-      - internal
-
   schedule-service:
     image: postgres:latest
     container_name: schedule-service
     ports:
-      - "5005:5432"
+      - "5002:5432"
     environment:
       POSTGRES_DB: health_pro
       POSTGRES_USER: root
@@ -88,11 +60,24 @@ services:
     networks:
       - internal
 
+  appointment-service:
+    image: postgres:latest
+    container_name: appointment-service
+    ports:
+      - "5003:5432"
+    environment:
+      POSTGRES_DB: health_pro
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    volumes:
+      - appointment-service:/var/lib/postgresql/data
+    networks:
+      - internal
+
 volumes:
   clinic-service-db:
   auth-service-db:
-  doctor-service-db:
-  appointment-slot-service:
+  appointment-service:
   schedule-service:
 
 networks:

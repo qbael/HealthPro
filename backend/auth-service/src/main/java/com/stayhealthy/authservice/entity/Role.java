@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,11 +19,15 @@ import java.util.UUID;
 public class Role {
 
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotBlank(message = "Role name không được để trống")
     @Size(max = 20, message = "Role name không được vượt quá 20 ký tự")
     @Column(name = "role_name", length = 20, nullable = false)
     private String roleName;
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<User> users = new HashSet<>();
 }

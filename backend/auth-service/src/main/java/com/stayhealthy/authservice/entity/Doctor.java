@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.URL;
 
 import java.util.UUID;
 
@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Doctor {
 
     @Id
-    @GeneratedValue(generator = "UUID", strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotNull(message = "User không được để trống")
@@ -42,6 +42,7 @@ public class Doctor {
     @Column(name = "address", length = 255)
     private String address;
 
+    @URL
     @Column(name = "avatar_url")
     private String avatarUrl;
 }
