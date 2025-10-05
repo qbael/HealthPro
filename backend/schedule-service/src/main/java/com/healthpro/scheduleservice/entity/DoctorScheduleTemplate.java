@@ -3,10 +3,10 @@ package com.healthpro.scheduleservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -34,14 +34,12 @@ public class DoctorScheduleTemplate {
     private DayOfWeek dayOfWeek;
 
     @NotNull(message = "Thời gian bắt đầu không được để trống.")
-    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Thời gian bắt đầu phải có định dạng HH:mm.")
     @Column(name = "from_time", nullable = false)
-    private String fromTime;
+    private Time fromTime;
 
     @NotNull(message = "Thời gian kết thúc không được để trống.")
-    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Thời gian kết thúc phải có định dạng HH:mm.")
     @Column(name = "to_time", nullable = false)
-    private String toTime;
+    private Time toTime;
 
     @NotNull(message = "Thời lượng mỗi ca khám không được để trống.")
     @Min(value = 1, message = "Thời lượng mỗi ca khám phải là một số dương (tính bằng phút).")

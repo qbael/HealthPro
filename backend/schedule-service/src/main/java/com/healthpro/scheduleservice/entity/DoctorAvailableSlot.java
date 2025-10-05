@@ -27,8 +27,7 @@ public class DoctorAvailableSlot {
     @Column(name = "doctor_id", nullable = false)
     private UUID doctorId;
 
-    @NotNull(message = "ID của chuyên khoa tại phòng khám không được để trống.")
-    @Column(name = "clinic_specialty_id", nullable = false)
+    @Column(name = "clinic_specialty_id")
     private UUID clinicSpecialtyId;
 
     @NotNull(message = "Ngày hẹn không được để trống.")
@@ -44,7 +43,8 @@ public class DoctorAvailableSlot {
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
+    @NotNull(message = "Loại cuộc hẹn không được trống")
     @Enumerated(EnumType.STRING)
-    @Column(name = "appointment_type")
+    @Column(name = "appointment_type", nullable = false)
     private AppointmentType appointmentType;
 }

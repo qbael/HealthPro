@@ -60,24 +60,9 @@ services:
     networks:
       - internal
 
-  appointment-service:
-    image: postgres:latest
-    container_name: appointment-service
-    ports:
-      - "5003:5432"
-    environment:
-      POSTGRES_DB: health_pro
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-    volumes:
-      - appointment-service:/var/lib/postgresql/data
-    networks:
-      - internal
-
 volumes:
   clinic-service-db:
   auth-service-db:
-  appointment-service:
   schedule-service:
 
 networks:

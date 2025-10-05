@@ -1,5 +1,6 @@
 package com.healthpro.clinicservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,8 +29,10 @@ public class ClinicSpecialty {
     private Specialty specialty;
 
     @OneToMany(mappedBy = "clinicSpecialty", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<ClinicInvitation> invitations;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "clinicSpecialty", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ClinicSpecialtyDoctor> assignedDoctors;
 }

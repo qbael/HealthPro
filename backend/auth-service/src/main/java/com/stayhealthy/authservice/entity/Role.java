@@ -1,5 +1,7 @@
 package com.stayhealthy.authservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,7 +29,8 @@ public class Role {
     @Column(name = "role_name", length = 20, nullable = false)
     private String roleName;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "role")
     @Builder.Default
+    @JsonBackReference
     private Set<User> users = new HashSet<>();
 }

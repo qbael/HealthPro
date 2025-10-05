@@ -34,7 +34,8 @@ public class ClinicInvitation {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private InvitationStatus status;
+    @Builder.Default
+    private InvitationStatus status = InvitationStatus.PENDING;
 
     @CreationTimestamp
     @Column(name = "invited_at")
@@ -45,12 +46,4 @@ public class ClinicInvitation {
 
     @Column(name = "title", columnDefinition = "TEXT")
     private String title;
-
-    @PrePersist
-    protected void onCreate() {
-        invitedAt = LocalDateTime.now();
-        if (status == null) {
-            status = InvitationStatus.PENDING;
-        }
-    }
 }

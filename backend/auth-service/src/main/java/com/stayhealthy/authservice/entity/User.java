@@ -1,5 +1,6 @@
 package com.stayhealthy.authservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -38,7 +39,7 @@ public class User {
     private String phoneNumber;
 
     @NotNull(message = "Role không được để trống")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 

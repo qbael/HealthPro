@@ -1,5 +1,6 @@
 package com.healthpro.clinicservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -48,8 +49,10 @@ public class Doctor {
     private String avatarUrl;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<DoctorSpecialty> doctorSpecialties;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<ClinicInvitation> invitations;
 }
