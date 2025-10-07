@@ -2,14 +2,14 @@
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { UserCog } from "lucide-react";
+
 const Header = () => {
     return (
         <header className='fixed top-0 left-0 flex items-center justify-between w-full h-16 px-3 bg-white shadow-md'>
@@ -23,7 +23,17 @@ const Header = () => {
             </div>
             <div className='flex items-center gap-5'>
                 <div className='hover:cursor-pointer'>
-                    Đặt khám bác sĩ
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>Profile</DropdownMenuItem>
+                            <DropdownMenuItem>Billing</DropdownMenuItem>
+                            <DropdownMenuItem>Team</DropdownMenuItem>
+                            <DropdownMenuItem>Subscription</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
                 <div className='hover:cursor-pointer'>
                     Đặt khám phòng khám
