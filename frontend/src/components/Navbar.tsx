@@ -9,6 +9,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Link from "next/link";
 
 const Header = () => {
     return (
@@ -39,7 +40,9 @@ const Header = () => {
                     Đặt khám phòng khám
                 </div>
                 <Button variant='outline' className=' hover:cursor-pointer hover:bg-blue-500 hover:text-white'>
-                    Đăng nhập
+                    <Link href='/login'>
+                        Đăng nhập
+                    </Link>
                 </Button>
             </div>
         </header>
