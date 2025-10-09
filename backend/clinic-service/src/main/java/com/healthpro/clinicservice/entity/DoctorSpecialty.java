@@ -1,5 +1,6 @@
 package com.healthpro.clinicservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class DoctorSpecialty {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
+    @JsonBackReference
     private Doctor doctor;
 
     @ManyToOne(fetch = FetchType.LAZY)
