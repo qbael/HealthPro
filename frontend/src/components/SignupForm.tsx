@@ -100,7 +100,7 @@ const SignupForm = ({ role }: SignupFormProps) => {
             )}
         />
 
-        <Button type="submit">
+        <Button type="submit" className='w-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
             Đăng ký
         </Button>
         {/* <Button type="submit" disabled={loading}>

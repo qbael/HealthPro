@@ -9,9 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +30,11 @@ public class UserController {
         List<User> users = userService.findAll();
 
         return ResponseEntity.ok().body(users);
+    }
+
+    @PostMapping
+    @Operation(summary = "Create Users")
+    public ResponseEntity<User> create(@RequestBody User user) {
+
     }
 }

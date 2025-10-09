@@ -25,23 +25,23 @@ const page = () => {
                 </div>
                 <div className='flex items-center justify-between gap-3'>
                     <Button 
-                        variant={role === 'patient' ? 'default' : 'outline'}
+                        variant='outline'
                         onClick={() => router.push(`/signup?role=patient`)}   
-                        className='flex-1'
+                        className={`flex-1 ${role === 'patient' ? 'bg-blue-500 text-white' : ''}`}
                     >
                         Bệnh nhân
                     </Button>
                     <Button 
-                        variant={role === 'doctor' ? 'default' : 'outline'}
+                        variant='outline'
                         onClick={() => router.push(`/signup?role=doctor`)}
-                        className='flex-1' 
+                        className={`flex-1 ${role === 'doctor' ? 'bg-blue-500 text-white' : ''}`}
                     >
                         Bác sĩ
                     </Button>
                     <Button 
-                        variant={role === 'clinic' ? 'default' : 'outline'}
+                        variant='outline'
                         onClick={() => router.push(`/signup?role=clinic`)}
-                        className='flex-1' 
+                        className={`flex-1 ${role === 'clinic' ? 'bg-blue-500 text-white' : ''}`}
                     >
                         Phòng khám
                     </Button>
