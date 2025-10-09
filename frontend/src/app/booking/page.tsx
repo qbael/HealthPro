@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import ImageSection from "@/components/ImageSection";
 import {
   Carousel,
   CarouselContent,
@@ -8,10 +7,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import DoctorCard from "@/components/DoctorCard";
-export default function Home() {
+const page = () => {
   return (
     <main className="flex flex-col items-center">
-      <ImageSection />
 
       <section className="w-[85%] relative top-16 flex flex-col items-center justify-between gap-5">
         <div className="flex flex-col gap-2 items-center">
@@ -65,3 +63,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default page;
