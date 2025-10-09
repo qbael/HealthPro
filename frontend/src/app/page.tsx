@@ -9,6 +9,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import DoctorCard from "@/components/DoctorCard";
+import { healthyNav } from "@/lib/navItem";
+import SideBar from "@/components/Sidebar";
 export default function Home() {
   return (
     <main className="flex flex-col items-center">
