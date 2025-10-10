@@ -5,10 +5,11 @@ import SignupForm from '@/components/SignupForm'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import Link from 'next/link'
+import {useEffect} from "react";
 
-const page = () => {
+const SignupPage = () => {
     const searchParams = useSearchParams()
-    const role = searchParams.get('role')
+    const role = searchParams.get('role') || 'PATIENT'
     const router = useRouter()
 
     return (
@@ -55,4 +56,4 @@ const page = () => {
     )
 }
 
-export default page
+export default SignupPage

@@ -3,8 +3,10 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import DropDownMenu from "@/components/ui/DropDownMenu";
 import Link from "next/link";
+import {useAuth} from "@/contexts/AuthContext";
 
 const Header = () => {
+    const { user } = useAuth()
     return (
         <header className='fixed top-0 left-0 flex items-center justify-between w-full h-16 px-3 bg-white shadow-md z-50'>
             <div className='flex items-center'>
@@ -25,11 +27,21 @@ const Header = () => {
                 <div className='hover:cursor-pointer'>
                     Đặt khám phòng khám
                 </div>
-                <Button variant='outline' className=' hover:cursor-pointer hover:bg-blue-500 hover:text-white'>
-                    <Link href='/login'>
-                        Đăng nhập
-                    </Link>
-                </Button>
+
+                {user ? (
+                    <Button variant='destructive' className=' hover:cursor-pointer hover:bg-red-500 hover:text-white'>
+                        <Link href='/login'>
+                            Đăng xuất
+                        </Link>
+                    </Button>
+                ) : (
+                    <Button variant='outline' className=' hover:cursor-pointer hover:bg-blue-500 hover:text-white'>
+                        <Link href='/login'>
+                            Đăng nhập
+                        </Link>
+                    </Button>
+                )}
+
             </div>
         </header>
     )

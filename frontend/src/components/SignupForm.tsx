@@ -25,8 +25,6 @@ const formSchema = z.object({
     password: z
       .string()    
       .min(8, { message: "Mật khẩu phải ít nhất 8 ký tự." }),
-      // .regex(/[A-Z]/, { message: "Mật khẩu phải chứa ít nhất 1 ký tự viết hoa." })
-      // .regex(/[^a-zA-Z0-9]/, { message: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt." }),
 
     confPassword: z.string().min(1, { message: "Vui lòng nhập lại mật khẩu." }),
     }).refine((data) => data.password === data.confPassword, {
@@ -98,13 +96,9 @@ const SignupForm = ({ role }: SignupFormProps) => {
                 </FormItem>
             )}
         />
-
-        <Button type="submit" className='w-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
-            Đăng ký
-        </Button>
-        {/* <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} className='w-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
             {loading ? "Đang đăng ký..." : "Đăng ký"}
-        </Button> */}
+        </Button>
       </form>
     </Form>
     )

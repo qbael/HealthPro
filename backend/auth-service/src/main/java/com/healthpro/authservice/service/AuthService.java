@@ -1,11 +1,15 @@
 package com.healthpro.authservice.service;
 
+import com.healthpro.authservice.dto.LoginRequestDTO;
+import com.healthpro.authservice.dto.LoginResponseDTO;
 import com.healthpro.authservice.dto.SignupRequestDTO;
 import com.healthpro.authservice.entity.Role;
 import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
+import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.utils.JwtUtil;
 import io.jsonwebtoken.JwtException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,14 +44,16 @@ public class AuthService {
         userService.create(user);
     }
 
-    public Optional<String> login(SignupRequestDTO signupRequestDTO) {
-        Optional<String> token = userService
-                .findByEmail(signupRequestDTO.getEmail())
-                .filter(u -> passwordEncoder.matches(signupRequestDTO.getPassword(),
-                        u.getPassword()))
-                .map(u->jwtUtil.generateToken(u.getEmail(), u.getRole()));
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        User user = userService.findByEmail(loginRequestDTO.getEmail())
+                .orElseThrow(() -> new UserNotFoundException(
+                        "User with email " + loginRequestDTO.getEmail() + " not found"));
 
-        return token;
+        if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException("Sai mật khẩu");
+        }
+
+        return new LoginResponseDTO(user.getId(), user.getEmail(), user.getRole());
     }
 
     public boolean validateToken(String token) {

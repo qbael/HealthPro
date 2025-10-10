@@ -47,4 +47,12 @@ public class JwtUtil {
             throw new JwtException("Invalid JWT");
         }
     }
+
+//    public String extractEmail(String token) {
+//        return extractClaims(token).getSubject();
+//    }
+//
+//    public String extractRole(String token) {
+//        return extractClaims(token).get("role", String.class);
+//    }
 }
