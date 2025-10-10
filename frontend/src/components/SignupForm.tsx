@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-// import { useAuthAction } from "@/hooks/useAuthAction";
+import { useAuthAction } from "@/hooks/useAuthAction";
  
 const formSchema = z.object({
     email: z
@@ -24,9 +24,9 @@ const formSchema = z.object({
 
     password: z
       .string()    
-      .min(6, { message: "Mật khẩu phải ít nhất 6 ký tự." })
-      .regex(/[A-Z]/, { message: "Mật khẩu phải chứa ít nhất 1 ký tự viết hoa." })
-      .regex(/[^a-zA-Z0-9]/, { message: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt." }),
+      .min(8, { message: "Mật khẩu phải ít nhất 8 ký tự." }),
+      // .regex(/[A-Z]/, { message: "Mật khẩu phải chứa ít nhất 1 ký tự viết hoa." })
+      // .regex(/[^a-zA-Z0-9]/, { message: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt." }),
 
     confPassword: z.string().min(1, { message: "Vui lòng nhập lại mật khẩu." }),
     }).refine((data) => data.password === data.confPassword, {
@@ -39,7 +39,7 @@ type SignupFormProps = {
 }
 
 const SignupForm = ({ role }: SignupFormProps) => {
-    // const { signup, loading } = useAuthAction()
+    const { signup, loading } = useAuthAction()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -51,8 +51,7 @@ const SignupForm = ({ role }: SignupFormProps) => {
     })
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // await signup(values.email, values.password)
-        console.log(values)
+        await signup(values.email, values.password, role)
     }
 
     return (

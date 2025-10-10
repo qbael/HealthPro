@@ -8,14 +8,13 @@ import { toast } from "sonner"
 export const useAuthAction = () => {
     const { user, loading, dispatch } = useContext(AuthContext)
 
-    const signup = async (email: string, password: string) => {
+    const signup = async (email: string, password: string, role: string) => {
         try {
             dispatch({ type: 'LOADING' })
-
-            const res = await api.post('/api/users/signup', {
+            const res = await api.post('v1/auth/signup', {
                 email: email,
                 password: password,
-                role: 'Parent'
+                role: role
             })
 
             toast.success('Đăng ký thành công.')
@@ -32,7 +31,7 @@ export const useAuthAction = () => {
         try {
             dispatch({ type: 'LOADING' })
 
-            const res = await api.post('/api/users/login', {
+            const res = await api.post('v1/auth/login', {
                 email: email,
                 password: password,
             })
@@ -49,7 +48,7 @@ export const useAuthAction = () => {
 
     const logout = async () => {
         try {
-            await api.post('/api/users/logout')
+            await api.post('/auth/logout')
             toast.success('Hẹn gặp lại.')
             dispatch({ type: 'LOGOUT' })
         }

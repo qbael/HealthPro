@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 const page = () => {
     const searchParams = useSearchParams()
-    const role = searchParams.get('role') || 'patient'
+    const role = searchParams.get('role')
     const router = useRouter()
 
     return (
@@ -26,22 +26,22 @@ const page = () => {
                 <div className='flex items-center justify-between gap-3'>
                     <Button 
                         variant='outline'
-                        onClick={() => router.push(`/signup?role=patient`)}   
-                        className={`flex-1 ${role === 'patient' ? 'bg-blue-500 text-white' : ''}`}
+                        onClick={() => router.replace(`/signup?role=PATIENT`)}
+                        className={`flex-1 ${role === 'PATIENT' ? 'bg-blue-500 text-white' : ''}`}
                     >
                         Bệnh nhân
                     </Button>
                     <Button 
                         variant='outline'
-                        onClick={() => router.push(`/signup?role=doctor`)}
-                        className={`flex-1 ${role === 'doctor' ? 'bg-blue-500 text-white' : ''}`}
+                        onClick={() => router.replace(`/signup?role=DOCTOR`)}
+                        className={`flex-1 ${role === 'DOCTOR' ? 'bg-blue-500 text-white' : ''}`}
                     >
                         Bác sĩ
                     </Button>
                     <Button 
                         variant='outline'
-                        onClick={() => router.push(`/signup?role=clinic`)}
-                        className={`flex-1 ${role === 'clinic' ? 'bg-blue-500 text-white' : ''}`}
+                        onClick={() => router.replace(`/signup?role=CLINIC`)}
+                        className={`flex-1 ${role === 'CLINIC' ? 'bg-blue-500 text-white' : ''}`}
                     >
                         Phòng khám
                     </Button>

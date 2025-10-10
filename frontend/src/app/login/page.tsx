@@ -18,7 +18,7 @@ const Page = () => {
                 </div>
                 <LoginForm />
                 <div className='flex gap-5 mt-5'>
-                    <Link href='/signup?role=patient' className='text-sm font-bold'>Chưa có tài khoản?</Link>
+                    <Link href='/signup?role=PATIENT' className='text-sm font-bold'>Chưa có tài khoản?</Link>
                 </div>
             </div>
         </main>

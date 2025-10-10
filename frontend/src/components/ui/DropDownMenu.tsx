@@ -1,4 +1,6 @@
-import React, {useState} from "react";
+"use client"
+
+import React, {useEffect, useState} from "react";
 import {ChevronDown} from "lucide-react";
 
 const DropDownMenu = () => {
@@ -7,6 +9,13 @@ const DropDownMenu = () => {
     // const toggleDropdown = () => {
     //     setIsOpen(!isOpen);
     // };
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) return null;
 
     return (
         <div className="relative inline-block text-left"
