@@ -13,7 +13,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -56,13 +56,11 @@ public class AuthService {
         return new LoginResponseDTO(user.getId(), user.getEmail(), user.getRole());
     }
 
-    public boolean validateToken(String token) {
-        try {
-            jwtUtil.validateToken(token);
-            return true;
-        }
-        catch (JwtException e) {
-            return false;
-        }
+    public LoginResponseDTO getCurrentUser( String token) {
+        UUID id = jwtUtil.extractId(token);
+        String email = jwtUtil.extractEmail(token);
+        Role role = jwtUtil.extractRole(token);
+
+        return new LoginResponseDTO(id, email, role);
     }
 }

@@ -32,4 +32,9 @@ public class Role {
     @Builder.Default
     @JsonBackReference
     private Set<User> users = new HashSet<>();
+
+    public Role(UUID id, String roleName) {
+        this.id = id;
+        this.roleName = roleName;
+    }
 }

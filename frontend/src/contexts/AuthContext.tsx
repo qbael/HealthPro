@@ -40,24 +40,24 @@ type AuthProviderProps = { children: ReactNode }
 export const AuthContextProvider = ({ children }: AuthProviderProps) => {
     const [state, dispatch] = useReducer(authReducer, initialState)
 
-    // useEffect(() => {
-    //     const checkUser = async () => {
-    //         try {
-    //             const res = await api.get(`v1/users/current`)
-    //             dispatch({ type: 'LOGIN', payload: res.data.user })
-    //         }
-    //         catch (err: any) {
-    //             if (err.response?.status === 401) {
-    //                 dispatch({ type: 'LOGOUT' })
-    //             }
-    //             else {
-    //                 console.error('Server error:', err)
-    //             }
-    //         }
-    //     }
-    //
-    //     checkUser()
-    // }, [])
+    useEffect(() => {
+        const checkUser = async () => {
+            try {
+                const res = await api.get(`v1/users/current`)
+                dispatch({ type: 'LOGIN', payload: res.data })
+            }
+            catch (err: any) {
+                if (err.response?.status === 401) {
+                    dispatch({ type: 'LOGOUT' })
+                }
+                else {
+                    console.error('Server error:', err)
+                }
+            }
+        }
+
+        checkUser()
+    }, [])
 
     return (
         <AuthContext.Provider value={{ user: state.user, loading: state.loading, dispatch }}>

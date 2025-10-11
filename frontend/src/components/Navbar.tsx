@@ -24,7 +24,8 @@ const Header = () => {
                  text-gray-700 hover:bg-blue-100 cursor-pointer mr-2'>
                     Liên hệ
                 </div>
-                <div className='hover:cursor-pointer'>
+                <div className='hover:cursor-pointer inline-flex justify-center rounded-md px-4 py-2 bg-white text-sm font-bold
+                     text-gray-700 hover:bg-blue-100 cursor-pointer mr-2' >
                     Đặt khám phòng khám
                 </div>
 
