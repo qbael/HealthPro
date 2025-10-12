@@ -16,7 +16,7 @@ public class DoctorService {
         this.doctorRepository = doctorRepository;
     }
 
-    public Optional<List<Doctor>> getDoctors(Integer maxResults) {
+    public Optional<List<Doctor>> getDoctors(int maxResults) {
         return Optional.of(doctorRepository.findAll().stream().limit(maxResults).toList());
     }
 }

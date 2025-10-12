@@ -1,10 +1,10 @@
-export type Specialty = {
+export type SpecialtyType = {
     id: string;
     name: string;
 };
 
-export type Doctor = {
-    id: string;
+export type DoctorType = {
+    id: string,
     userId: string,
     fullName: string,
     bio: string,
@@ -13,6 +13,6 @@ export type Doctor = {
     avatarUrl: string,
     doctorSpecialties: {
         id: string,
-        specialty: Specialty
-    }[]
+        specialty: SpecialtyType
+    }[],
 }

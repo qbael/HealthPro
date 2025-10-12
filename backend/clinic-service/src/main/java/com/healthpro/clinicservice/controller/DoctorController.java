@@ -31,9 +31,9 @@ public class DoctorController {
     ) {
         Optional<List<Doctor>> doctors = doctorService.getDoctors(Integer.parseInt(maxResults));
         return doctors.map(doctorList -> ResponseEntity.ok().body(
-                ApiResponseDto.success(doctorList, "Lấy danh sách bác sĩ thành công")))
+                        ApiResponseDto.success(doctorList, "Lấy danh sách bác sĩ thành công")))
                 .orElseGet(() -> ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(ApiResponseDto.error(404, "Lấy danh sách bác sĩ thất bại")));
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(ApiResponseDto.error(404, "Lấy danh sách bác sĩ thất bại")));
     }
 }
