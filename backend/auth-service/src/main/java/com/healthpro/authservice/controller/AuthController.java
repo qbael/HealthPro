@@ -26,13 +26,29 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    private ResponseEntity<LoginResponseDTO> getLoginResponseDTOResponseEntity(
+            HttpServletResponse response, LoginResponseDTO loginResponseDTO
+    ) {
+        String token = jwtUtil.generateToken(loginResponseDTO.getEmail(),
+                loginResponseDTO.getId(), loginResponseDTO.getRole());
+        Cookie cookie = new Cookie("jwt", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(24 * 60 * 60 * 3); // 3 day
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(loginResponseDTO);
+    }
+
     @PostMapping("/signup")
     @Operation(summary = "Signup User")
-    public ResponseEntity<?> signup(
-            @RequestBody SignupRequestDTO signupRequestDTO
+    public ResponseEntity<LoginResponseDTO> signup(
+            @RequestBody SignupRequestDTO signupRequestDTO,
+            HttpServletResponse response
     ) {
-        authService.signup(signupRequestDTO);
-        return ResponseEntity.ok(Map.of("message", "Signup successful"));
+        LoginResponseDTO signupResponseDTO = authService.signup(signupRequestDTO);
+
+        return getLoginResponseDTOResponseEntity(response, signupResponseDTO);
     }
 
     @PostMapping("/login")
@@ -43,15 +59,7 @@ public class AuthController {
     ) {
         LoginResponseDTO loginResponseDTO = authService.login(loginRequestDTO);
 
-        String token = jwtUtil.generateToken(loginResponseDTO.getEmail(),
-                loginResponseDTO.getId(), loginResponseDTO.getRole());
-        Cookie cookie = new Cookie("jwt", token);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(24 * 60 * 60 * 3); // 3 day
-        response.addCookie(cookie);
-
-        return ResponseEntity.ok(loginResponseDTO);
+        return getLoginResponseDTOResponseEntity(response, loginResponseDTO);
     }
 
     @PostMapping("/logout")

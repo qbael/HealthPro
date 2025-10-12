@@ -13,6 +13,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,7 +30,7 @@ public class AuthService {
         this.roleService = roleService;
     }
 
-    public void signup(SignupRequestDTO signupRequestDTO) {
+    public LoginResponseDTO signup(SignupRequestDTO signupRequestDTO) {
         if (userService.findByEmail(signupRequestDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("A user with this email " + "already exists"
                     + signupRequestDTO.getEmail());
@@ -42,6 +43,12 @@ public class AuthService {
         Role role = roleService.findByRole(signupRequestDTO.getRole());
         user.setRole(role);
         userService.create(user);
+
+        User createdUser = userService.findByEmail(signupRequestDTO.getEmail())
+                .orElseThrow(() -> new UserNotFoundException(
+                        "User with email " + signupRequestDTO.getEmail() + " not found"));
+
+        return new LoginResponseDTO(createdUser.getId(), createdUser.getEmail(), user.getRole());
     }
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {

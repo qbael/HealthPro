@@ -4,11 +4,10 @@ import com.healthpro.authservice.dto.UserRequestDTO;
 import com.healthpro.authservice.dto.UserResponseDTO;
 import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
+import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.mapper.UserMapper;
 import com.healthpro.authservice.repository.RoleRepository;
 import com.healthpro.authservice.repository.UserRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import com.healthpro.authservice.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

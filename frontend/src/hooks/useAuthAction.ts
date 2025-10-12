@@ -13,15 +13,15 @@ export const useAuthAction = () => {
     const signup = async (email: string, password: string, role: string) => {
         try {
             dispatch({ type: 'LOADING', payload: true })
-            await api.post('v1/auth/signup', {
+            const res = await api.post('v1/auth/signup', {
                 email: email,
                 password: password,
                 role: role
             })
 
             toast.success('Đăng ký thành công.')
-            dispatch({ type: 'LOADING' , payload: false })
-            setTimeout(() => router.push('/login'), 1000)
+            dispatch({ type: 'LOGIN', payload: res.data })
+            setTimeout(() => router.push('/profile'), 500)
 
         }
         catch (err: any) {

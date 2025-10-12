@@ -32,9 +32,17 @@ const Header = () => {
                 </div>
 
                 {user ? (
-                    <Button variant='destructive' className=' hover:cursor-pointer hover:bg-red-500 hover:text-white' onClick={logout}>
+                    <div className='flex gap-7'>
+                        <Link href='/profile' className='hover:cursor-pointer inline-flex justify-center rounded-md px-4 py-2 bg-white text-sm font-bold
+                     text-gray-700 hover:bg-blue-100 cursor-pointer' >
+                            Hồ Sơ
+                        </Link>
+
+                        <Button variant='destructive' className=' hover:cursor-pointer hover:bg-red-500 hover:text-white' onClick={logout}>
                             Đăng xuất
-                    </Button>
+                        </Button>
+                    </div>
+
                 ) : (
                     <Button variant='outline' className=' hover:cursor-pointer hover:bg-blue-500 hover:text-white'>
                         <Link href='/login'>
