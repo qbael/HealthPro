@@ -43,7 +43,7 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
     useEffect(() => {
         const checkUser = async () => {
             try {
-                const res = await api.get(`v1/users/current`)
+                const res = await api.get(`v1/auth/current`)
                 dispatch({ type: 'LOGIN', payload: res.data })
             }
             catch (err: any) {

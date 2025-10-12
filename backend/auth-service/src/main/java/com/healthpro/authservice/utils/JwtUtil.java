@@ -67,10 +67,6 @@ public class JwtUtil {
                 .compact();
     }
 
-//    public void validateToken(String token) {
-//        parseClaims(token);
-//    }
-
     public boolean validateToken(String token) {
         try {
             parseClaims(token);

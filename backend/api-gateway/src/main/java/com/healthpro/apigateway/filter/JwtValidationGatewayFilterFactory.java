@@ -35,19 +35,7 @@ public class JwtValidationGatewayFilterFactory extends
                     .cookie("jwt", token)
                     .retrieve()
                     .toBodilessEntity()
-                    .flatMap(response -> {
-                        if (response.getStatusCode().is2xxSuccessful()) {
-                            return chain.filter(exchange);
-                        }
-                        else {
-                            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                            return exchange.getResponse().setComplete();
-                        }
-                    })
-                    .onErrorResume(e -> {
-                        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                        return exchange.getResponse().setComplete();
-                    });
+                    .then(chain.filter(exchange));
         };
     }
 }

@@ -53,7 +53,7 @@ export const useAuthAction = () => {
 
     const logout = async () => {
         try {
-            await api.post('/auth/logout')
+            await api.post('v1/auth/logout')
             toast.success('Hẹn gặp lại.')
             dispatch({ type: 'LOGOUT' })
         }

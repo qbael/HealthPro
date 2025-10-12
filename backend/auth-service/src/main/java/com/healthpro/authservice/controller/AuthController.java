@@ -3,7 +3,6 @@ package com.healthpro.authservice.controller;
 import com.healthpro.authservice.dto.LoginRequestDTO;
 import com.healthpro.authservice.dto.LoginResponseDTO;
 import com.healthpro.authservice.dto.SignupRequestDTO;
-import com.healthpro.authservice.entity.Role;
 import com.healthpro.authservice.service.AuthService;
 import com.healthpro.authservice.utils.JwtUtil;
 import io.jsonwebtoken.JwtException;
@@ -53,6 +52,18 @@ public class AuthController {
         response.addCookie(cookie);
 
         return ResponseEntity.ok(loginResponseDTO);
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "Logout User")
+    public ResponseEntity<Void> logout (HttpServletResponse response){
+        Cookie cookie = new Cookie("jwt", "");
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Get Current Logged In User")

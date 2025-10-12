@@ -2,7 +2,6 @@ package com.healthpro.authservice.controller;
 
 import com.healthpro.authservice.dto.UserRequestDTO;
 import com.healthpro.authservice.dto.UserResponseDTO;
-import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
