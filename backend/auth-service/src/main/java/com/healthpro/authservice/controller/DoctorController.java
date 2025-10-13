@@ -2,8 +2,6 @@ package com.healthpro.authservice.controller;
 
 import com.healthpro.authservice.dto.DoctorRequestDTO;
 import com.healthpro.authservice.dto.DoctorResponseDTO;
-import com.healthpro.authservice.dto.UserRequestDTO;
-import com.healthpro.authservice.dto.UserResponseDTO;
 import com.healthpro.authservice.service.DoctorService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -28,22 +26,31 @@ public class DoctorController {
         return ResponseEntity.ok().body(doctors);
     }
 
-    @PutMapping("/{id}")
-    @Operation(summary = "Update a Doctor")
-    public ResponseEntity<DoctorResponseDTO> updateDoctor(
-            @PathVariable UUID id,
-            @RequestBody DoctorRequestDTO doctorRequestDTO
+    @GetMapping("/{id}")
+    public ResponseEntity<DoctorResponseDTO> getDoctorById(
+            @PathVariable UUID id
     ) {
-        DoctorResponseDTO doctorResponseDTO = doctorService.updateDoctor(id, doctorRequestDTO);
+        DoctorResponseDTO doctorResponseDTO = doctorService.findById(id);
         return ResponseEntity.ok().body(doctorResponseDTO);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a Doctor")
-    public ResponseEntity<Void> deleteDoctor(
-            @PathVariable UUID id
+    @PostMapping
+    @Operation(summary = "Create a Doctor")
+    public ResponseEntity<DoctorResponseDTO> createDoctor(
+            @RequestBody DoctorRequestDTO doctorRequestDTO
     ) {
-        doctorService.deleteDoctor(id);
-        return ResponseEntity.noContent().build();
+        DoctorResponseDTO doctorResponseDTO = doctorService.createDoctor(doctorRequestDTO);
+        return ResponseEntity.ok().body(doctorResponseDTO);
     }
+
+
+//    @PutMapping("/{id}")
+//    @Operation(summary = "Update a Doctor")
+//    public ResponseEntity<DoctorResponseDTO> updateDoctor(
+//            @PathVariable UUID id,
+//            @RequestBody DoctorRequestDTO doctorRequestDTO
+//    ) {
+//        DoctorResponseDTO doctorResponseDTO = doctorService.updateDoctor(id, doctorRequestDTO);
+//        return ResponseEntity.ok().body(doctorResponseDTO);
+//    }
 }

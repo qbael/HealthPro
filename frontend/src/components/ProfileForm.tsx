@@ -14,7 +14,6 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {useAuth} from "@/contexts/AuthContext";
 import {useEffect, useState} from "react";
 
 const baseSchema = z.object({
@@ -43,8 +42,21 @@ const baseSchema = z.object({
     }),
 })
 
-const ProfileForm = () => {
-    const { user } = useAuth()
+interface UserProfile {
+    id: string;
+    doctorId: string
+    role: string;
+    email: string;
+    phoneNumber: string;
+    isActive: boolean;
+    fullName: string;
+    address: string
+}
+
+interface ProfileFormProps {
+    user: UserProfile;
+}
+const ProfileForm = ({ user } : ProfileFormProps) => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -54,11 +66,11 @@ const ProfileForm = () => {
     const form = useForm<z.infer<typeof baseSchema>>({
         resolver: zodResolver(baseSchema),
         defaultValues: {
-            role: "",
-            email: "",
-            fullName: "",
-            phoneNumber: "",
-            address: "",
+            role: user.role,
+            email: user.email,
+            fullName: user.fullName || "",
+            phoneNumber: user.phoneNumber,
+            address:  user.address || "",
         },
     })
 

@@ -1,8 +1,8 @@
 package com.healthpro.authservice.dto;
 
-import com.healthpro.authservice.entity.Role;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.UUID;
 
 @Getter
@@ -10,9 +10,9 @@ import java.util.UUID;
 public class LoginResponseDTO {
     private UUID id;
     private String email;
-    private Role role;
+    private String role;
 
-    public LoginResponseDTO(UUID id, String email, Role role) {
+    public LoginResponseDTO(UUID id, String email, String role) {
         this.id = id;
         this.email = email;
         this.role = role;

@@ -10,11 +10,13 @@ export const useAuthAction = () => {
     const { user, loading, dispatch } = useContext(AuthContext)
     const router = useRouter()
 
-    const signup = async (email: string, password: string, role: string) => {
+    const signup = async (email: string, phoneNumber: string,
+                          password: string, role: string) => {
         try {
             dispatch({ type: 'LOADING', payload: true })
             const res = await api.post('v1/auth/signup', {
                 email: email,
+                phoneNumber: phoneNumber,
                 password: password,
                 role: role
             })

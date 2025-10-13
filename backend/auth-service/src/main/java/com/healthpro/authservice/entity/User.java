@@ -33,6 +33,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @NotBlank(message = "Số điện thoại không được để trống")
     @Pattern(regexp = "^0[0-9]{9}$", message = "Số điện thoại phải có đúng 10 chữ số")
     @Column(name = "phone_number", length = 10)
     private String phoneNumber;

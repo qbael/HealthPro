@@ -9,7 +9,7 @@ public class UserMapper {
         userDTO.setId(user.getId());
         userDTO.setEmail(user.getEmail());
         userDTO.setPhoneNumber(user.getPhoneNumber());
-        userDTO.setRole(user.getRole());
+        userDTO.setRole(user.getRole().getRoleName());
         userDTO.setIsActive(user.getIsActive());
 
         return userDTO;

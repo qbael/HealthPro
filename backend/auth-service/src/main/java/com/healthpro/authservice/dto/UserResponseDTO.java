@@ -12,6 +12,6 @@ public class UserResponseDTO {
     private UUID id;
     private String email;
     private String phoneNumber;
-    private Role role;
+    private String role;
     private Boolean isActive;
 }

@@ -20,7 +20,12 @@ const formSchema = z.object({
     email: z
         .string()
         .min(1, { message: "Vui lòng nhập email."})
-        .email({ message: "Email không hợp lệ"}), 
+        .email({ message: "Email không hợp lệ"}),
+
+    phoneNumber: z
+        .string()
+        .min(1, { message: "Vui lòng nhập số điện thoại." })
+        .regex(/^0\d{9}$/, { message: "Số điện thoại phải có đúng 10 chữ số và bắt đầu bằng 0." }),
 
     password: z
       .string()    
@@ -43,13 +48,14 @@ const SignupForm = ({ role }: SignupFormProps) => {
         resolver: zodResolver(formSchema),
         defaultValues: {
         email: "",
+        phoneNumber: "",
         password: "",
         confPassword: "",
         }
     })
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        await signup(values.email, values.password, role)
+        await signup(values.email, values.phoneNumber, values.password, role)
     }
 
     return (
@@ -63,6 +69,20 @@ const SignupForm = ({ role }: SignupFormProps) => {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                     <Input placeholder="healthpro@gmail.com" {...field} />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+        />
+
+        <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Số Điện Thoại</FormLabel>
+                <FormControl>
+                    <Input placeholder="090-123-4567" {...field} />
                 </FormControl>
                 <FormMessage />
                 </FormItem>

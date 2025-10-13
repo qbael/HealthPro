@@ -37,30 +37,15 @@ public class JwtUtil {
         return parseClaims(token).getSubject();
     }
 
-    public Map<String, Object> extractRoleClaim(String token) {
-        Object roleClaim = parseClaims(token).get("role");
-        if (!(roleClaim instanceof Map)) throw new IllegalArgumentException("JWT role claim is invalid");
-        return (Map<String, Object>) roleClaim;
+    public String extractRole(String token) {
+        return parseClaims(token).get("role").toString();
     }
 
-    public Role extractRole(String token) {
-        Map<String, Object> roleMap = extractRoleClaim(token);
-        return new Role(
-                UUID.fromString(roleMap.get("id").toString()),
-                roleMap.get("roleName").toString()
-        );
-    }
-
-    public String generateToken(String email, UUID id, Role role) {
-        Map<String, Object> roleClaim = Map.of(
-                "id", role.getId().toString(),
-                "roleName", role.getRoleName()
-        );
-
+    public String generateToken(String email, UUID id, String role) {
         return Jwts.builder()
                 .subject(email)
                 .claim("id", id)
-                .claim("role", roleClaim)
+                .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24))) // 24 hours
                 .signWith(secretKey)
