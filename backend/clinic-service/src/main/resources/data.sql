@@ -15,34 +15,34 @@ VALUES ('850e8400-e29b-41d4-a716-446655440001', 'Nội tổng quát'),
 INSERT INTO doctors (id, user_id, full_name, bio, gender, address, avatar_url)
 VALUES ('750e8400-e29b-41d4-a716-446655440011', '650e8400-e29b-41d4-a716-446655440011', 'BS. Trần Văn Nguyên',
         'Bác sĩ chuyên khoa Nội tổng quát với hơn 15 năm kinh nghiệm. Chuyên điều trị các bệnh về tim mạch, tiểu đường và cao huyết áp.',
-        true, '78 Pasteur, Quận 1, TP.HCM', 'https://example.com/avatars/doctor1.jpg'),
+        true, '78 Pasteur, Quận 1, TP.HCM', 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440012', '650e8400-e29b-41d4-a716-446655440012', 'BS. Lê Thị Mai',
         'Bác sĩ chuyên khoa Sản - Phụ khoa, tốt nghiệp Đại học Y Hà Nội. Có kinh nghiệm 10 năm trong lĩnh vực chăm sóc sức khỏe sinh sản và điều trị vô sinh.',
-        false, '234 Điện Biên Phủ, Quận Bình Thạnh, TP.HCM', 'https://example.com/avatars/doctor2.jpg'),
+        false, '234 Điện Biên Phủ, Quận Bình Thạnh, TP.HCM', 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440013', '650e8400-e29b-41d4-a716-446655440013', 'BS. Phạm Văn Minh',
         'Bác sĩ chuyên khoa Nhi với 12 năm kinh nghiệm. Chuyên điều trị các bệnh về hô hấp, tiêu hóa và phát triển ở trẻ em.',
-        true, '567 Cách Mạng Tháng 8, Quận 10, TP.HCM', 'https://example.com/avatars/doctor3.jpg'),
+        true, '567 Cách Mạng Tháng 8, Quận 10, TP.HCM', 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=200&h=200&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440014', '650e8400-e29b-41d4-a716-446655440014', 'BS. Nguyễn Thị Hạnh',
         'Bác sĩ chuyên khoa Da liễu, tốt nghiệp loại Giỏi Đại học Y Dược TP.HCM. Chuyên điều trị mụn trứng cá, viêm da và các bệnh nấm da.',
-        false, '89 Võ Văn Tần, Quận 3, TP.HCM', 'https://example.com/avatars/doctor4.jpg'),
+        false, '89 Võ Văn Tần, Quận 3, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440015', '650e8400-e29b-41d4-a716-446655440015', 'BS. Hoàng Văn Tuấn',
         'Bác sĩ chuyên khoa Ngoại tổng hợp với 20 năm kinh nghiệm. Chuyên phẫu thuật nội soi và các ca phẫu thuật về ổ bụng.',
-        true, '123 Trần Hưng Đạo, Quận 5, TP.HCM', 'https://example.com/avatars/doctor5.jpg');
+        true, '123 Trần Hưng Đạo, Quận 5, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop');
 
 -- Insert Clinics (matching user_ids from auth-service)
-INSERT INTO clinics (id, user_id, clinic_name, address, description, open_hour, close_hour, logo_url)
+INSERT INTO clinics (id, user_id, clinic_name, address, description, weekday_open_hour, weekday_close_hour, weekend_open_hour,  weekend_close_hour, logo_url, avatar_url)
 VALUES ('750e8400-e29b-41d4-a716-446655440031', '650e8400-e29b-41d4-a716-446655440031', 'Bệnh viện Chợ Rẫy',
         '201B Nguyễn Chí Thanh, Quận 5, TP.HCM',
         'Bệnh viện đa khoa hạng đặc biệt, là một trong những bệnh viện lớn nhất khu vực phía Nam. Cung cấp đầy đủ các dịch vụ y tế từ khám chữa bệnh đến phẫu thuật chuyên sâu.',
-        '07:00', '21:00', 'https://example.com/logos/choray.png'),
+        '07:00', '21:00', '07:00', '17:00', 'https://res.cloudinary.com/dwkjsecri/image/upload/v1760283326/ggm2hmwvz358ww0ub7ek.jpg', 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400&h=250&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440032', '650e8400-e29b-41d4-a716-446655440032',
         'Phòng khám Đa khoa Hoàng Hoa', '345 Hoàng Văn Thụ, Quận Tân Bình, TP.HCM',
         'Phòng khám đa khoa uy tín với đội ngũ bác sĩ giàu kinh nghiệm. Chuyên khám và điều trị nội khoa, ngoại khoa, sản phụ khoa và nhi khoa.',
-        '08:00', '20:00', 'https://example.com/logos/hoanghoa.png'),
+        '08:00', '20:00', '08:00', '17:00', 'https://res.cloudinary.com/dwkjsecri/image/upload/v1760282444/jwzn0b5e3amdapletedu.jpg', 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=400&h=250&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440033', '650e8400-e29b-41d4-a716-446655440033',
         'Trung tâm Y tế Medical Center', '789 Nguyễn Thị Minh Khai, Quận 3, TP.HCM',
         'Trung tâm y tế hiện đại với trang thiết bị tiên tiến. Cung cấp dịch vụ khám chữa bệnh, xét nghiệm và chẩn đoán hình ảnh chất lượng cao.',
-        '08:00', '18:00', 'https://example.com/logos/medicalcenter.png');
+        '08:00', '18:00', '08:00', '18:00','https://res.cloudinary.com/dwkjsecri/image/upload/v1760283326/ggm2hmwvz358ww0ub7ek.jpg', 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&h=250&fit=crop');
 
 -- Insert Doctor Specialties (Bác sĩ và chuyên khoa của họ)
 INSERT INTO doctor_specialties (id, doctor_id, specialty_id)

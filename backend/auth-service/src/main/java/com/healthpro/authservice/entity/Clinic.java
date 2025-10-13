@@ -41,14 +41,26 @@ public class Clinic {
     private String description;
 
     @Pattern(regexp = "^([0-1][0-9]|2[0-3]):[0-5][0-9]$", message = "Giờ mở cửa phải theo định dạng HH:mm")
-    @Column(name = "open_hour", length = 5)
-    private String openHour = "08:00";
+    @Column(name = "weekday_open_hour", length = 5)
+    private String weekdayOpenHour = "08:00";
 
     @Pattern(regexp = "^([0-1][0-9]|2[0-3]):[0-5][0-9]$", message = "Giờ đóng cửa phải theo định dạng HH:mm")
-    @Column(name = "close_hour", length = 5)
-    private String closeHour = "17:00";
+    @Column(name = "weekday_close_hour", length = 5)
+    private String weekdayCloseHour = "17:00";
+
+    @Pattern(regexp = "^([0-1][0-9]|2[0-3]):[0-5][0-9]$", message = "Giờ mở cửa phải theo định dạng HH:mm")
+    @Column(name = "weekend_open_hour", length = 5)
+    private String weekendOpenHour = "08:00";
+
+    @Pattern(regexp = "^([0-1][0-9]|2[0-3]):[0-5][0-9]$", message = "Giờ đóng cửa phải theo định dạng HH:mm")
+    @Column(name = "weekend_close_hour", length = 5)
+    private String weekendCloseHour = "17:00";
 
     @URL(message = "URL không hợp lệ")
     @Column(name = "logo_url")
     private String logoUrl;
+
+    @URL(message = "URL không hợp lệ")
+    @Column(name = "avatar_url")
+    private String avatarUrl;
 }
