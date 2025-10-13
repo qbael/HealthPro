@@ -2,8 +2,11 @@ package com.healthpro.authservice.controller;
 
 import com.healthpro.authservice.dto.DoctorRequestDTO;
 import com.healthpro.authservice.dto.DoctorResponseDTO;
+import com.healthpro.authservice.repository.DoctorRepository;
 import com.healthpro.authservice.service.DoctorService;
+import com.healthpro.authservice.utils.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +17,11 @@ import java.util.UUID;
 @RequestMapping("/api/v1/doctors")
 public class DoctorController {
     private final DoctorService doctorService;
+    private final JwtUtil jwtUtil;
 
-    public DoctorController(DoctorService doctorService) {
+    public DoctorController(DoctorService doctorService, JwtUtil jwtUtil) {
         this.doctorService = doctorService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping
@@ -24,14 +29,6 @@ public class DoctorController {
     public ResponseEntity<List<DoctorResponseDTO>> getDoctors() {
         List<DoctorResponseDTO> doctors = doctorService.getDoctors();
         return ResponseEntity.ok().body(doctors);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<DoctorResponseDTO> getDoctorById(
-            @PathVariable UUID id
-    ) {
-        DoctorResponseDTO doctorResponseDTO = doctorService.findById(id);
-        return ResponseEntity.ok().body(doctorResponseDTO);
     }
 
     @PostMapping

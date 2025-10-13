@@ -3,7 +3,7 @@ POST http://localhost:8080/api/v1/doctors
 Content-Type: application/json
 
 {
-  "userId": "f6ff47d1-03a8-4ccd-8f06-9276b8c932b4",
+  "userId": "5d636b2f-91bf-4254-9c05-479c40f6dc5b",
   "fullName": "Tran Minh Dang",
   "address": "123 An Duong Vuong"
 }

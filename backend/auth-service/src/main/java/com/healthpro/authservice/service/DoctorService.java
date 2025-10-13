@@ -1,15 +1,13 @@
 package com.healthpro.authservice.service;
 
+import com.healthpro.authservice.dto.ClinicResponseDTO;
 import com.healthpro.authservice.dto.DoctorRequestDTO;
 import com.healthpro.authservice.dto.DoctorResponseDTO;
-import com.healthpro.authservice.dto.UserRequestDTO;
-import com.healthpro.authservice.dto.UserResponseDTO;
 import com.healthpro.authservice.entity.Doctor;
 import com.healthpro.authservice.entity.User;
-import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.UserNotFoundException;
+import com.healthpro.authservice.mapper.ClinicMapper;
 import com.healthpro.authservice.mapper.DoctorMapper;
-import com.healthpro.authservice.mapper.UserMapper;
 import com.healthpro.authservice.repository.DoctorRepository;
 import com.healthpro.authservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -33,10 +31,9 @@ public class DoctorService {
         return doctors.stream().map(DoctorMapper::toDoctorResponseDTO).toList();
     }
 
-    public DoctorResponseDTO findById(UUID id) {
-        Doctor doctor = doctorRepository.findByUser_Id(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id.toString()));
-        return DoctorMapper.toDoctorResponseDTO(doctor);
+    public Optional<DoctorResponseDTO> findByUserId(UUID id) {
+        return doctorRepository.findByUser_Id(id)
+                .map(DoctorMapper::toDoctorResponseDTO);
     }
 
     public DoctorResponseDTO createDoctor(DoctorRequestDTO doctorRequestDTO) {
