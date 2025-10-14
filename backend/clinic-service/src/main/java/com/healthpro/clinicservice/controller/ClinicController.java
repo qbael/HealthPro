@@ -25,7 +25,7 @@ public class ClinicController {
     @GetMapping
     public ResponseEntity<ApiResponseDto<Page<Clinic>>> getClinics(
             @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam(required = false, defaultValue = "12") Integer limit,
+            @RequestParam(required = false, defaultValue = "10") Integer limit,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDir
     ) {
