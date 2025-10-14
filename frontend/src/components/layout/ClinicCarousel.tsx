@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import {ClinicsType} from "@/types/clinics-types";
-import {ClinicCard} from "@/components/layout/ClinicCard";
+import {ClinicCard} from "@/components/ui/ClinicCard";
 
 interface ClinicCarouselProps {
     clinics: ClinicsType[];
@@ -33,13 +33,14 @@ const ClinicCarousel = ({clinics}: ClinicCarouselProps) => {
 
     return (
         <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-6 px-5">
                 <div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-1">Đặt khám bệnh viện</h2>
                     <p className="text-gray-600">Đặt khám và thanh toán dễ có phiếu khám (thời gian, số thứ tự) trước khi đi khám các bệnh viện kết nối chính thức với YouMed.</p>
                 </div>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                    Xem thêm <ChevronRight size={18} />
+                <button
+                    className="bg-cyan-400 hover:bg-blue-700 text-sm font-bold text-white px-3 mt-7 py-1 rounded-lg flex items-center gap-2 transition-colors">
+                    Xem thêm <ChevronRight size={18}/>
                 </button>
             </div>
 
@@ -79,7 +80,7 @@ const ClinicCarousel = ({clinics}: ClinicCarouselProps) => {
                             onClick={() => goToSlide(index)}
                             className={`h-2 rounded-full transition-all duration-300 hover:cursor-pointer ${
                                 index === currentSlide
-                                    ? 'w-8 bg-blue-500'
+                                    ? 'w-8 bg-cyan-400'
                                     : 'w-2 bg-gray-300 hover:bg-gray-400'
                             }`}
                             aria-label={`Go to slide ${index + 1}`}

@@ -6,7 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
-import DoctorCard from "@/components/DoctorCard";
+import DoctorCard from "@/components/layout/DoctorCard";
 const page = () => {
   return (
     <main className="flex flex-col items-center">
@@ -28,10 +28,10 @@ const page = () => {
         <div className="w-full">
           <Carousel>
             <CarouselContent>
-              <CarouselItem className="basis-1/4"><DoctorCard /></CarouselItem>
-              <CarouselItem className="basis-1/4"><DoctorCard /></CarouselItem>
-              <CarouselItem className="basis-1/4"><DoctorCard /></CarouselItem>
-              <CarouselItem className="basis-1/4"><DoctorCard /></CarouselItem>
+              <CarouselItem className="basis-1/4"><DoctorCard id={""} userId={""} fullName={""} bio={""} gender={false} address={""} avatarUrl={""} doctorSpecialties={[]} /></CarouselItem>
+              <CarouselItem className="basis-1/4"><DoctorCard id={""} userId={""} fullName={""} bio={""} gender={false} address={""} avatarUrl={""} doctorSpecialties={[]} /></CarouselItem>
+              <CarouselItem className="basis-1/4"><DoctorCard id={""} userId={""} fullName={""} bio={""} gender={false} address={""} avatarUrl={""} doctorSpecialties={[]} /></CarouselItem>
+              <CarouselItem className="basis-1/4"><DoctorCard id={""} userId={""} fullName={""} bio={""} gender={false} address={""} avatarUrl={""} doctorSpecialties={[]} /></CarouselItem>
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />
@@ -49,10 +49,10 @@ const page = () => {
         <div className="w-full">
           <Carousel>
             <CarouselContent>
-              <CarouselItem className="basis-1/4"><DoctorCard /></CarouselItem>
-              <CarouselItem className="basis-1/4"><DoctorCard /></CarouselItem>
-              <CarouselItem className="basis-1/4"><DoctorCard /></CarouselItem>
-              <CarouselItem className="basis-1/4"><DoctorCard /></CarouselItem>
+              <CarouselItem className="basis-1/4"><DoctorCard id={""} userId={""} fullName={""} bio={""} gender={false} address={""} avatarUrl={""} doctorSpecialties={[]} /></CarouselItem>
+              <CarouselItem className="basis-1/4"><DoctorCard id={""} userId={""} fullName={""} bio={""} gender={false} address={""} avatarUrl={""} doctorSpecialties={[]} /></CarouselItem>
+              <CarouselItem className="basis-1/4"><DoctorCard id={""} userId={""} fullName={""} bio={""} gender={false} address={""} avatarUrl={""} doctorSpecialties={[]} /></CarouselItem>
+              <CarouselItem className="basis-1/4"><DoctorCard id={""} userId={""} fullName={""} bio={""} gender={false} address={""} avatarUrl={""} doctorSpecialties={[]} /></CarouselItem>
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />

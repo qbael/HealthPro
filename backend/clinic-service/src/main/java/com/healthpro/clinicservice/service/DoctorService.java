@@ -2,6 +2,8 @@ package com.healthpro.clinicservice.service;
 
 import com.healthpro.clinicservice.entity.Doctor;
 import com.healthpro.clinicservice.repository.DoctorRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public class DoctorService {
         this.doctorRepository = doctorRepository;
     }
 
-    public Optional<List<Doctor>> getDoctors(int maxResults) {
-        return Optional.of(doctorRepository.findAll().stream().limit(maxResults).toList());
+    public Optional<Page<Doctor>> getDoctors(Pageable pageable) {
+        return Optional.of(doctorRepository.findAll(pageable));
     }
 }
