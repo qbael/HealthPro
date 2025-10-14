@@ -24,6 +24,7 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+
     @NotNull(message = "Id người dùng không được ")
     @Column(name = "user_id", unique = true, nullable = false)
     private UUID userId;
