@@ -7,7 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
-import DoctorCard from "@/components/DoctorCard";
+import DoctorCard from "@/components/layout/DoctorCard";
 export default function Home() {
   return (
     <main className="flex flex-col items-center">
