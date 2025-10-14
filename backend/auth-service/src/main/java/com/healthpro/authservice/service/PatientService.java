@@ -4,15 +4,16 @@ import com.healthpro.authservice.dto.PatientRequestDTO;
 import com.healthpro.authservice.dto.PatientResponseDTO;
 import com.healthpro.authservice.entity.Patient;
 import com.healthpro.authservice.entity.User;
+import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.mapper.PatientMapper;
+import com.healthpro.authservice.mapper.UserMapper;
 import com.healthpro.authservice.repository.PatientRepository;
 import com.healthpro.authservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,6 +43,29 @@ public class PatientService {
     public void createPatient(User createdUser) {
         Patient patient = new Patient();
         patient.setUser(createdUser);
+        patientRepository.save(patient);
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    public void updatePatient(UUID id, PatientRequestDTO patientRequestDTO) {
+        Patient patient = patientRepository.findByUser_Id(id).orElseThrow(
+                () -> new UserNotFoundException("User not found with this ID " + id));
+
+        if (userRepository.existsByEmailAndIdNot(patientRequestDTO.getEmail(), id)) {
+            throw new EmailAlreadyExistsException("User with this email already exists" + patientRequestDTO.getEmail());
+        }
+
+        User user = patient.getUser();
+        user.setEmail(patientRequestDTO.getEmail());
+        user.setPhoneNumber(patientRequestDTO.getPhoneNumber());
+
+        patient.setFullName(patientRequestDTO.getFullName());
+        patient.setDateOfBirth(patientRequestDTO.getDateOfBirth());
+        patient.setGender(patientRequestDTO.getGender());
+        patient.setMedicalNotes(patientRequestDTO.getMedicalNotes());
+        patientRepository.save(patient);
+
+        userRepository.save(user);
         patientRepository.save(patient);
     }
 }

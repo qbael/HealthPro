@@ -1,20 +1,16 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
-import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import {useEffect, useState} from "react";
+import {zodResolver} from "@hookform/resolvers/zod"
+import {useForm} from "react-hook-form"
+import {z} from "zod"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
+import {Button} from "@/components/ui/button"
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
+import {Input} from "@/components/ui/input"
+import {useState} from "react";
+import api from "@/lib/axios";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
 
 const baseSchema = z.object({
     role: z
@@ -37,20 +33,71 @@ const baseSchema = z.object({
             { message: "Số điện thoại không hợp lệ." }
         ),
 
-    address: z.string().min(1, {
-        message: "Vui lòng nhập địa chỉ.",
+    gender: z.boolean({
+        message: "Vui lòng nhập giới tính.",
     }),
+
+    // address: z.string().min(1, {
+    //     message: "Vui lòng nhập địa chỉ.",
+    // }),
+
+    // dateOfBirth: z
+    //     .string()
+    //     .datetime({ offset: false, message: "Ngày sinh không hợp lệ." })
+    //     .or(z.string().min(1, { message: "Vui lòng nhập ngày sinh." })),
+    //
+    // bio: z.string().min(1, {
+    //     message: "Vui lòng nhập giới thiệu.",
+    // }),
+    //
+    // avatarUrl: z.string().min(1, {
+    //     message: "Vui lòng chọn avatar.",
+    // }),
+    //
+    // logoUrl: z.string().min(1, {
+    //     message: "Vui lòng chọn logo.",
+    // }),
+    //
+    // description: z.string().min(1, {
+    //     message: "Vui lòng nhập chú thích.",
+    // }),
+    //
+    // weekdayOpenHour: z.string().min(1, {
+    //     message: "Vui lòng chọn giờ bắt đầu trong tuần.",
+    // }),
+    //
+    // weekdayCloseHour: z.string().min(1, {
+    //     message: "Vui lòng chọn giờ kết thúc trong tuần.",
+    // }),
+    //
+    // weekendOpenHour: z.string().min(1, {
+    //     message: "Vui lòng chọn ngày bắt đầu cuối tuần.",
+    // }),
+    //
+    // weekendCloseHour: z.string().min(1, {
+    //     message: "Vui lòng chọn ngày kết thúc cuối tuần.",
+    // })
 })
 
 interface UserProfile {
-    id: string;
-    doctorId: string
-    role: string;
-    email: string;
-    phoneNumber: string;
-    isActive: boolean;
-    fullName: string;
+    id: string
+    Id: string
+    role: string
+    email: string
+    phoneNumber: string
+    isActive: boolean
+    fullName: string
     address: string
+    gender: boolean
+    dateOfBirth: string
+    bio: string
+    avatarUrl: string
+    logoUrl: string
+    description: string
+    weekdayOpenHour: string
+    weekdayCloseHour: string
+    weekendOpenHour: string
+    weekendCloseHour: string
 }
 
 interface ProfileFormProps {
@@ -58,10 +105,7 @@ interface ProfileFormProps {
 }
 const ProfileForm = ({ user } : ProfileFormProps) => {
     const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-
-    }, []);
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof baseSchema>>({
         resolver: zodResolver(baseSchema),
@@ -70,12 +114,30 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
             email: user.email,
             fullName: user.fullName || "",
             phoneNumber: user.phoneNumber,
+            gender: user.gender || undefined,
             address:  user.address || "",
+            dateOfBirth: user.dateOfBirth || "",
+            bio: user.bio || "",
+            avatarUrl: user.avatarUrl || "",
+            logoUrl: user.logoUrl || "",
+            description: user.description || "",
+            weekdayOpenHour: user.weekdayOpenHour || "",
+            weekdayCloseHour: user.weekdayCloseHour || "",
+            weekendOpenHour: user.weekendOpenHour || "",
+            weekendCloseHour: user.weekendCloseHour || "",
         },
     })
 
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
-        console.log(values)
+        try {
+            setLoading(true)
+            await api.put(`v1/profile/${user.role.toLowerCase()}/${user.id}`, values)
+            setLoading(false)
+            toast.success("Cập nhật thành công")
+        }
+        catch (err) {
+            console.error('Failed to update profile:', err)
+        }
     }
 
     return (
@@ -152,6 +214,34 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                             </FormItem>
                         )}
                     />
+                    )}
+
+                {user?.role === 'CLINIC' ? null
+                    : (
+                        <FormField
+                            control={form.control}
+                            name="gender"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Giới Tính</FormLabel>
+                                    <FormControl>
+                                        <Select
+                                            onValueChange={(value) => field.onChange(value === "true")}
+                                            value={field.value?.toString() ?? ""}
+                                        >
+                                            <SelectTrigger className="w-[180px]">
+                                                <SelectValue placeholder="Giới tính" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="true">Nam</SelectItem>
+                                                <SelectItem value="false">Nữ</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     )}
 
                 <Button type="submit" disabled={loading} className='w-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>

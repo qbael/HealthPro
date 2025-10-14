@@ -7,9 +7,11 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class DoctorRequestDTO {
-    private UUID userId;
+public class DoctorRequestDTO extends UserRequestDTO {
+    private UUID doctorId;
     private String fullName;
-    private String phoneNumber;
+    private String bio;
+    private Boolean gender;
     private String address;
+    private String avatarUrl;
 }

@@ -10,5 +10,8 @@ import java.util.UUID;
 public class DoctorResponseDTO extends UserResponseDTO {
     private UUID doctorId;
     private String fullName;
+    private String bio;
+    private Boolean gender;
     private String address;
+    private String avatarUrl;
 }

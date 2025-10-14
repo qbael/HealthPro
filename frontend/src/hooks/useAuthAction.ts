@@ -23,7 +23,7 @@ export const useAuthAction = () => {
 
             toast.success('Đăng ký thành công.')
             dispatch({ type: 'LOGIN', payload: res.data })
-            setTimeout(() => router.push('/profile'), 500)
+            router.replace('/profile')
 
         }
         catch (err: any) {
@@ -44,6 +44,7 @@ export const useAuthAction = () => {
 
             toast.success('Đăng nhập thành công.')
             dispatch({ type: 'LOGIN', payload: res.data })
+            router.replace('/')
 
         }
         catch (err: any) {
@@ -58,6 +59,7 @@ export const useAuthAction = () => {
             await api.post('v1/auth/logout')
             toast.success('Hẹn gặp lại.')
             dispatch({ type: 'LOGOUT' })
+            router.replace('/')
         }
         catch (err: any) {
             console.error(err.response?.data || err.message)

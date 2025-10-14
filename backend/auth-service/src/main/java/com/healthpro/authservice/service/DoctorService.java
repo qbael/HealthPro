@@ -3,9 +3,11 @@ package com.healthpro.authservice.service;
 import com.healthpro.authservice.dto.ClinicResponseDTO;
 import com.healthpro.authservice.dto.DoctorRequestDTO;
 import com.healthpro.authservice.dto.DoctorResponseDTO;
+import com.healthpro.authservice.dto.PatientRequestDTO;
 import com.healthpro.authservice.entity.Doctor;
 import com.healthpro.authservice.entity.Patient;
 import com.healthpro.authservice.entity.User;
+import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.mapper.ClinicMapper;
 import com.healthpro.authservice.mapper.DoctorMapper;
@@ -49,19 +51,26 @@ public class DoctorService {
         doctorRepository.save(doctor);
     }
 
-//    public UserResponseDTO updateUser(UUID id, UserRequestDTO userRequestDTO) {
-//        Doctor doctor =  doctorRepository.findById(id).orElseThrow(
-//                () -> new UserNotFoundException("User not found with this ID " + id));
-//
-//        if (doctorRepository.existsByEmailAndIdNot(doctorRequestDTO.getEmail(), id)) {
-//            throw new EmailAlreadyExistsException("User with this email already exists" + userRequestDTO.getEmail());
-//        }
-//
-//        user.setEmail(userRequestDTO.getEmail());
-//        user.setPhoneNumber(userRequestDTO.getPhoneNumber());
-//        user.setRole(roleRepository.findByRoleName(userRequestDTO.getRole()));
-//
-//        User updatedUser = userRepository.save(user);
-//        return UserMapper.toDoctorResponseDTO(updatedUser);
-//    }
+    @SuppressWarnings("DuplicatedCode")
+    public void updateDoctor(UUID id, DoctorRequestDTO doctorRequestDTO) {
+        Doctor doctor = doctorRepository.findByUser_Id(id).orElseThrow(
+                () -> new UserNotFoundException("User not found with this ID " + id));
+
+        if (userRepository.existsByEmailAndIdNot(doctorRequestDTO.getEmail(), id)) {
+            throw new EmailAlreadyExistsException("User with this email already exists" + doctorRequestDTO.getEmail());
+        }
+
+        User user = doctor.getUser();
+        user.setEmail(doctorRequestDTO.getEmail());
+        user.setPhoneNumber(doctorRequestDTO.getPhoneNumber());
+
+        doctor.setFullName(doctorRequestDTO.getFullName());
+        doctor.setBio(doctorRequestDTO.getBio());
+        doctor.setGender(doctorRequestDTO.getGender());
+        doctor.setAddress(doctorRequestDTO.getAddress());
+        doctor.setAvatarUrl(doctorRequestDTO.getAvatarUrl());
+
+        userRepository.save(user);
+        doctorRepository.save(doctor);
+    }
 }

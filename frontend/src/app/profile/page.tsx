@@ -18,11 +18,18 @@ const Page = () => {
         fetchProfile()
     }, [])
 
-    if (!user) return <p>Loading...</p>
+    if (!user)
+        return (
+            <div className="text-center py-12 w-full h-screen flex justify-center items-center">
+                <div
+                    className="inline-block animate-spin rounded-full h-30 w-30 border-4 border-cyan-400 border-t-transparent">
+                </div>
+            </div>
+        )
 
     return (
         <main className="flex justify-center">
-            <div className='w-[90%] max-w-[700px] mt-30'>
+            <div className='w-[90%] max-w-[650px] mt-30'>
                 <ProfileForm user={user}/>
             </div>
         </main>

@@ -1,5 +1,8 @@
 package com.healthpro.authservice.controller;
 
+import com.healthpro.authservice.dto.ClinicRequestDTO;
+import com.healthpro.authservice.dto.DoctorRequestDTO;
+import com.healthpro.authservice.dto.PatientRequestDTO;
 import com.healthpro.authservice.service.ClinicService;
 import com.healthpro.authservice.service.DoctorService;
 import com.healthpro.authservice.service.PatientService;
@@ -7,10 +10,7 @@ import com.healthpro.authservice.utils.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -27,8 +27,6 @@ public class ProfileController {
     public ResponseEntity<?> getProfile(
             @CookieValue(value = "jwt", required = false) String token
     ) {
-
-        System.out.println("token" + token);
         if (token == null || !jwtUtil.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -44,23 +42,30 @@ public class ProfileController {
         };
     }
 
-//    @PostMapping("/profile")
-//    public ResponseEntity<?> getProfile(
-//            HttpServletRequest request
-//    ) {
-//        String token = jwtUtil.extractTokenFromCookie(request);
-//        if (token == null || !jwtUtil.validateToken(token)) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//
-//        UUID userId = jwtUtil.extractId(token);
-//        String role = jwtUtil.extractRole(token);
-//
-//        return switch (role) {
-//            case "PATIENT" -> ResponseEntity.ok(patientService.createPatient(userId));
-//            case "DOCTOR" -> ResponseEntity.ok(doctorService.createDoctor(userId));
-//            case "CLINIC" -> ResponseEntity.ok(clinicService.createClinic(userId)));
-//            default -> ResponseEntity.badRequest().body("Không tồn tại role");
-//        };
-//    }
+    @PutMapping("/patient/{userId}")
+    public ResponseEntity<?> updatePatientProfile(
+            @PathVariable UUID userId,
+            @RequestBody PatientRequestDTO patientRequestDTO
+    ) {
+        patientService.updatePatient(userId, patientRequestDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/doctor/{userId}")
+    public ResponseEntity<?> updateDoctorProfile(
+            @PathVariable UUID userId,
+            @RequestBody DoctorRequestDTO doctorRequestDTO
+    ) {
+        doctorService.updateDoctor(userId, doctorRequestDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/clinic/{userId}")
+    public ResponseEntity<?> updateClinicProfile(
+            @PathVariable UUID userId,
+            @RequestBody ClinicRequestDTO clinicRequestDTO
+    ) {
+        clinicService.updateClinic(userId, clinicRequestDTO);
+        return ResponseEntity.ok().build();
+    }
 }
