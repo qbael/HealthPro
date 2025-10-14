@@ -14,19 +14,22 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-// import { useAuthAction } from "@/hooks/useAuthAction";
+import { useAuthAction } from "@/hooks/useAuthAction";
  
 const formSchema = z.object({
     email: z
         .string()
         .min(1, { message: "Vui lòng nhập email."})
-        .email({ message: "Email không hợp lệ"}), 
+        .email({ message: "Email không hợp lệ"}),
+
+    phoneNumber: z
+        .string()
+        .min(1, { message: "Vui lòng nhập số điện thoại." })
+        .regex(/^0\d{9}$/, { message: "Số điện thoại phải có đúng 10 chữ số và bắt đầu bằng 0." }),
 
     password: z
       .string()    
-      .min(6, { message: "Mật khẩu phải ít nhất 6 ký tự." })
-      .regex(/[A-Z]/, { message: "Mật khẩu phải chứa ít nhất 1 ký tự viết hoa." })
-      .regex(/[^a-zA-Z0-9]/, { message: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt." }),
+      .min(8, { message: "Mật khẩu phải ít nhất 8 ký tự." }),
 
     confPassword: z.string().min(1, { message: "Vui lòng nhập lại mật khẩu." }),
     }).refine((data) => data.password === data.confPassword, {
@@ -39,20 +42,20 @@ type SignupFormProps = {
 }
 
 const SignupForm = ({ role }: SignupFormProps) => {
-    // const { signup, loading } = useAuthAction()
+    const { signup, loading } = useAuthAction()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
         email: "",
+        phoneNumber: "",
         password: "",
         confPassword: "",
         }
     })
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // await signup(values.email, values.password)
-        console.log(values)
+        await signup(values.email, values.phoneNumber, values.password, role)
     }
 
     return (
@@ -66,6 +69,20 @@ const SignupForm = ({ role }: SignupFormProps) => {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                     <Input placeholder="healthpro@gmail.com" {...field} />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+        />
+
+        <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Số Điện Thoại</FormLabel>
+                <FormControl>
+                    <Input placeholder="090-123-4567" {...field} />
                 </FormControl>
                 <FormMessage />
                 </FormItem>
@@ -99,13 +116,9 @@ const SignupForm = ({ role }: SignupFormProps) => {
                 </FormItem>
             )}
         />
-
-        <Button type="submit">
-            Đăng ký
-        </Button>
-        {/* <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} className='w-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
             {loading ? "Đang đăng ký..." : "Đăng ký"}
-        </Button> */}
+        </Button>
       </form>
     </Form>
     )

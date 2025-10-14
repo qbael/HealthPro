@@ -5,6 +5,7 @@ import com.healthpro.clinicservice.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DoctorService {
@@ -15,7 +16,7 @@ public class DoctorService {
         this.doctorRepository = doctorRepository;
     }
 
-    public List<Doctor> getDoctors() {
-        return doctorRepository.findAll();
+    public Optional<List<Doctor>> getDoctors(int maxResults) {
+        return Optional.of(doctorRepository.findAll().stream().limit(maxResults).toList());
     }
 }

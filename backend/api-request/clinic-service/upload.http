@@ -1,0 +1,14 @@
+### Upload image (unsigned)
+POST https://api.cloudinary.com/v1_1/dwkjsecri/image/upload
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="image.webp"
+Content-Type: image/webp
+
+< /home/qbao/Downloads/4d510848-8b6c-480b-b28f-a4c4a3ef1e4c.webp
+--boundary
+Content-Disposition: form-data; name="upload_preset"
+
+clinics
+--boundary--

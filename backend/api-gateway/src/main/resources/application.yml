@@ -1,0 +1,29 @@
+server:
+  port: 4004 # Gateway listens on port 4004
+
+auth:
+  service:
+    url: http://localhost:8080
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            # Route for /api/v1/auth/** to auth-service
+          - id: auth-service-route
+            uri: http://localhost:8080
+            predicates:
+              - Path=/api/v1/auth/**
+            filters:
+              - StripPrefix=0
+
+            # Route for /api/v1/users/** to users-service
+          - id: user-service-route
+            uri: http://localhost:8080
+            predicates:
+              - Path=/api/v1/users/**
+            filters:
+              - StripPrefix=0
+              - JwtValidation

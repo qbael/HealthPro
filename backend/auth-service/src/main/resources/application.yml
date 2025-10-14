@@ -19,6 +19,8 @@ spring:
   sql:
     init:
       mode: always
+jwt:
+  secret: VGhpcy1pcy1hLXNlY3JldC1rZXktZm9yLUpXVC0yNTYtYml0IQ==
 
 server:
   port: 8080

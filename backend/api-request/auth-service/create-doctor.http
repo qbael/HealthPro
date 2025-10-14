@@ -1,0 +1,10 @@
+### POST request to create Doctor
+POST http://localhost:8080/api/v1/doctors
+Content-Type: application/json
+
+{
+  "userId": "5d636b2f-91bf-4254-9c05-479c40f6dc5b",
+  "fullName": "Tran Minh Dang",
+  "address": "123 An Duong Vuong"
+}
+###

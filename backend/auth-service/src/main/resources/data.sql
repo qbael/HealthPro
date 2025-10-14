@@ -113,16 +113,16 @@ VALUES ('750e8400-e29b-41d4-a716-446655440021', '650e8400-e29b-41d4-a716-4466554
         true, 'Sinh viên năm 3 Đại học Y. Không có tiền sử bệnh lý. Khám sức khỏe để xin visa du học.');
 
 -- Insert Clinics
-INSERT INTO clinics (id, user_id, clinic_name, address, description, open_hour, close_hour, logo_url)
+INSERT INTO clinics (id, user_id, clinic_name, address, description, weekday_open_hour, weekday_close_hour, weekend_open_hour,  weekend_close_hour, logo_url, avatar_url)
 VALUES ('750e8400-e29b-41d4-a716-446655440031', '650e8400-e29b-41d4-a716-446655440031', 'Bệnh viện Chợ Rẫy',
         '201B Nguyễn Chí Thanh, Quận 5, TP.HCM',
         'Bệnh viện đa khoa hạng đặc biệt, là một trong những bệnh viện lớn nhất khu vực phía Nam. Cung cấp đầy đủ các dịch vụ y tế từ khám chữa bệnh đến phẫu thuật chuyên sâu.',
-        '07:00', '21:00', 'https://example.com/logos/choray.png'),
+        '07:00', '21:00', '07:00', '17:00', 'https://res.cloudinary.com/dwkjsecri/image/upload/v1760283326/ggm2hmwvz358ww0ub7ek.jpg', 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400&h=250&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440032', '650e8400-e29b-41d4-a716-446655440032', 'Phòng khám Đa khoa Hoàng Hoa',
         '345 Hoàng Văn Thụ, Quận Tân Bình, TP.HCM',
         'Phòng khám đa khoa uy tín với đội ngũ bác sĩ giàu kinh nghiệm. Chuyên khám và điều trị nội khoa, ngoại khoa, sản phụ khoa và nhi khoa.',
-        '08:00', '20:00', 'https://example.com/logos/hoanghoa.png'),
+        '08:00', '20:00', '08:00', '17:00', 'https://res.cloudinary.com/dwkjsecri/image/upload/v1760282444/jwzn0b5e3amdapletedu.jpg', 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=400&h=250&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440033', '650e8400-e29b-41d4-a716-446655440033', 'Trung tâm Y tế Medical Center',
         '789 Nguyễn Thị Minh Khai, Quận 3, TP.HCM',
         'Trung tâm y tế hiện đại với trang thiết bị tiên tiến. Cung cấp dịch vụ khám chữa bệnh, xét nghiệm và chẩn đoán hình ảnh chất lượng cao.',
-        '08:00', '18:00', 'https://example.com/logos/medicalcenter.png');
+        '08:00', '18:00', '08:00', '18:00','https://res.cloudinary.com/dwkjsecri/image/upload/v1760283326/ggm2hmwvz358ww0ub7ek.jpg', 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&h=250&fit=crop');

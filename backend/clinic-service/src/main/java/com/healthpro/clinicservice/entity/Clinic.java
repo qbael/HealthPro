@@ -41,17 +41,29 @@ public class Clinic {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Định dạng thời gian không hợp lệ")
-    @Column(name = "open_hour", length = 5)
-    private String openHour;
+    @Pattern(regexp = "^([0-1][0-9]|2[0-3]):[0-5][0-9]$", message = "Giờ mở cửa phải theo định dạng HH:mm")
+    @Column(name = "weekday_open_hour", length = 5)
+    private String weekdayOpenHour = "08:00";
 
-    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Định dạng thời gian không hợp lệ")
-    @Column(name = "close_hour", length = 5)
-    private String closeHour;
+    @Pattern(regexp = "^([0-1][0-9]|2[0-3]):[0-5][0-9]$", message = "Giờ đóng cửa phải theo định dạng HH:mm")
+    @Column(name = "weekday_close_hour", length = 5)
+    private String weekdayCloseHour = "17:00";
+
+    @Pattern(regexp = "^([0-1][0-9]|2[0-3]):[0-5][0-9]$", message = "Giờ mở cửa phải theo định dạng HH:mm")
+    @Column(name = "weekend_open_hour", length = 5)
+    private String weekendOpenHour = "08:00";
+
+    @Pattern(regexp = "^([0-1][0-9]|2[0-3]):[0-5][0-9]$", message = "Giờ đóng cửa phải theo định dạng HH:mm")
+    @Column(name = "weekend_close_hour", length = 5)
+    private String weekendCloseHour = "17:00";
 
     @URL(message = "URL không hợp lệ")
     @Column(name = "logo_url")
     private String logoUrl;
+
+    @URL(message = "URL không hợp lệ")
+    @Column(name = "avatar_url")
+    private String avatarUrl;
 
     @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference

@@ -5,10 +5,11 @@ import SignupForm from '@/components/SignupForm'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import Link from 'next/link'
+import {useEffect} from "react";
 
-const page = () => {
+const SignupPage = () => {
     const searchParams = useSearchParams()
-    const role = searchParams.get('role') || 'patient'
+    const role = searchParams.get('role') || 'PATIENT'
     const router = useRouter()
 
     return (
@@ -25,23 +26,23 @@ const page = () => {
                 </div>
                 <div className='flex items-center justify-between gap-3'>
                     <Button 
-                        variant={role === 'patient' ? 'default' : 'outline'}
-                        onClick={() => router.push(`/signup?role=patient`)}   
-                        className='flex-1'
+                        variant='outline'
+                        onClick={() => router.replace(`/signup?role=PATIENT`)}
+                        className={`flex-1 ${role === 'PATIENT' ? 'bg-blue-500 text-white' : ''}`}
                     >
                         Bệnh nhân
                     </Button>
                     <Button 
-                        variant={role === 'doctor' ? 'default' : 'outline'}
-                        onClick={() => router.push(`/signup?role=doctor`)}
-                        className='flex-1' 
+                        variant='outline'
+                        onClick={() => router.replace(`/signup?role=DOCTOR`)}
+                        className={`flex-1 ${role === 'DOCTOR' ? 'bg-blue-500 text-white' : ''}`}
                     >
                         Bác sĩ
                     </Button>
                     <Button 
-                        variant={role === 'clinic' ? 'default' : 'outline'}
-                        onClick={() => router.push(`/signup?role=clinic`)}
-                        className='flex-1' 
+                        variant='outline'
+                        onClick={() => router.replace(`/signup?role=CLINIC`)}
+                        className={`flex-1 ${role === 'CLINIC' ? 'bg-blue-500 text-white' : ''}`}
                     >
                         Phòng khám
                     </Button>
@@ -55,4 +56,4 @@ const page = () => {
     )
 }
 
-export default page
+export default SignupPage

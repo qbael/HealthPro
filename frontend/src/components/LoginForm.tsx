@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-// import { useAuthAction } from "@/hooks/useAuthAction"
+import { useAuthAction } from "@/hooks/useAuthAction"
  
 const formSchema = z.object({
     email: z
@@ -27,8 +27,8 @@ const formSchema = z.object({
     .min(1, { message: "Vui lòng nhập mật khẩu." })
 })
 
-const LoginForm = () => {    
-  // const { login, loading } = useAuthAction()
+const LoginForm = () => {
+    const {login, loading} = useAuthAction();
 
   const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -39,7 +39,7 @@ const LoginForm = () => {
   })
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // await login(values.email, values.password)
+        await login(values.email, values.password)
     }
     
     return (
@@ -72,11 +72,8 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        {/* <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} className='w-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
             {loading ? "Đang đăng nhập..." : "Đăng nhập"}
-        </Button> */}
-        <Button type="submit">
-            Đăng nhập
         </Button>
       </form>
     </Form>
