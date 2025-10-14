@@ -8,6 +8,7 @@ import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.mapper.PatientMapper;
 import com.healthpro.authservice.repository.PatientRepository;
 import com.healthpro.authservice.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,19 +30,18 @@ public class PatientService {
         return patients.stream().map(PatientMapper::toPatientResponseDTO).toList();
     }
 
-    public Optional<PatientResponseDTO> findByUserId(UUID id) {
-        return patientRepository.findByUser_Id(id)
-                .map(PatientMapper::toPatientResponseDTO);
-    }
-
-    public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
-        Patient patient = new Patient();
-        User user = userRepository.findById(patientRequestDTO.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-        patient.setUser(user);
-        patient.setFullName(patientRequestDTO.getFullName());
-        patientRepository.save(patient);
+    public PatientResponseDTO findByUserId(UUID id) {
+        Patient patient = patientRepository.findByUser_Id(id)
+                .orElseThrow(() -> new UserNotFoundException(
+                        "User with id " + id + " not found"));
 
         return PatientMapper.toPatientResponseDTO(patient);
+    }
+
+    @Transactional
+    public void createPatient(User createdUser) {
+        Patient patient = new Patient();
+        patient.setUser(createdUser);
+        patientRepository.save(patient);
     }
 }

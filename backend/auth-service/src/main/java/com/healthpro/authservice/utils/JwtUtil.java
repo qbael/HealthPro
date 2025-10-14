@@ -29,7 +29,6 @@ public class JwtUtil {
 
     public UUID extractId(String token) {
         Object idClaim = parseClaims(token).get("id");
-        if (idClaim == null) throw new IllegalArgumentException("JWT does not contain 'id' claim");
         return UUID.fromString(idClaim.toString());
     }
 
@@ -39,17 +38,6 @@ public class JwtUtil {
 
     public String extractRole(String token) {
         return parseClaims(token).get("role").toString();
-    }
-
-    public String extractTokenFromCookie(HttpServletRequest request) {
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
     }
 
     public String generateToken(String email, UUID id, String role) {

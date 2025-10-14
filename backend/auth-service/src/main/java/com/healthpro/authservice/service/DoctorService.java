@@ -4,12 +4,15 @@ import com.healthpro.authservice.dto.ClinicResponseDTO;
 import com.healthpro.authservice.dto.DoctorRequestDTO;
 import com.healthpro.authservice.dto.DoctorResponseDTO;
 import com.healthpro.authservice.entity.Doctor;
+import com.healthpro.authservice.entity.Patient;
 import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.mapper.ClinicMapper;
 import com.healthpro.authservice.mapper.DoctorMapper;
+import com.healthpro.authservice.mapper.PatientMapper;
 import com.healthpro.authservice.repository.DoctorRepository;
 import com.healthpro.authservice.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,21 +34,19 @@ public class DoctorService {
         return doctors.stream().map(DoctorMapper::toDoctorResponseDTO).toList();
     }
 
-    public Optional<DoctorResponseDTO> findByUserId(UUID id) {
-        return doctorRepository.findByUser_Id(id)
-                .map(DoctorMapper::toDoctorResponseDTO);
-    }
-
-    public DoctorResponseDTO createDoctor(DoctorRequestDTO doctorRequestDTO) {
-        Doctor doctor = new Doctor();
-        User user = userRepository.findById(doctorRequestDTO.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-        doctor.setUser(user);
-        doctor.setFullName(doctorRequestDTO.getFullName());
-        doctor.setAddress(doctorRequestDTO.getAddress());
-        doctorRepository.save(doctor);
+    public DoctorResponseDTO findByUserId(UUID id) {
+        Doctor doctor = doctorRepository.findByUser_Id(id)
+                .orElseThrow(() -> new UserNotFoundException(
+                        "User with id " + id + " not found"));
 
         return DoctorMapper.toDoctorResponseDTO(doctor);
+    }
+
+    @Transactional
+    public void createDoctor(User createdUser) {
+        Doctor doctor = new Doctor();
+        doctor.setUser(createdUser);
+        doctorRepository.save(doctor);
     }
 
 //    public UserResponseDTO updateUser(UUID id, UserRequestDTO userRequestDTO) {

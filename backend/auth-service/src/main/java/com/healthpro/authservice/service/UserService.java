@@ -35,8 +35,8 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public void create(User user) {
-        userRepository.save(user);
+    public User create(User user) {
+        return userRepository.save(user);
     }
 
     public UserResponseDTO updateUser(UUID id, UserRequestDTO userRequestDTO) {
