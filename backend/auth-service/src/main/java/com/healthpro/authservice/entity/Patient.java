@@ -28,9 +28,9 @@ public class Patient {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @NotBlank(message = "Họ tên không được để trống")
+//    @NotBlank(message = "Họ tên không được để trống")
     @Size(max = 255, message = "Họ tên không được vượt quá 255 ký tự")
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
     @Past(message = "Ngày sinh phải là ngày trong quá khứ")

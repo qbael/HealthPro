@@ -6,6 +6,6 @@ Content-Type: application/json
   "email": "mindang1@gmail.com",
   "phoneNumber": "0901234567",
   "password": "mindang1",
-  "role": "DOCTOR"
+  "role": "PATIENT"
 }
 ###

@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -31,11 +29,24 @@ public class AuthController {
     ) {
         String token = jwtUtil.generateToken(loginResponseDTO.getEmail(),
                 loginResponseDTO.getId(), loginResponseDTO.getRole());
+//        response.setHeader("Set-Cookie", String.format(
+//                "jwt=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=None",
+//                token,
+//                24 * 60 * 60 * 3
+//        ));
+
         Cookie cookie = new Cookie("jwt", token);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        cookie.setMaxAge(24 * 60 * 60 * 3); // 3 day
+        cookie.setMaxAge(24 * 60 * 60 * 3);
+        cookie.setSecure(true);
         response.addCookie(cookie);
+
+        response.addHeader("Set-Cookie", String.format(
+                "jwt=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=None",
+                token,
+                24 * 60 * 60 * 3
+        ));
 
         return ResponseEntity.ok(loginResponseDTO);
     }
@@ -76,7 +87,8 @@ public class AuthController {
 
     @Operation(summary = "Get Current Logged In User")
     @GetMapping("/current")
-    public ResponseEntity<LoginResponseDTO> getCurrentUser(@CookieValue("jwt") String token) {
+    public ResponseEntity<LoginResponseDTO> getCurrentUser(
+            @CookieValue(value = "jwt", required = false) String token) {
         if (token == null || token.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -86,13 +98,11 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(authService.getCurrentUser(token));
-
     }
 
     @Operation(summary = "Validate Token")
     @GetMapping("/validate")
-    public ResponseEntity<Void> validateToken(
-            @CookieValue(value = "jwt", required = false) String jwtCookie) {
+    public ResponseEntity<Void> validateToken(String jwtCookie) {
 
         if (jwtCookie == null || jwtCookie.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

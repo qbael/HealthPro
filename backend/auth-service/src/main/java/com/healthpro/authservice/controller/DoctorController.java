@@ -31,14 +31,14 @@ public class DoctorController {
         return ResponseEntity.ok().body(doctors);
     }
 
-    @PostMapping
-    @Operation(summary = "Create a Doctor")
-    public ResponseEntity<DoctorResponseDTO> createDoctor(
-            @RequestBody DoctorRequestDTO doctorRequestDTO
-    ) {
-        DoctorResponseDTO doctorResponseDTO = doctorService.createDoctor(doctorRequestDTO);
-        return ResponseEntity.ok().body(doctorResponseDTO);
-    }
+//    @PostMapping
+//    @Operation(summary = "Create a Doctor")
+//    public ResponseEntity<DoctorResponseDTO> createDoctor(
+//            @RequestBody DoctorRequestDTO doctorRequestDTO
+//    ) {
+//        DoctorResponseDTO doctorResponseDTO = doctorService.createDoctor(doctorRequestDTO);
+//        return ResponseEntity.ok().body(doctorResponseDTO);
+//    }
 
 
 //    @PutMapping("/{id}")
