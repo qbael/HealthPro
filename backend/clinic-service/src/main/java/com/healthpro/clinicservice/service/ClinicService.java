@@ -1,7 +1,10 @@
 package com.healthpro.clinicservice.service;
 
+import com.healthpro.clinicservice.dto.ApiResponseDto;
 import com.healthpro.clinicservice.entity.Clinic;
 import com.healthpro.clinicservice.repository.ClinicRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +17,7 @@ public class ClinicService {
         this.clinicRepository = clinicRepository;
     }
 
-    public Optional<List<Clinic>> getClinics(int maxResult) {
-        return Optional.of(clinicRepository.findAll().stream().limit(maxResult).toList());
+    public Optional<Page<Clinic>> getClinics(Pageable pageable) {
+        return  Optional.of(clinicRepository.findAll(pageable));
     }
 }

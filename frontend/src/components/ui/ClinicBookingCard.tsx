@@ -3,21 +3,25 @@ import {Clock, MapPin, Star} from "lucide-react";
 import {ClinicsType} from "@/types/clinics-types";
 import Image from "next/image";
 
-export const ClinicBookingCard = (clinic: ClinicsType) => {
+interface ClinicBookingCardProps {
+    clinic: ClinicsType;
+}
+
+export const ClinicBookingCard = ({clinic}: ClinicBookingCardProps ) => {
     return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-3">
             <div className="flex gap-4">
                 <Image
-                    src={clinic.logoUrl || '/api/placeholder/60/60'}
+                    src={clinic.logoUrl}
                     alt={clinic.clinicName}
                     width={100}
                     height={100}
-                    className="w-14 h-14 rounded-lg object-cover"
+                    className="w-25 h-25 rounded-lg object-cover"
                 />
                 <div className="flex-1">
-                    <h3 className="text-gray-800 font-semibold text-base mb-1">
+                    <h1 className="text-gray-800 font-semibold mb-1">
                         {clinic.clinicName}
-                    </h3>
+                    </h1>
                     <div className="flex items-start gap-2 text-sm text-gray-600 mb-2">
                         <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
                         <span>{clinic.address}</span>

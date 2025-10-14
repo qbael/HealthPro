@@ -27,7 +27,7 @@ export default async function CarouselPage() {
     const clinicsData = await clinicsRes.json();
 
     const doctors = doctorsData.data.content;
-    const clinics = clinicsData.data;
+    const clinics = clinicsData.data.content;
 
 
     return (

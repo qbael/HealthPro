@@ -13,14 +13,14 @@ export const DoctorBookingCard = ( {doctor}: DoctorBookingCardProps ) => {
         .join(' • ');
 
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-3">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-3">
             <div className="flex gap-4">
                 <Image
-                    src={doctor.avatarUrl || '/api/placeholder/80/80'}
+                    src={doctor.avatarUrl}
                     alt={doctor.fullName}
                     width={100}
                     height={100}
-                    className="w-16 h-16 rounded-lg object-cover"
+                    className="w-25 h-25 rounded-lg object-cover"
                 />
                 <div className="flex-1">
                     <h3 className="text-cyan-500 font-semibold text-lg mb-1">
@@ -35,9 +35,14 @@ export const DoctorBookingCard = ( {doctor}: DoctorBookingCardProps ) => {
                         <span>{doctor.address}</span>
                     </div>
                 </div>
-                <button className="bg-cyan-400 hover:bg-cyan-500 text-white px-6 py-2 rounded-lg font-medium h-fit">
-                    Đặt ngay
-                </button>
+                <div className="flex flex-col gap-2">
+                    <button className="bg-white hover:bg-gray-50 text-cyan-500 border border-cyan-500 px-5 py-2 rounded-lg font-medium text-sm">
+                        Xem chi tiết
+                    </button>
+                    <button className="bg-cyan-400 hover:bg-cyan-500 text-white px-5 py-2 rounded-lg font-medium text-sm">
+                        Đặt khám ngay
+                    </button>
+                </div>
             </div>
         </div>
     );

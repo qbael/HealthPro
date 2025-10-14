@@ -22,7 +22,7 @@ export default async function DoctorListingPage({searchParams} : {searchParams: 
     const currentPage = body.data.pageable.pageNumber;
 
     return (
-        <div className={'min-h-screen mt-15 bg-gray-50 py-6 px-20'}>
+        <div className={'min-h-screen mt-15 bg-gray-50 py-6 px-50'}>
             <div className="flex flex-wrap flex-col w-full gap-4">
                 {doctors.map(doctor => (
                     <DoctorBookingCard key={doctor.id} doctor={doctor}/>
