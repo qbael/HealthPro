@@ -32,7 +32,9 @@ export default function RootLayout({
       >
       <Providers>
           <Header />
-          {children}
+          <div className="mt-15">
+              {children}
+          </div>
           <Toaster richColors />
       </Providers>
       </body>

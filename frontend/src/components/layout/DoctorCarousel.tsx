@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import DoctorCard from "@/components/layout/DoctorCard";
+import DoctorCard from "@/components/ui/DoctorCard";
 import { DoctorType } from "@/types/doctor-types";
 
 interface DoctorCarouselProps {
@@ -39,7 +39,7 @@ const DoctorCarousel = ({ doctors }: DoctorCarouselProps) => {
                     <p className="text-gray-600">Phiếu khám kèm số thứ tự và thời gian của bạn được xác nhận.</p>
                 </div>
                 <button
-                    className="bg-blue-500 hover:bg-blue-700 text-sm font-bold text-white px-3 mt-7 py-1 rounded-lg flex items-center gap-2 transition-colors">
+                    className="bg-cyan-400 hover:bg-blue-700 text-sm font-bold text-white px-3 mt-7 py-1 rounded-lg flex items-center gap-2 transition-colors">
                     Xem thêm <ChevronRight size={18}/>
                 </button>
             </div>
@@ -81,7 +81,7 @@ const DoctorCarousel = ({ doctors }: DoctorCarouselProps) => {
                             onClick={() => goToSlide(index)}
                             className={`h-2 rounded-full transition-all duration-300 hover:cursor-pointer ${
                                 index === currentSlide
-                                    ? 'w-8 bg-blue-500'
+                                    ? 'w-8 bg-cyan-400'
                                     : 'w-2 bg-gray-300 hover:bg-gray-400'
                             }`}
                             aria-label={`Go to slide ${index + 1}`}

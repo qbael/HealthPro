@@ -4,6 +4,10 @@ import com.healthpro.clinicservice.dto.ApiResponseDto;
 import com.healthpro.clinicservice.entity.Doctor;
 import com.healthpro.clinicservice.service.DoctorService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +30,16 @@ public class DoctorController {
 
     @GetMapping
     @Operation(summary = "Get Doctors with specialties")
-    public ResponseEntity<ApiResponseDto<List<Doctor>>> getDoctors(
-            @RequestParam(required = false, defaultValue = "12") String maxResults
+    public ResponseEntity<ApiResponseDto<Page<Doctor>>> getDoctors(
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "12") Integer limit,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sortDir
     ) {
-        Optional<List<Doctor>> doctors = doctorService.getDoctors(Integer.parseInt(maxResults));
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(
+                sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy
+        ));
+        Optional<Page<Doctor>> doctors = doctorService.getDoctors(pageable);
         return doctors.map(doctorList -> ResponseEntity.ok().body(
                         ApiResponseDto.success(doctorList, "Lấy danh sách bác sĩ thành công")))
                 .orElseGet(() -> ResponseEntity

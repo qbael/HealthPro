@@ -10,7 +10,7 @@ const DropDownMenu = () => {
              onMouseLeave={() => setIsOpen(false)}
              onMouseEnter={() => setIsOpen(true)}
         >
-            <Link href={"/appointments"}>
+            <Link href={"/booking"}>
                 <button
                     className="inline-flex justify-center w-full rounded-md px-4 py-2 bg-white text-sm font-bold
                      text-gray-700 hover:bg-blue-100 cursor-pointer focus:outline-none transition"
@@ -29,13 +29,13 @@ const DropDownMenu = () => {
             >
                 <div className="">
                     <Link
-                        href="/appointments"
+                        href="/doctors"
                         className="block rounded-md shadow-md shadow-gray-200 py-3 px-3 m-3 text-sm font-bold text-gray-700 hover:bg-blue-100 hover:text-blue-600"
                     >
                         Đặt khám bác sĩ
                     </Link>
                     <Link
-                        href="#"
+                        href="/clinics"
                         className="block rounded-md shadow-md shadow-gray-200 py-3 px-3 m-3 text-sm font-bold text-gray-700 hover:bg-blue-100 hover:text-blue-600"
                     >
                          Đặt khám phòng khám
