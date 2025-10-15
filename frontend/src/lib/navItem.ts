@@ -9,6 +9,5 @@ type NavItem = {
 
 export const healthyNav: NavItem[] = [
     { label: 'Đặt khám bác sĩ', href: '/booking/doctors', icon: IoMedicalOutline },
-    { label: 'Đặt khám bệnh viện', href: '/booking/hospitals', icon: IoBusinessOutline },
     { label: 'Đặt khám phòng khám', href: '/booking/clinics', icon: IoMedkitOutline },
 ]

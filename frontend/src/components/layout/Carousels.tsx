@@ -31,7 +31,7 @@ export default async function CarouselPage() {
 
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8 mt-12 font-medium text-gray-900">
+        <div className="min-h-screen bg-gray-50 p-8 mt-5 font-medium text-gray-900">
             <DoctorCarousel doctors={doctors} />
             <ClinicCarousel clinics={clinics} />
         </div>

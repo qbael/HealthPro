@@ -20,8 +20,8 @@ const SideBar = ({ navItems }: SideBarProps) => {
   return (
     <nav
       className={cn(
-        "w-full bg-white shadow-sm border-t border-gray-200",
-        "flex justify-center items-center gap-8 py-3"
+        "w-full bg-white border-t border-gray-200",
+        "flex justify-center items-center gap-8 pt-5"
       )}
     >
       {navItems.map(({ label, href, icon: Icon }) => (
@@ -29,8 +29,8 @@ const SideBar = ({ navItems }: SideBarProps) => {
           href={href}
           key={label}
           className={cn(
-            "flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors font-medium",
-            pathname === href && "text-blue-600 font-semibold border-b-2 border-blue-600 pb-1"
+            "flex justify-center items-center w-70 gap-2 font-medium px-4 py-2 rounded-full border transition-all duration-300",
+            pathname === href && "text-white bg-gradient-to-r from-[#00b5f1] to-[#00e0ff]"
           )}
         >
           {Icon && <Icon className="w-8 h-8" />}
