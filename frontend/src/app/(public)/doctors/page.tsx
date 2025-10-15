@@ -7,7 +7,6 @@ import {DoctorBookingCard} from "@/components/ui/DoctorBookingCard";
 
 export default async function DoctorListingPage({searchParams} : {searchParams: Promise<{page?: number; limit?: number; sortBy?: string; sortDir?: string} >}) {
     const {page = 0, limit = 10, sortBy = 'id', sortDir = 'acs'} = await searchParams;
-    console.log(`${DOCTORS_API_URL}?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDir=${sortDir}`);
     const res = await fetch(`${DOCTORS_API_URL}?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDir=${sortDir}`, {
         method: "GET",
         cache: 'no-store'
@@ -22,7 +21,7 @@ export default async function DoctorListingPage({searchParams} : {searchParams: 
     const currentPage = body.data.pageable.pageNumber;
 
     return (
-        <div className={'min-h-screen mt-15 bg-gray-50 py-6 px-20'}>
+        <div className={'min-h-screen mt-15 bg-gray-50 py-6 px-100'}>
             <div className="flex flex-wrap flex-col w-full gap-4">
                 {doctors.map(doctor => (
                     <DoctorBookingCard key={doctor.id} doctor={doctor}/>
