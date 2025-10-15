@@ -1,7 +1,20 @@
+'use client'
 import Image from "next/image";
 import {Input} from "@/components/ui/input";
+import { usePathname } from "next/navigation"
 
 const ImageSection = () => {
+    const pathname = usePathname()
+
+    const placeholderMap: Record<string, string> = {
+    "/booking/doctor": "Tìm kiếm bác sĩ",
+    "/booking/clinics": "Tìm kiếm phòng khám",
+    "/booking/hospitals": "Tìm kiếm bệnh viện",
+    "/booking/services": "Tìm kiếm dịch vụ y tế",
+    }
+
+    const placeholder = Object.entries(placeholderMap).find(([key]) => pathname.includes(key))?.[1] || "Triệu chứng, bác sĩ, bệnh viện..."
+
     return (
         <section className='relative w-full h-[500px]'>
             <Image
@@ -17,7 +30,7 @@ const ImageSection = () => {
                     YouMed để có số thứ tự và khung giờ khám trước</p>
                 <Input
                     className="bg-white"
-                    placeholder="Triệu chứng, bác sĩ, bệnh viện..."
+                    placeholder={placeholder}
                 />
             </div>
         </section>

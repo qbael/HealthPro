@@ -22,7 +22,7 @@ export default async function ClinicListingPage({searchParams} : {searchParams: 
     const currentPage = body.data.pageable.pageNumber;
 
     return (
-        <div className={'min-h-screen mt-15 bg-gray-50 py-6 px-50'}>
+        <div className={'min-h-screen mt-5 bg-gray-50 py-6 px-50'}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {clinics.map(clinic => (
                     <ClinicBookingCard key={clinic.id} clinic={clinic}/>
