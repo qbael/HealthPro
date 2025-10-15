@@ -19,6 +19,7 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { vi } from "date-fns/locale"
 import Image from 'next/image'
+import {Loading} from '@/components/ui/Loading'
 
 const baseSchema = z.object({
     role: z
@@ -76,6 +77,12 @@ const doctorSchema = baseSchema.extend({
     avatarUrl: z.string().optional()
 })
 
+const isEarlier = (open: string, close: string) => {
+    const [openH, openM] = open.split(":").map(Number);
+    const [closeH, closeM] = close.split(":").map(Number);
+    return openH * 60 + openM < closeH * 60 + closeM;
+}
+
 const clinicSchema = baseSchema.extend({
     clinicName: z.string().min(1, {
         message: "Vui lòng nhập tên phòng khám.",
@@ -117,6 +124,42 @@ const clinicSchema = baseSchema.extend({
         message: "Vui lòng chọn ngày kết thúc cuối tuần.",
     })
 })
+.superRefine((data, ctx) => {
+    const toMinutes = (t: string) => {
+        const [h, m] = t.split(":").map(Number);
+        return h * 60 + m;
+    }
+
+    if (data.weekdayOpenHour && data.weekdayCloseHour) {
+        if (toMinutes(data.weekdayOpenHour) >= toMinutes(data.weekdayCloseHour)) {
+            ctx.addIssue({
+                path: ["weekdayOpenHour"],
+                code: z.ZodIssueCode.custom,
+                message: "Giờ bắt đầu phải nhỏ hơn giờ kết thúc.",
+            });
+            ctx.addIssue({
+                path: ["weekdayCloseHour"],
+                code: z.ZodIssueCode.custom,
+                message: "Giờ kết thúc phải lớn hơn giờ bắt đầu.",
+            });
+        }
+    }
+
+    if (data.weekendOpenHour && data.weekendCloseHour) {
+        if (toMinutes(data.weekendOpenHour) >= toMinutes(data.weekendCloseHour)) {
+            ctx.addIssue({
+                path: ["weekendOpenHour"],
+                code: z.ZodIssueCode.custom,
+                message: "Giờ bắt đầu phải nhỏ hơn giờ kết thúc.",
+            });
+            ctx.addIssue({
+                path: ["weekendCloseHour"],
+                code: z.ZodIssueCode.custom,
+                message: "Giờ kết thúc phải lớn hơn giờ bắt đầu.",
+            });
+        }
+    }
+})
 
 interface UserProfile {
     id: string
@@ -126,6 +169,7 @@ interface UserProfile {
     phoneNumber: string
     isActive: boolean
     fullName: string
+    clinicName: string
     address: string
     gender: boolean
     dateOfBirth: Date
@@ -154,7 +198,7 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
     const schema = user.role === 'PATIENT' ? patientSchema :
                         user.role === 'DOCTOR' ? doctorSchema :
                         user.role === 'CLINIC' ? clinicSchema : null
-    console.log(schema)
+
     if (!schema) throw new Error('Unknown role')
 
     type FormValues = z.infer<typeof schema>
@@ -168,6 +212,7 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
             ,
             email: user.email,
             fullName: user.fullName || "",
+            clinicName: user.clinicName || "",
             phoneNumber: user.phoneNumber,
             gender: user.gender || undefined,
             address:  user.address || "",
@@ -213,9 +258,10 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
             delete payload.avatarFile
             delete payload.logoFile
 
-            await api.put(`v1/profile/${user.role.toLowerCase()}/${user.id}`, values)
+            await api.put(`v1/profile/${user.role.toLowerCase()}/${user.id}`, payload)
             toast.success("Cập nhật thành công")
         }
+
         catch (err: any) {
             const msg = err.response?.data?.message || 'Cập nhật thất bại. Vui lòng thử lại.'
             toast.error(msg)
@@ -235,7 +281,7 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                         <FormItem>
                             <FormLabel>Vai Trò</FormLabel>
                             <FormControl>
-                                <Input {...field} disabled={true}/>
+                                <Input {...field} readOnly/>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -323,7 +369,7 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                                                         {field.value ? (
                                                             format(field.value, "PPP", { locale: vi })
                                                         ) : (
-                                                            <span>Pick a date</span>
+                                                            <span>Chọn ngày sinh</span>
                                                         )}
                                                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                                     </Button>
@@ -434,7 +480,9 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                                     <img
                                         src={avatarPreview}
                                         alt="Avatar Preview"
-                                        className="mt-2 h-24 w-24 object-cover rounded"
+                                        width={200}
+                                        height={200}
+                                        className="mt-2 object-cover rounded"
                                     />
                                 )}
                                 <FormMessage />
@@ -465,10 +513,12 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                                         />
                                     </FormControl>
                                     {logoPreview && (
-                                        <img
+                                        <Image
                                             src={logoPreview}
                                             alt="Logo Preview"
-                                            className="mt-2 h-24 w-24 object-cover rounded"
+                                            width={200}
+                                            height={200}
+                                            className="mt-2 object-cover rounded"
                                         />
                                     )}
                                     <FormMessage />
@@ -483,7 +533,7 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                                 <FormItem>
                                     <FormLabel>Giới Thiệu</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder="Nhập giới thiệu..." />
+                                        <Textarea placeholder="Nhập giới thiệu..." {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -496,14 +546,14 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                                 name="weekdayOpenHour"
                                 render={({ field }) => (
                                     <FormItem className='flex-1'>
-                                        <FormLabel>Giờ Mở Trong Tuần</FormLabel>
+                                        <FormLabel>Giờ Bắt Đầu Trong Tuần</FormLabel>
                                         <FormControl>
                                             <Select
-                                                onValueChange={(value) => field.onChange(value === "true")}
-                                                value={field.value?.toString() ?? ""}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
                                             >
                                                 <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Giờ Mở Trong Tuần" />
+                                                    <SelectValue placeholder="Giờ Bắt Đầu Trong Tuần" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {hours.map(hour => (
@@ -524,14 +574,14 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                                 name="weekdayCloseHour"
                                 render={({ field }) => (
                                     <FormItem className='flex-1'>
-                                        <FormLabel>Giờ Đóng Trong Tuần</FormLabel>
+                                        <FormLabel>Giờ Kết Thúc Trong Tuần</FormLabel>
                                         <FormControl>
                                             <Select
-                                                onValueChange={(value) => field.onChange(value === "true")}
-                                                value={field.value?.toString() ?? ""}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
                                             >
                                                 <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Giờ Đóng Trong Tuần" />
+                                                    <SelectValue placeholder="Giờ Kết Thúc Trong Tuần" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {hours.map(hour => (
@@ -554,14 +604,14 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                                 name="weekendOpenHour"
                                 render={({ field }) => (
                                     <FormItem className='flex-1'>
-                                        <FormLabel>Giờ Đóng Trong Tuần</FormLabel>
+                                        <FormLabel>Giờ Bắt Đầu Cuối Tuần</FormLabel>
                                         <FormControl>
                                             <Select
-                                                onValueChange={(value) => field.onChange(value === "true")}
-                                                value={field.value?.toString() ?? ""}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
                                             >
                                                 <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Giờ Đóng Trong Tuần" />
+                                                    <SelectValue placeholder="Giờ Bắt Đầu Trong Tuần" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {hours.map(hour => (
@@ -582,14 +632,14 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                                 name="weekendCloseHour"
                                 render={({ field }) => (
                                     <FormItem className='flex-1'>
-                                        <FormLabel>Giờ Đóng Cuối Tuần</FormLabel>
+                                        <FormLabel>Giờ Kết Thúc Cuối Tuần</FormLabel>
                                         <FormControl>
                                             <Select
-                                                onValueChange={(value) => field.onChange(value === "true")}
-                                                value={field.value?.toString() ?? ""}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
                                             >
                                                 <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Giờ Đóng Cuối Tuần" />
+                                                    <SelectValue placeholder="Giờ Kết Thúc Cuối Tuần" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {hours.map(hour => (
@@ -608,6 +658,7 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
                     </>
                 )}
 
+                {loading && <Loading />}
                 <Button type="submit" disabled={loading} className='w-full bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
                     {loading ? "Đang cập nhật..." : "Cập nhật"}
                 </Button>

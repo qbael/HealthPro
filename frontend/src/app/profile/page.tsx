@@ -26,7 +26,7 @@ const Page = () => {
                 </div>
             </div>
         )
-
+console.log(user)
     return (
         <main className="flex justify-center">
             <div className='w-[90%] max-w-[640px] my-10'>

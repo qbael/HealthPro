@@ -14,6 +14,9 @@ public class DoctorMapper {
         doctorDTO.setIsActive(doctor.getUser().getIsActive());
         doctorDTO.setFullName(doctor.getFullName());
         doctorDTO.setAddress(doctor.getAddress());
+        doctorDTO.setBio(doctor.getBio());
+        doctorDTO.setGender(doctor.getGender());
+        doctorDTO.setAvatarUrl(doctor.getAvatarUrl());
         return doctorDTO;
     }
 }
