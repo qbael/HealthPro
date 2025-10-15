@@ -27,9 +27,9 @@ export const useAuthAction = () => {
 
         }
         catch (err: any) {
-            console.error(err)
-            dispatch({ type: 'LOGOUT' })
-            toast.error('Đăng ký thất bại. Vui lòng thử lại.')
+            const msg = err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.'
+            dispatch({ type: 'LOADING', payload: false })
+            toast.error(msg)
         }
     }
 
@@ -48,9 +48,9 @@ export const useAuthAction = () => {
 
         }
         catch (err: any) {
-            console.error(err)
-            dispatch({ type: 'LOGOUT' })
-            toast.error('Đăng nhập thất bại. Vui lòng thử lại.')
+            const msg = err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.'
+            dispatch({ type: 'LOADING', payload: false })
+            toast.error(msg)
         }
     }
 

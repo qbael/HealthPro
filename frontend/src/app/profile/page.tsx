@@ -29,7 +29,7 @@ const Page = () => {
 
     return (
         <main className="flex justify-center">
-            <div className='w-[90%] max-w-[650px] mt-30'>
+            <div className='w-[90%] max-w-[640px] my-10'>
                 <ProfileForm user={user}/>
             </div>
         </main>

@@ -7,7 +7,6 @@ import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.mapper.PatientMapper;
-import com.healthpro.authservice.mapper.UserMapper;
 import com.healthpro.authservice.repository.PatientRepository;
 import com.healthpro.authservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -52,7 +51,7 @@ public class PatientService {
                 () -> new UserNotFoundException("User not found with this ID " + id));
 
         if (userRepository.existsByEmailAndIdNot(patientRequestDTO.getEmail(), id)) {
-            throw new EmailAlreadyExistsException("User with this email already exists" + patientRequestDTO.getEmail());
+            throw new EmailAlreadyExistsException("Email này đã tồn tại");
         }
 
         User user = patient.getUser();

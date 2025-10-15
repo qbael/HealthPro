@@ -2,22 +2,16 @@ package com.healthpro.authservice.service;
 
 import com.healthpro.authservice.dto.ClinicRequestDTO;
 import com.healthpro.authservice.dto.ClinicResponseDTO;
-import com.healthpro.authservice.dto.DoctorResponseDTO;
-import com.healthpro.authservice.dto.PatientRequestDTO;
 import com.healthpro.authservice.entity.Clinic;
-import com.healthpro.authservice.entity.Doctor;
-import com.healthpro.authservice.entity.Patient;
 import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.mapper.ClinicMapper;
-import com.healthpro.authservice.mapper.DoctorMapper;
 import com.healthpro.authservice.repository.ClinicRepository;
 import com.healthpro.authservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -55,7 +49,7 @@ public class ClinicService {
                 () -> new UserNotFoundException("User not found with this ID " + id));
 
         if (userRepository.existsByEmailAndIdNot(clinicRequestDTO.getEmail(), id)) {
-            throw new EmailAlreadyExistsException("User with this email already exists" + clinicRequestDTO.getEmail());
+            throw new EmailAlreadyExistsException("Email này đã tồn tại");
         }
 
         User user = clinic.getUser();
