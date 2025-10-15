@@ -1,3 +1,4 @@
+'use client'
 import React, {useEffect, useState} from 'react';
 import ProfileForm from "@/components/ProfileForm";
 import api from '@/lib/axios'
