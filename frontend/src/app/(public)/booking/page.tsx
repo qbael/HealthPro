@@ -1,5 +1,3 @@
-import Image from "next/image";
-import {Input} from "@/components/ui/input";
 import CarouselPage from "@/components/layout/Carousels";
 
 export default function Home() {
