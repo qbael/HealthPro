@@ -7,9 +7,15 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class ClinicRequestDTO {
-    private UUID userId;
+public class ClinicRequestDTO extends UserResponseDTO {
+    private UUID clinicId;
     private String clinicName;
-    private String phoneNumber;
     private String address;
+    private String description;
+    private String logoUrl;
+    private String avatarUrl;
+    private String weekdayOpenHour;
+    private String weekdayCloseHour;
+    private String weekendOpenHour;
+    private String weekendCloseHour;
 }

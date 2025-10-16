@@ -13,6 +13,14 @@ public class ClinicMapper {
         clinicDTO.setPhoneNumber(clinic.getUser().getPhoneNumber());
         clinicDTO.setIsActive(clinic.getUser().getIsActive());
         clinicDTO.setClinicName(clinic.getClinicName());
+        clinicDTO.setAddress(clinic.getAddress());
+        clinicDTO.setDescription(clinic.getDescription());
+        clinicDTO.setAvatarUrl(clinic.getAvatarUrl());
+        clinicDTO.setLogoUrl(clinic.getLogoUrl());
+        clinicDTO.setWeekdayOpenHour(clinic.getWeekdayOpenHour());
+        clinicDTO.setWeekdayCloseHour(clinic.getWeekdayCloseHour());
+        clinicDTO.setWeekendOpenHour(clinic.getWeekendOpenHour());
+        clinicDTO.setWeekendCloseHour(clinic.getWeekendCloseHour());
         return clinicDTO;
     }
 }

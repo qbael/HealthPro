@@ -23,13 +23,13 @@ export const useAuthAction = () => {
 
             toast.success('Đăng ký thành công.')
             dispatch({ type: 'LOGIN', payload: res.data })
-            setTimeout(() => router.push('/profile'), 500)
+            router.replace('/profile')
 
         }
         catch (err: any) {
-            console.error(err)
-            dispatch({ type: 'LOGOUT' })
-            toast.error('Đăng ký thất bại. Vui lòng thử lại.')
+            const msg = err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.'
+            dispatch({ type: 'LOADING', payload: false })
+            toast.error(msg)
         }
     }
 
@@ -44,12 +44,13 @@ export const useAuthAction = () => {
 
             toast.success('Đăng nhập thành công.')
             dispatch({ type: 'LOGIN', payload: res.data })
+            router.replace('/')
 
         }
         catch (err: any) {
-            console.error(err)
-            dispatch({ type: 'LOGOUT' })
-            toast.error('Đăng nhập thất bại. Vui lòng thử lại.')
+            const msg = err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.'
+            dispatch({ type: 'LOADING', payload: false })
+            toast.error(msg)
         }
     }
 
@@ -58,6 +59,7 @@ export const useAuthAction = () => {
             await api.post('v1/auth/logout')
             toast.success('Hẹn gặp lại.')
             dispatch({ type: 'LOGOUT' })
+            router.replace('/')
         }
         catch (err: any) {
             console.error(err.response?.data || err.message)

@@ -13,6 +13,9 @@ public class PatientMapper {
         patientDTO.setPhoneNumber(patient.getUser().getPhoneNumber());
         patientDTO.setIsActive(patient.getUser().getIsActive());
         patientDTO.setFullName(patient.getFullName());
+        patientDTO.setDateOfBirth(patient.getDateOfBirth());
+        patientDTO.setGender(patient.getGender());
+        patientDTO.setMedicalNotes(patient.getMedicalNotes());
         return patientDTO;
     }
 }

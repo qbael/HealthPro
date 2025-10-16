@@ -28,9 +28,8 @@ public class Clinic {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @NotBlank(message = "Tên phòng khám không được để trống")
     @Size(max = 255, message = "Tên phòng khám không được vượt quá 255 ký tự")
-    @Column(name = "clinic_name", nullable = false)
+    @Column(name = "clinic_name")
     private String clinicName;
 
     @Size(max = 255, message = "Địa chỉ không được vượt quá 255 ký tự")
