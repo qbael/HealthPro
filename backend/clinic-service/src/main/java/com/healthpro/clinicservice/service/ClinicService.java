@@ -9,15 +9,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ClinicService {
     public final ClinicRepository clinicRepository;
+
     public ClinicService(ClinicRepository clinicRepository) {
         this.clinicRepository = clinicRepository;
     }
 
     public Optional<Page<Clinic>> getClinics(Pageable pageable) {
-        return  Optional.of(clinicRepository.findAll(pageable));
+        return Optional.of(clinicRepository.findAll(pageable));
+    }
+
+    public Optional<Clinic> getClinicById(String id) {
+        return clinicRepository.findById(UUID.fromString(id));
     }
 }
