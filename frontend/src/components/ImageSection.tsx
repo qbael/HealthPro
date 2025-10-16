@@ -12,7 +12,7 @@ const ImageSection = () => {
             />
             <div
                 className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 text-center w-[50%]'>
-                <h1 className='text-4xl text-white font-bold'>Ứng dụng đặt khám</h1>
+                <h1 className='text-4xl text-black font-bold'>Ứng dụng đặt khám</h1>
                 <p className='text-md text-black w-[90%]'>Đặt khám với hơn 1000 bác sĩ đã kết nối chính thức với
                     YouMed để có số thứ tự và khung giờ khám trước</p>
                 <Input

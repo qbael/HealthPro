@@ -158,8 +158,8 @@ export default async function DoctorProfile({params}: { params: Promise<{ id: st
                    className="block relative overflow-hidden bg-primary text-white hover:text-white text-base rounded-2xl m-4 md:m-6 flex-1 bg-right-bottom"
                    href={`https://www.google.com/maps/search/?api=1&amp;query=${doctor.address}`}>
                     <img
-                    _ngcontent-serverapp-c57="" src="/map.webp" width="700" height="460" alt="Map"
-                    className="absolute bottom-0 right-0"/>
+                        _ngcontent-serverapp-c57="" src="/map.webp" width="700" height="460" alt="Map"
+                        className="absolute bottom-0 right-0"/>
                     <div _ngcontent-serverapp-c57=""
                          className="relative bg-gradient-to-br from-blue-700 via-primary p-6 h-full"><h2
                         _ngcontent-serverapp-c57="" className="text-lg font-semibold text-white">Địa chỉ</h2>

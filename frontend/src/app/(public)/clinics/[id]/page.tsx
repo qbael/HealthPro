@@ -134,20 +134,6 @@ export default async function ClinicDetailPage({params}: {params: Promise<{ id: 
                                         </div>
                                     </div>
                                 )}
-                                <div className="flex items-start gap-3">
-                                    <Phone className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                                    <div>
-                                        <p className="text-sm text-gray-500 mb-1">Điện thoại</p>
-                                        <p className="text-gray-800">{clinic.p}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <Mail className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                                    <div>
-                                        <p className="text-sm text-gray-500 mb-1">Email</p>
-                                        <p className="text-gray-800">contact@healthpro.vn</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

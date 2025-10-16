@@ -16,7 +16,7 @@ export const DoctorBookingCard = ({ doctor }: DoctorBookingCardProps) => {
         .join(" • ");
 
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-3 max-w-3/4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-3 max-w-3xl">
             <div className="flex gap-4 items-center">
                 <Image
                     src={doctor.avatarUrl}

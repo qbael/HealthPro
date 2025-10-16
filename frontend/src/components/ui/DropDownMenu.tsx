@@ -29,13 +29,13 @@ const DropDownMenu = () => {
             >
                 <div className="">
                     <Link
-                        href="/doctors"
+                        href="/booking/doctors"
                         className="block rounded-md shadow-md shadow-gray-200 py-3 px-3 m-3 text-sm font-bold text-gray-700 hover:bg-blue-100 hover:text-blue-600"
                     >
                         Đặt khám bác sĩ
                     </Link>
                     <Link
-                        href="/clinics"
+                        href="/booking/clinics"
                         className="block rounded-md shadow-md shadow-gray-200 py-3 px-3 m-3 text-sm font-bold text-gray-700 hover:bg-blue-100 hover:text-blue-600"
                     >
                          Đặt khám phòng khám
