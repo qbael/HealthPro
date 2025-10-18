@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import DoctorCard from "@/components/ui/DoctorCard";
+import DoctorCard from "@/components/DoctorCard";
 import { DoctorType } from "@/types/doctor-types";
 import Link from "next/link";
 

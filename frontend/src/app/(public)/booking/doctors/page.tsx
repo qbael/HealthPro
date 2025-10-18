@@ -3,7 +3,7 @@ import {DOCTORS_API_URL} from "@/lib/utils";
 import {ResponseWithPaginationType} from "@/types/response";
 import {Pagination} from "@/components/ui/Pagination";
 import React from "react";
-import {DoctorBookingCard} from "@/components/ui/DoctorBookingCard";
+import {DoctorBookingCard} from "@/components/DoctorBookingCard";
 
 export default async function DoctorListingPage({searchParams} : {searchParams: Promise<{page?: number; limit?: number; sortBy?: string; sortDir?: string} >}) {
     const {page = 0, limit = 10, sortBy = 'id', sortDir = 'acs'} = await searchParams;

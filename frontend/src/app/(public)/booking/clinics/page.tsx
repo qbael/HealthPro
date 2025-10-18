@@ -3,7 +3,7 @@ import {ResponseWithPaginationType} from "@/types/response";
 import {Pagination} from "@/components/ui/Pagination";
 import React from "react";
 import {ClinicsType} from "@/types/clinics-types";
-import {ClinicBookingCard} from "@/components/ui/ClinicBookingCard";
+import {ClinicBookingCard} from "@/components/ClinicBookingCard";
 
 export default async function ClinicListingPage({searchParams} : {searchParams: Promise<{page?: number; limit?: number; sortBy?: string; sortDir?: string} >}) {
     const {page = 0, limit = 10, sortBy = 'id', sortDir = 'acs'} = await searchParams;
