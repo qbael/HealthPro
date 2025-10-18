@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -35,11 +36,11 @@ public class DoctorScheduleTemplate {
 
     @NotNull(message = "Thời gian bắt đầu không được để trống.")
     @Column(name = "from_time", nullable = false)
-    private Time fromTime;
+    private LocalTime fromTime;
 
     @NotNull(message = "Thời gian kết thúc không được để trống.")
     @Column(name = "to_time", nullable = false)
-    private Time toTime;
+    private LocalTime toTime;
 
     @NotNull(message = "Thời lượng mỗi ca khám không được để trống.")
     @Min(value = 1, message = "Thời lượng mỗi ca khám phải là một số dương (tính bằng phút).")

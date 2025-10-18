@@ -1,18 +1,22 @@
 import { IoMedicalOutline, IoBusinessOutline, IoMedkitOutline, IoFlaskOutline  } from "react-icons/io5";
 
-type NavItem = {
+type NavItem1 = {
   label: string
   href: string
-  icon: string | React.ComponentType
+  icon: React.ComponentType
+}
+type NavItem= {
+  label: string
+  href: string
+  icon: string
 }
 
-export const healthyNav: NavItem[] = [
+export const healthyNav: NavItem1[] = [
     { label: 'Đặt khám bác sĩ', href: '/booking/doctors', icon: IoMedicalOutline },
     { label: 'Đặt khám phòng khám', href: '/booking/clinics', icon: IoMedkitOutline },
 ]
 
 export const doctorNav: NavItem[] = [
-    { label: 'Hồ Sơ', href: '/profile', icon: 'User' },
     { label: 'Lời Mời', href: '/notification', icon: 'Bell' },
 ]
 

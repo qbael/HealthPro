@@ -5,7 +5,6 @@ import SignupForm from '@/components/SignupForm'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import Link from 'next/link'
-import {useEffect} from "react";
 
 const SignupPage = () => {
     const searchParams = useSearchParams()
@@ -14,7 +13,7 @@ const SignupPage = () => {
 
     return (
         <main className='flex justify-center'>
-            <div className='relative top-30 w-1/4 border border-gray-300 shadow-sm rounded-2xl p-4 flex flex-col gap-5'>
+            <div className='relative top-5 w-1/4 border border-gray-300 shadow-sm rounded-2xl p-4 flex flex-col gap-5'>
                 <div className='flex justify-center items-center gap-2'>
                     <Image 
                         src='/logo.svg'
@@ -49,7 +48,7 @@ const SignupPage = () => {
                 </div>
                 <SignupForm key={role} role={role} />
                 <div className='flex gap-5'>
-                    <Link href='/login' className='text-sm font-bold'>Chưa có tài khoản?</Link>
+                    <Link href='/login' className='text-sm font-bold'>Đã có tài khoản?</Link>
                 </div>
             </div>
         </main>

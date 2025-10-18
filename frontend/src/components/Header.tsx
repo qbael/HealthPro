@@ -9,6 +9,7 @@ import {useAuthAction} from "@/hooks/useAuthAction"
 const Header = () => {
     const { user } = useAuth()
     const { logout } = useAuthAction()
+
     return (
         <header className='fixed top-0 left-0 flex items-center justify-between w-full h-16 px-3 bg-white shadow-md z-10'>
             <div className='flex items-center'>
@@ -23,17 +24,48 @@ const Header = () => {
                 </Link>
             </div>
             <div className='flex items-center gap-1'>
-                <DropDownMenu/>
-                <div className='hover:cursor-pointer inline-flex justify-center rounded-md px-4 py-2 bg-white text-sm font-bold
-                text-gray-700 hover:bg-blue-100 cursor-pointer mr-2'>
-                    Liên hệ
-                </div>
+                {
+                    user?.role === 'PATIENT' || !user ? (
+                    <>
+                        <DropDownMenu/>
+                        <div className='hover:cursor-pointer inline-flex justify-center rounded-md px-4 py-2 bg-white text-sm font-bold
+                            text-gray-700 hover:bg-blue-100 cursor-pointer mr-2'>
+                            Liên hệ
+                        </div>
+                    </>
+                ) : user?.role === 'DOCTOR' ? (
+                        <Link className='hover:cursor-pointer inline-flex justify-center rounded-md px-4 py-2 bg-white text-sm font-bold
+                            text-gray-700 hover:bg-blue-100 cursor-pointer mr-2'
+                            href='/doctor/schedules'
+                        >
+                            Lịch làm
+                        </Link>
+                ) : user?.role === 'CLINIC' ? (
+                        <>
+                            <Link className='hover:cursor-pointer inline-flex justify-center rounded-md px-4 py-2 bg-white text-sm font-bold
+                            text-gray-700 hover:bg-blue-100 cursor-pointer mr-2'
+                                  href='/specialty'
+                            >
+                                Chuyên khoa
+                            </Link>
+
+                            <Link className='hover:cursor-pointer inline-flex justify-center rounded-md px-4 py-2 bg-white text-sm font-bold
+                            text-gray-700 hover:bg-blue-100 cursor-pointer mr-2'
+                                  href='/schedule'
+                            >
+                                Lịch làm
+                            </Link>
+                        </>
+                    ) : null}
 
                 {user ? (
                     <div className='flex gap-7'>
                             <Link href='/profile' className='hover:cursor-pointer inline-flex justify-center rounded-md px-4 py-2 bg-white text-sm font-bold
                                 text-gray-700 hover:bg-blue-100 cursor-pointer' >
-                                Hồ Sơ
+                                Hồ Sơ {
+                                user?.role === 'PATIENT' ? <span className='ml-1'>(Bệnh Nhân)</span> :
+                                user?.role === 'DOCTOR' ? <span className='ml-1'>(Bác Sĩ)</span> :
+                                user?.role === 'CLINIC' ? <span className='ml-1'>(Phòng Khám)</span> : null}
                             </Link>
 
                         <Button variant='destructive' className=' hover:cursor-pointer hover:bg-red-500 hover:text-white' onClick={logout}>
