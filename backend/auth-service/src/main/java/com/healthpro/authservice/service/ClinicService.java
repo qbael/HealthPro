@@ -37,10 +37,11 @@ public class ClinicService {
         return ClinicMapper.toClinicResponseDTO(clinic);
     }
 
-    public void createClinic(User createdUser) {
+    public UUID createClinic(User createdUser) {
         Clinic clinic = new Clinic();
         clinic.setUser(createdUser);
         clinicRepository.save(clinic);
+        return  clinic.getId();
     }
 
     @SuppressWarnings("DuplicatedCode")

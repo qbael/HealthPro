@@ -27,8 +27,8 @@ public class AuthController {
     private ResponseEntity<LoginResponseDTO> getLoginResponseDTOResponseEntity(
             HttpServletResponse response, LoginResponseDTO loginResponseDTO
     ) {
-        String token = jwtUtil.generateToken(loginResponseDTO.getEmail(),
-                loginResponseDTO.getId(), loginResponseDTO.getRole());
+        String token = jwtUtil.generateToken(loginResponseDTO.getEmail(), loginResponseDTO.getId(),
+                loginResponseDTO.getUserRoleId(), loginResponseDTO.getRole());
 
         Cookie cookie = new Cookie("jwt", token);
         cookie.setHttpOnly(true);

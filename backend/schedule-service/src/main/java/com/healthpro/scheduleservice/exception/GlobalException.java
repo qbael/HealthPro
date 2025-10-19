@@ -15,7 +15,7 @@ import java.util.Map;
 public class GlobalException extends RuntimeException {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-        StackTraceElement element = ex.getStackTrace()[0]; // Lấy phần tử đầu tiên trong stack trace
+        StackTraceElement element = ex.getStackTrace()[0];
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());

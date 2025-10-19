@@ -39,10 +39,11 @@ public class DoctorService {
     }
 
     @Transactional
-    public void createDoctor(User createdUser) {
+    public UUID createDoctor(User createdUser) {
         Doctor doctor = new Doctor();
         doctor.setUser(createdUser);
         doctorRepository.save(doctor);
+        return doctor.getId();
     }
 
     @SuppressWarnings("DuplicatedCode")

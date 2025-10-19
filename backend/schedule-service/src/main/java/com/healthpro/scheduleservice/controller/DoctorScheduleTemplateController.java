@@ -33,4 +33,19 @@ public class DoctorScheduleTemplateController {
                 userId, doctorScheduleTemplateRequestDTO);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateDoctorScheduleTemplate(
+            @PathVariable UUID userId,
+            @RequestBody DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
+    ) {
+        doctorScheduleTemplateService.updateDoctorScheduleTemplate(
+                userId, doctorScheduleTemplateRequestDTO);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping
+    public void deleteDoctorScheduleTemplate(){
+        doctorScheduleTemplateService.deleteAll();
+    }
 }

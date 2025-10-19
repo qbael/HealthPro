@@ -8,22 +8,23 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@
 import {Checkbox} from "@/components/ui/checkbox"
 import {Label} from "@/components/ui/label"
 import {toast} from 'sonner'
-import api from '@/lib/axios'
+import api2 from '@/lib/axios'
 import * as React from "react"
 import {useEffect} from "react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {useAuth} from "@/contexts/AuthContext";
 
 const baseSchema = z.object({
     dayOfWeek: z
         .array(
             z.enum([
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday",
+                "MONDAY",
+                "TUESDAY",
+                "WEDNESDAY",
+                "THURSDAY",
+                "FRIDAY",
+                "SATURDAY",
+                "SUNDAY",
             ])
         )
         .nonempty({ message: "Vui lòng chọn ít nhất một ngày trong tuần." }),
@@ -66,28 +67,39 @@ const baseSchema = z.object({
     }
 })
 
+type DayType =
+    | "MONDAY"
+    | "TUESDAY"
+    | "WEDNESDAY"
+    | "THURSDAY"
+    | "FRIDAY"
+    | "SATURDAY"
+    | "SUNDAY"
+
 type ScheduleFormProps = {
     schedule?: {
-        dayOfWeek: string[]
+        dayOfWeek: DayType[]
         fromTime: string
         toTime: string
         slotDuration: number
         doctor_id?: string
     }
     mode?: 'create' | 'update'
-    // fetchSchedule: () => void
+    fetchSchedule: () => void
 }
 
-const ScheduleForm = ({ schedule, mode = 'create' }: ScheduleFormProps) => {
+const ScheduleForm = ({ schedule, mode = 'create', fetchSchedule }: ScheduleFormProps) => {
+    const { user } = useAuth()
+
     const days = [
-        { value: "Sunday", label: "Chủ Nhật" },
-        { value: "Monday", label: "Thứ Hai" },
-        { value: "Tuesday", label: "Thứ Ba" },
-        { value: "Wednesday", label: "Thứ Tư" },
-        { value: "Thursday", label: "Thứ Năm" },
-        { value: "Friday", label: "Thứ Sáu" },
-        { value: "Saturday", label: "Thứ Bảy" },
-    ];
+        { value: "SUNDAY", label: "Chủ Nhật" },
+        { value: "MONDAY", label: "Thứ Hai" },
+        { value: "TUESDAY", label: "Thứ Ba" },
+        { value: "WEDNESDAY", label: "Thứ Tư" },
+        { value: "THURSDAY", label: "Thứ Năm" },
+        { value: "FRIDAY", label: "Thứ Sáu" },
+        { value: "SATURDAY", label: "Thứ Bảy" },
+    ] as const;
 
     const hours = Array.from({ length: 10 }, (_, i) => {
         const h = i + 8;
@@ -101,7 +113,6 @@ const ScheduleForm = ({ schedule, mode = 'create' }: ScheduleFormProps) => {
             label: `${value} phút`,
         };
     });
-
 
     const form = useForm<z.infer<typeof baseSchema>>({
         resolver: zodResolver(baseSchema),
@@ -124,25 +135,18 @@ const ScheduleForm = ({ schedule, mode = 'create' }: ScheduleFormProps) => {
                 toTime: "",
                 slotDuration: undefined,
             })
-    }, [schedule])
+    }, [form, schedule])
 
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
         try {
-            if (mode == 'update' && schedule?.doctor_id) {
-                const payload = { ... values }
-
-                await api.put(`/api/users/${schedule?.doctor_id}`, {
-                    ... values,
-                    role: 'Driver'
-                })
-                fetchSchedule()
-                toast.success('Cập nhật thành công.')
+            if (mode == 'update') {
+                await api2.put(`v1/schedules/${user?.userRoleId}`, values)
+                // fetchSchedule()
+                toast.success('Chỉnh sửa thành công.')
             }
             else {
-                await api.post('/api/users', {
-                    ...values, role: 'Driver'
-                })
-                fetchSchedule()
+                await api2.post(`v1/schedules/${user?.userRoleId}`, values)
+                // fetchSchedule()
                 toast.success('Tạo thành công.')
             }
 
@@ -151,8 +155,10 @@ const ScheduleForm = ({ schedule, mode = 'create' }: ScheduleFormProps) => {
         }
         catch (err: any) {
             console.error(err)
-            toast.error(mode === 'update' ? 'Cập nhật thất bại.' : 'Tạo thất bại.')
+            toast.error(mode === 'update' ? 'Chỉnh sửa thất bại.' : 'Tạo thất bại.')
         }
+
+        console.log(values)
     }
 
     const { isLoading } = form.formState
@@ -169,9 +175,18 @@ const ScheduleForm = ({ schedule, mode = 'create' }: ScheduleFormProps) => {
                             <FormControl>
                                 <div className=" mt-2 grid grid-cols-4 gap-3">
                                     {days.map(d => (
-                                        <div key={d.label} className="flex items-center gap-3">
-                                            <Checkbox id={d.label} />
-                                            <Label htmlFor={d.label} className='text-sm'>{d.label}</Label>
+                                        <div key={d.value} className="flex items-center gap-3">
+                                            <Checkbox
+                                                id={d.label}
+                                                checked={field.value?.includes(d.value)}
+                                                onCheckedChange={(check) => {
+                                                    if (check)
+                                                        field.onChange([... field.value, d.value])
+                                                    else
+                                                        field.onChange(field.value.filter(v => v != d.value))
+                                                }}
+                                            />
+                                            <Label htmlFor={d.value} className='text-sm'>{d.label}</Label>
                                         </div>
                                     ))}
                                 </div>
@@ -267,7 +282,7 @@ const ScheduleForm = ({ schedule, mode = 'create' }: ScheduleFormProps) => {
                 />
 
                 <Button type="submit" className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
-                    {isLoading ? 'Đang xử lý...' : mode === 'update' ? 'Cập nhật' : 'Đăng ký'}
+                    {isLoading ? 'Đang xử lý...' : mode === 'update' ? 'Chỉnh sửa' : 'Đăng ký'}
                 </Button>
             </form>
         </Form>

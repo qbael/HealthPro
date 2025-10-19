@@ -19,8 +19,7 @@ const Page = () => {
         { label: "Bảy", color: "text-orange-500" },
     ]
 
-
-    const fetchSchedule = () => {
+    const fetchSchedule = async () => {
         return
     }
 
@@ -40,6 +39,7 @@ const Page = () => {
                             <DialogTitle>Đăng Ký Lịch Làm</DialogTitle>
                         </DialogHeader>
                         <ScheduleForm
+                            fetchSchedule={fetchSchedule}
                         />
                     </DialogContent>
                 </Dialog>
