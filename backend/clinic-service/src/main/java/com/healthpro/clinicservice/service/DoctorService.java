@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class DoctorService {
@@ -20,5 +21,9 @@ public class DoctorService {
 
     public Optional<Page<Doctor>> getDoctors(Pageable pageable) {
         return Optional.of(doctorRepository.findAll(pageable));
+    }
+
+    public Optional<Doctor> getDoctorById(String id) {
+        return doctorRepository.findById(UUID.fromString(id));
     }
 }

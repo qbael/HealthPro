@@ -1,6 +1,5 @@
 package com.healthpro.scheduleservice.exception;
 
-import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -47,4 +46,3 @@ public class GlobalException extends RuntimeException {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 }
-

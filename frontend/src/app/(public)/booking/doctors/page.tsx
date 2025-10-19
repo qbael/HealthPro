@@ -3,7 +3,7 @@ import {DOCTORS_API_URL} from "@/lib/utils";
 import {ResponseWithPaginationType} from "@/types/response";
 import {Pagination} from "@/components/ui/Pagination";
 import React from "react";
-import {DoctorBookingCard} from "@/components/ui/DoctorBookingCard";
+import {DoctorBookingCard} from "@/components/DoctorBookingCard";
 
 export default async function DoctorListingPage({searchParams} : {searchParams: Promise<{page?: number; limit?: number; sortBy?: string; sortDir?: string} >}) {
     const {page = 0, limit = 10, sortBy = 'id', sortDir = 'acs'} = await searchParams;
@@ -21,8 +21,8 @@ export default async function DoctorListingPage({searchParams} : {searchParams: 
     const currentPage = body.data.pageable.pageNumber;
 
     return (
-        <div className={'min-h-screen mt-15 bg-gray-50 py-6 px-100'}>
-            <div className="flex flex-wrap flex-col w-full gap-4">
+        <div className={'min-h-screen w-full mt-15 bg-gray-50 py-6 px-100'}>
+            <div className="flex flex-wrap flex-col w-full items-center">
                 {doctors.map(doctor => (
                     <DoctorBookingCard key={doctor.id} doctor={doctor}/>
                 ))}

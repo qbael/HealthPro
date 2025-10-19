@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import DoctorCard from "@/components/ui/DoctorCard";
+import DoctorCard from "@/components/DoctorCard";
 import { DoctorType } from "@/types/doctor-types";
+import Link from "next/link";
 
 interface DoctorCarouselProps {
     doctors: DoctorType[];
@@ -38,10 +39,12 @@ const DoctorCarousel = ({ doctors }: DoctorCarouselProps) => {
                     <h2 className="text-2xl font-bold text-gray-900 mb-1">Đặt khám bác sĩ</h2>
                     <p className="text-gray-600">Phiếu khám kèm số thứ tự và thời gian của bạn được xác nhận.</p>
                 </div>
-                <button
-                    className="bg-cyan-400 hover:bg-blue-700 text-sm font-bold text-white px-3 mt-7 py-1 rounded-lg flex items-center gap-2 transition-colors">
-                    Xem thêm <ChevronRight size={18}/>
-                </button>
+                <Link href="/booking/doctors">
+                    <button
+                        className="bg-cyan-400 hover:bg-blue-700 text-sm font-bold text-white px-3 mt-7 py-1 rounded-lg hover:cursor-pointer flex items-center gap-2 transition-colors">
+                        Xem thêm <ChevronRight size={18}/>
+                    </button>
+                </Link>
             </div>
 
             <div className="relative">

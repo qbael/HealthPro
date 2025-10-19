@@ -3,7 +3,7 @@ import {ResponseWithPaginationType} from "@/types/response";
 import {Pagination} from "@/components/ui/Pagination";
 import React from "react";
 import {ClinicsType} from "@/types/clinics-types";
-import {ClinicBookingCard} from "@/components/ui/ClinicBookingCard";
+import {ClinicBookingCard} from "@/components/ClinicBookingCard";
 
 export default async function ClinicListingPage({searchParams} : {searchParams: Promise<{page?: number; limit?: number; sortBy?: string; sortDir?: string} >}) {
     const {page = 0, limit = 10, sortBy = 'id', sortDir = 'acs'} = await searchParams;
@@ -22,8 +22,8 @@ export default async function ClinicListingPage({searchParams} : {searchParams: 
     const currentPage = body.data.pageable.pageNumber;
 
     return (
-        <div className={'min-h-screen mt-15 bg-gray-50 py-6 px-50'}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className={'min-h-screen mt-15 bg-gray-50 py-6 px-40 items-center'}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 items-center w-full gap-4">
                 {clinics.map(clinic => (
                     <ClinicBookingCard key={clinic.id} clinic={clinic}/>
                 ))}
