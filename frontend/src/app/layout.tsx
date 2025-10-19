@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type {Metadata} from "next";
+import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import {Providers} from "@/providers/Providers";
-import { Toaster } from "@/components/ui/sonner"
-import ClientLayout from "@/components/ClientLayout";
+import {Toaster} from "@/components/ui/sonner"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +31,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
       <Providers>
-          <ClientLayout>{children}</ClientLayout>
+          <Header />
+          <div className='mt-16'>{children}</div>
           <Toaster richColors />
       </Providers>
       </body>

@@ -27,13 +27,8 @@ public class AuthController {
     private ResponseEntity<LoginResponseDTO> getLoginResponseDTOResponseEntity(
             HttpServletResponse response, LoginResponseDTO loginResponseDTO
     ) {
-        String token = jwtUtil.generateToken(loginResponseDTO.getEmail(),
-                loginResponseDTO.getId(), loginResponseDTO.getRole());
-//        response.setHeader("Set-Cookie", String.format(
-//                "jwt=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=None",
-//                token,
-//                24 * 60 * 60 * 3
-//        ));
+        String token = jwtUtil.generateToken(loginResponseDTO.getEmail(), loginResponseDTO.getId(),
+                loginResponseDTO.getUserRoleId(), loginResponseDTO.getRole());
 
         Cookie cookie = new Cookie("jwt", token);
         cookie.setHttpOnly(true);
@@ -102,8 +97,8 @@ public class AuthController {
 
     @Operation(summary = "Validate Token")
     @GetMapping("/validate")
-    public ResponseEntity<Void> validateToken(String jwtCookie) {
-
+    public ResponseEntity<Void> validateToken(
+            @CookieValue(value = "jwt", required = false) String jwtCookie) {
         if (jwtCookie == null || jwtCookie.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

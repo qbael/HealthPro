@@ -6,7 +6,7 @@ import Image from "next/image";
 const Page = () => {
     return (
         <main className='flex justify-center'>
-            <div className='relative top-40 w-1/4 border border-gray-300 shadow-sm rounded-2xl p-4'>
+            <div className='relative top-20 w-1/4 border border-gray-300 shadow-sm rounded-2xl p-4'>
                 <div className='flex justify-center items-center gap-2 mb-3'>
                     <Image
                         src='/logo.svg'

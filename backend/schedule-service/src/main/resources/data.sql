@@ -1,138 +1,143 @@
 -- Insert Doctor Schedule Templates (Lịch làm việc mẫu của bác sĩ theo tuần)
 -- BS. Trần Văn Nguyên - Làm việc Thứ 2, 4, 6
-INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active,
-                                       updated_at)
-VALUES ('d50e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440011', 'MONDAY', '08:00:00',
-        '17:00:00', 30, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440002', '750e8400-e29b-41d4-a716-446655440011', 'WEDNESDAY', '08:00:00',
-        '17:00:00', 30, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440003', '750e8400-e29b-41d4-a716-446655440011', 'FRIDAY', '08:00:00',
-        '17:00:00', 30, true, '2024-03-01 10:00:00');
+-- =====================================================
+-- DOCTOR SCHEDULE TEMPLATES (Lịch làm việc cá nhân của bác sĩ)
+-- =====================================================
 
--- BS. Lê Thị Mai - Làm việc Thứ 2, 3, 5
-INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active,
-                                       updated_at)
-VALUES ('d50e8400-e29b-41d4-a716-446655440004', '750e8400-e29b-41d4-a716-446655440012', 'MONDAY', '09:00:00',
-        '16:00:00', 45, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440005', '750e8400-e29b-41d4-a716-446655440012', 'TUESDAY', '09:00:00',
-        '16:00:00', 45, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440006', '750e8400-e29b-41d4-a716-446655440012', 'THURSDAY', '09:00:00',
-        '16:00:00', 45, true, '2024-03-01 10:00:00');
+-- BS. Trần Văn Nguyên - Làm việc riêng Thứ 2 (chiều), Thứ 4 (chiều), Thứ 6 (chiều)
+-- Sáng làm tại Bệnh viện Chợ Rẫy, chiều làm việc cá nhân
+INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active, updated_at)
+VALUES
+    ('d50e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440011', 'MONDAY', '17:30:00', '20:00:00', 30, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440002', '750e8400-e29b-41d4-a716-446655440011', 'WEDNESDAY', '17:30:00', '20:00:00', 30, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440003', '750e8400-e29b-41d4-a716-446655440011', 'FRIDAY', '17:30:00', '20:00:00', 30, true, '2024-03-01 10:00:00');
 
--- BS. Phạm Văn Minh - Làm việc Thứ 3, 4, 6, 7
-INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active,
-                                       updated_at)
-VALUES ('d50e8400-e29b-41d4-a716-446655440007', '750e8400-e29b-41d4-a716-446655440013', 'TUESDAY', '08:00:00',
-        '12:00:00', 20, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440008', '750e8400-e29b-41d4-a716-446655440013', 'WEDNESDAY', '13:00:00',
-        '17:00:00', 20, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440009', '750e8400-e29b-41d4-a716-446655440013', 'FRIDAY', '08:00:00',
-        '17:00:00', 20, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440010', '750e8400-e29b-41d4-a716-446655440013', 'SATURDAY', '08:00:00',
-        '12:00:00', 20, true, '2024-03-01 10:00:00');
+-- BS. Lê Thị Mai - Làm việc riêng Thứ 4, Thứ 6, Thứ 7
+-- Thứ 2, 3, 5 làm tại Bệnh viện Chợ Rẫy
+INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active, updated_at)
+VALUES
+    ('d50e8400-e29b-41d4-a716-446655440004', '750e8400-e29b-41d4-a716-446655440012', 'WEDNESDAY', '08:00:00', '16:00:00', 45, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440005', '750e8400-e29b-41d4-a716-446655440012', 'FRIDAY', '08:00:00', '16:00:00', 45, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440006', '750e8400-e29b-41d4-a716-446655440012', 'SATURDAY', '08:00:00', '12:00:00', 45, true, '2024-03-01 10:00:00');
 
--- BS. Nguyễn Thị Hạnh - Làm việc Thứ 2, 4, 5, 7
-INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active,
-                                       updated_at)
-VALUES ('d50e8400-e29b-41d4-a716-446655440011', '750e8400-e29b-41d4-a716-446655440014', 'MONDAY', '13:00:00',
-        '18:00:00', 30, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440012', '750e8400-e29b-41d4-a716-446655440014', 'WEDNESDAY', '09:00:00',
-        '18:00:00', 30, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440013', '750e8400-e29b-41d4-a716-446655440014', 'THURSDAY', '09:00:00',
-        '18:00:00', 30, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440014', '750e8400-e29b-41d4-a716-446655440014', 'SATURDAY', '09:00:00',
-        '15:00:00', 30, true, '2024-03-01 10:00:00');
+-- BS. Phạm Văn Minh - Làm việc riêng Thứ 2, Thứ 4, Thứ 5
+-- Thứ 3, 6, 7 làm tại Phòng khám Hoàng Hoa
+INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active, updated_at)
+VALUES
+    ('d50e8400-e29b-41d4-a716-446655440007', '750e8400-e29b-41d4-a716-446655440013', 'MONDAY', '08:00:00', '17:00:00', 20, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440008', '750e8400-e29b-41d4-a716-446655440013', 'WEDNESDAY', '08:00:00', '12:00:00', 20, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440009', '750e8400-e29b-41d4-a716-446655440013', 'THURSDAY', '08:00:00', '17:00:00', 20, true, '2024-03-01 10:00:00');
 
--- BS. Hoàng Văn Tuấn - Làm việc Thứ 3, 5, 6
-INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active,
-                                       updated_at)
-VALUES ('d50e8400-e29b-41d4-a716-446655440015', '750e8400-e29b-41d4-a716-446655440015', 'TUESDAY', '08:00:00',
-        '16:00:00', 60, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440016', '750e8400-e29b-41d4-a716-446655440015', 'THURSDAY', '08:00:00',
-        '16:00:00', 60, true, '2024-03-01 10:00:00'),
-       ('d50e8400-e29b-41d4-a716-446655440017', '750e8400-e29b-41d4-a716-446655440015', 'FRIDAY', '08:00:00',
-        '16:00:00', 60, true, '2024-03-01 10:00:00');
+-- BS. Nguyễn Thị Hạnh - Làm việc riêng Thứ 2, 4, 5, 7 (không xung đột)
+INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active, updated_at)
+VALUES
+    ('d50e8400-e29b-41d4-a716-446655440011', '750e8400-e29b-41d4-a716-446655440014', 'MONDAY', '13:00:00', '18:00:00', 30, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440012', '750e8400-e29b-41d4-a716-446655440014', 'WEDNESDAY', '09:00:00', '18:00:00', 30, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440013', '750e8400-e29b-41d4-a716-446655440014', 'THURSDAY', '09:00:00', '18:00:00', 30, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440014', '750e8400-e29b-41d4-a716-446655440014', 'SATURDAY', '09:00:00', '15:00:00', 30, true, '2024-03-01 10:00:00');
 
--- Insert Clinic Specialty Schedule Templates (Lịch làm việc của chuyên khoa tại phòng khám)
--- Bệnh viện Chợ Rẫy - Nội tổng quát
-INSERT INTO clinic_specialty_schedule_templates (id, clinic_specialty_id, day_of_week, from_time, to_time,
-                                                 slot_duration, is_active, updated_at)
-VALUES ('e50e8400-e29b-41d4-a716-446655440001', 'a50e8400-e29b-41d4-a716-446655440001', 'MONDAY', '07:00:00',
-        '17:00:00', 30, true, '2024-03-01 08:00:00'),
-       ('e50e8400-e29b-41d4-a716-446655440002', 'a50e8400-e29b-41d4-a716-446655440001', 'WEDNESDAY', '07:00:00',
-        '17:00:00', 30, true, '2024-03-01 08:00:00'),
-       ('e50e8400-e29b-41d4-a716-446655440003', 'a50e8400-e29b-41d4-a716-446655440001', 'FRIDAY', '07:00:00',
-        '17:00:00', 30, true, '2024-03-01 08:00:00');
+-- BS. Hoàng Văn Tuấn - Làm việc riêng Thứ 3, 5, 6 (không xung đột)
+INSERT INTO doctor_schedule_templates (id, doctor_id, day_of_week, from_time, to_time, slot_duration, is_active, updated_at)
+VALUES
+    ('d50e8400-e29b-41d4-a716-446655440015', '750e8400-e29b-41d4-a716-446655440015', 'TUESDAY', '08:00:00', '16:00:00', 60, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440016', '750e8400-e29b-41d4-a716-446655440015', 'THURSDAY', '08:00:00', '16:00:00', 60, true, '2024-03-01 10:00:00'),
+    ('d50e8400-e29b-41d4-a716-446655440017', '750e8400-e29b-41d4-a716-446655440015', 'FRIDAY', '08:00:00', '16:00:00', 60, true, '2024-03-01 10:00:00');
 
--- Bệnh viện Chợ Rẫy - Sản Phụ khoa
-INSERT INTO clinic_specialty_schedule_templates (id, clinic_specialty_id, day_of_week, from_time, to_time,
-                                                 slot_duration, is_active, updated_at)
-VALUES ('e50e8400-e29b-41d4-a716-446655440004', 'a50e8400-e29b-41d4-a716-446655440002', 'MONDAY', '08:00:00',
-        '16:00:00', 45, true, '2024-03-01 08:00:00'),
-       ('e50e8400-e29b-41d4-a716-446655440005', 'a50e8400-e29b-41d4-a716-446655440002', 'TUESDAY', '08:00:00',
-        '16:00:00', 45, true, '2024-03-01 08:00:00'),
-       ('e50e8400-e29b-41d4-a716-446655440006', 'a50e8400-e29b-41d4-a716-446655440002', 'THURSDAY', '08:00:00',
-        '16:00:00', 45, true, '2024-03-01 08:00:00');
+-- =====================================================
+-- CLINIC SPECIALTY SCHEDULE TEMPLATES (Lịch hoạt động của chuyên khoa tại phòng khám)
+-- =====================================================
 
--- Phòng khám Hoàng Hoa - Nhi khoa
-INSERT INTO clinic_specialty_schedule_templates (id, clinic_specialty_id, day_of_week, from_time, to_time,
-                                                 slot_duration, is_active, updated_at)
-VALUES ('e50e8400-e29b-41d4-a716-446655440007', 'a50e8400-e29b-41d4-a716-446655440013', 'TUESDAY', '08:00:00',
-        '17:00:00', 20, true, '2024-03-01 08:00:00'),
-       ('e50e8400-e29b-41d4-a716-446655440008', 'a50e8400-e29b-41d4-a716-446655440013', 'FRIDAY', '08:00:00',
-        '17:00:00', 20, true, '2024-03-01 08:00:00'),
-       ('e50e8400-e29b-41d4-a716-446655440009', 'a50e8400-e29b-41d4-a716-446655440013', 'SATURDAY', '08:00:00',
-        '12:00:00', 20, true, '2024-03-01 08:00:00');
+-- Bệnh viện Chợ Rẫy - Nội tổng quát (Thứ 2, 4, 6 - Sáng đến chiều)
+INSERT INTO clinic_specialty_schedule_templates (id, clinic_specialty_id, day_of_week, from_time, to_time, slot_duration, is_active, updated_at)
+VALUES
+    ('e50e8400-e29b-41d4-a716-446655440001', 'a50e8400-e29b-41d4-a716-446655440001', 'MONDAY', '07:00:00', '17:00:00', 30, true, '2024-03-01 08:00:00'),
+    ('e50e8400-e29b-41d4-a716-446655440002', 'a50e8400-e29b-41d4-a716-446655440001', 'WEDNESDAY', '07:00:00', '17:00:00', 30, true, '2024-03-01 08:00:00'),
+    ('e50e8400-e29b-41d4-a716-446655440003', 'a50e8400-e29b-41d4-a716-446655440001', 'FRIDAY', '07:00:00', '17:00:00', 30, true, '2024-03-01 08:00:00');
+
+-- Bệnh viện Chợ Rẫy - Sản Phụ khoa (Thứ 2, 3, 5 - Sáng đến chiều)
+INSERT INTO clinic_specialty_schedule_templates (id, clinic_specialty_id, day_of_week, from_time, to_time, slot_duration, is_active, updated_at)
+VALUES
+    ('e50e8400-e29b-41d4-a716-446655440004', 'a50e8400-e29b-41d4-a716-446655440002', 'MONDAY', '08:00:00', '16:00:00', 45, true, '2024-03-01 08:00:00'),
+    ('e50e8400-e29b-41d4-a716-446655440005', 'a50e8400-e29b-41d4-a716-446655440002', 'TUESDAY', '08:00:00', '16:00:00', 45, true, '2024-03-01 08:00:00'),
+    ('e50e8400-e29b-41d4-a716-446655440006', 'a50e8400-e29b-41d4-a716-446655440002', 'THURSDAY', '08:00:00', '16:00:00', 45, true, '2024-03-01 08:00:00');
+
+-- Phòng khám Hoàng Hoa - Nhi khoa (Thứ 3, 6, 7 - Sáng đến chiều)
+INSERT INTO clinic_specialty_schedule_templates (id, clinic_specialty_id, day_of_week, from_time, to_time, slot_duration, is_active, updated_at)
+VALUES
+    ('e50e8400-e29b-41d4-a716-446655440007', 'a50e8400-e29b-41d4-a716-446655440013', 'TUESDAY', '08:00:00', '17:00:00', 20, true, '2024-03-01 08:00:00'),
+    ('e50e8400-e29b-41d4-a716-446655440008', 'a50e8400-e29b-41d4-a716-446655440013', 'FRIDAY', '08:00:00', '17:00:00', 20, true, '2024-03-01 08:00:00'),
+    ('e50e8400-e29b-41d4-a716-446655440009', 'a50e8400-e29b-41d4-a716-446655440013', 'SATURDAY', '08:00:00', '12:00:00', 20, true, '2024-03-01 08:00:00');
+
+-- =====================================================
+-- CLINIC SPECIALTY DOCTORS (Phân công bác sĩ cho chuyên khoa tại phòng khám)
+-- =====================================================
+
+INSERT INTO clinic_specialty_doctors (id, clinic_specialty_id, doctor_id, assignment_count)
+VALUES
+    -- BS. Trần Văn Nguyên tại Bệnh viện Chợ Rẫy - Nội tổng quát
+    ('c50e8400-e29b-41d4-a716-446655440001', 'a50e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440011', 15),
+
+    -- BS. Trần Văn Nguyên tại Bệnh viện Chợ Rẫy - Tim mạch
+    ('c50e8400-e29b-41d4-a716-446655440002', 'a50e8400-e29b-41d4-a716-446655440006', '750e8400-e29b-41d4-a716-446655440011', 8),
+
+    -- BS. Lê Thị Mai tại Bệnh viện Chợ Rẫy - Sản Phụ khoa
+    ('c50e8400-e29b-41d4-a716-446655440003', 'a50e8400-e29b-41d4-a716-446655440002', '750e8400-e29b-41d4-a716-446655440012', 12),
+
+    -- BS. Lê Thị Mai tại Phòng khám Hoàng Hoa - Sản Phụ khoa
+    ('c50e8400-e29b-41d4-a716-446655440004', 'a50e8400-e29b-41d4-a716-446655440012', '750e8400-e29b-41d4-a716-446655440012', 5),
+
+    -- BS. Phạm Văn Minh tại Phòng khám Hoàng Hoa - Nhi khoa
+    ('c50e8400-e29b-41d4-a716-446655440005', 'a50e8400-e29b-41d4-a716-446655440013', '750e8400-e29b-41d4-a716-446655440013', 10);
 
 -- Insert Doctor Available Slots (Các slot khám bệnh có sẵn của bác sĩ - future dates)
 -- BS. Trần Văn Nguyên - Các slot trong tuần tới
-INSERT INTO doctor_available_slots (id, doctor_id, clinic_specialty_id, appointment_date, start_time, end_time,
-                                    appointment_type)
-VALUES
--- 2025-10-13 (Monday)
-('f50e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440011',
- 'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '08:00:00', '08:30:00', 'CLINIC'),
-('f50e8400-e29b-41d4-a716-446655440002', '750e8400-e29b-41d4-a716-446655440011',
- 'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '08:30:00', '09:00:00', 'CLINIC'),
-('f50e8400-e29b-41d4-a716-446655440003', '750e8400-e29b-41d4-a716-446655440011',
- 'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '09:00:00', '09:30:00', 'CLINIC'),
-('f50e8400-e29b-41d4-a716-446655440004', '750e8400-e29b-41d4-a716-446655440011',
- 'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '14:00:00', '14:30:00', 'CLINIC'),
-('f50e8400-e29b-41d4-a716-446655440005', '750e8400-e29b-41d4-a716-446655440011',
- 'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '14:30:00', '15:00:00', 'CLINIC'),
--- 2025-10-15 (Wednesday)
-('f50e8400-e29b-41d4-a716-446655440006', '750e8400-e29b-41d4-a716-446655440011',
- 'a50e8400-e29b-41d4-a716-446655440001', '2025-10-15', '08:00:00', '08:30:00', 'CLINIC'),
-('f50e8400-e29b-41d4-a716-446655440007', '750e8400-e29b-41d4-a716-446655440011',
- 'a50e8400-e29b-41d4-a716-446655440001', '2025-10-15', '10:00:00', '10:30:00', 'CLINIC'),
-('f50e8400-e29b-41d4-a716-446655440008', '750e8400-e29b-41d4-a716-446655440011',
- 'a50e8400-e29b-41d4-a716-446655440001', '2025-10-15', '15:00:00', '15:30:00', 'CLINIC');
-
--- BS. Lê Thị Mai - Các slot trong tuần tới
-INSERT INTO doctor_available_slots (id, doctor_id, clinic_specialty_id, appointment_date, start_time, end_time,
-                                    appointment_type)
-VALUES ('f50e8400-e29b-41d4-a716-446655440011', '750e8400-e29b-41d4-a716-446655440012',
-        'a50e8400-e29b-41d4-a716-446655440002', '2025-10-13', '09:00:00', '09:45:00', 'CLINIC'),
-       ('f50e8400-e29b-41d4-a716-446655440012', '750e8400-e29b-41d4-a716-446655440012',
-        'a50e8400-e29b-41d4-a716-446655440002', '2025-10-13', '10:00:00', '10:45:00', 'CLINIC'),
-       ('f50e8400-e29b-41d4-a716-446655440013', '750e8400-e29b-41d4-a716-446655440012',
-        'a50e8400-e29b-41d4-a716-446655440002', '2025-10-14', '09:00:00', '09:45:00', 'CLINIC'),
-       ('f50e8400-e29b-41d4-a716-446655440014', '750e8400-e29b-41d4-a716-446655440012',
-        'a50e8400-e29b-41d4-a716-446655440002', '2025-10-14', '14:00:00', '14:45:00', 'CLINIC');
-
--- BS. Phạm Văn Minh - Các slot trong tuần tới
-INSERT INTO doctor_available_slots (id, doctor_id, clinic_specialty_id, appointment_date, start_time, end_time,
-                                    appointment_type)
-VALUES ('f50e8400-e29b-41d4-a716-446655440021', '750e8400-e29b-41d4-a716-446655440013',
-        'a50e8400-e29b-41d4-a716-446655440013', '2025-10-14', '08:00:00', '08:20:00', 'CLINIC'),
-       ('f50e8400-e29b-41d4-a716-446655440022', '750e8400-e29b-41d4-a716-446655440013',
-        'a50e8400-e29b-41d4-a716-446655440013', '2025-10-14', '08:20:00', '08:40:00', 'CLINIC'),
-       ('f50e8400-e29b-41d4-a716-446655440023', '750e8400-e29b-41d4-a716-446655440013',
-        'a50e8400-e29b-41d4-a716-446655440013', '2025-10-17', '08:00:00', '08:20:00', 'CLINIC'),
-       ('f50e8400-e29b-41d4-a716-446655440024', '750e8400-e29b-41d4-a716-446655440013',
-        'a50e8400-e29b-41d4-a716-446655440013', '2025-10-17', '09:00:00', '09:20:00', 'CLINIC'),
-       ('f50e8400-e29b-41d4-a716-446655440025', '750e8400-e29b-41d4-a716-446655440013',
-        'a50e8400-e29b-41d4-a716-446655440013', '2025-10-18', '08:00:00', '08:20:00', 'CLINIC');
+-- INSERT INTO doctor_available_slots (id, doctor_id, clinic_specialty_id, appointment_date, start_time, end_time,
+--                                     appointment_type)
+-- VALUES
+-- -- 2025-10-13 (Monday)
+-- ('f50e8400-e29b-41d4-a716-446655440001', '750e8400-e29b-41d4-a716-446655440011',
+--  'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '08:00:00', '08:30:00', 'CLINIC'),
+-- ('f50e8400-e29b-41d4-a716-446655440002', '750e8400-e29b-41d4-a716-446655440011',
+--  'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '08:30:00', '09:00:00', 'CLINIC'),
+-- ('f50e8400-e29b-41d4-a716-446655440003', '750e8400-e29b-41d4-a716-446655440011',
+--  'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '09:00:00', '09:30:00', 'CLINIC'),
+-- ('f50e8400-e29b-41d4-a716-446655440004', '750e8400-e29b-41d4-a716-446655440011',
+--  'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '14:00:00', '14:30:00', 'CLINIC'),
+-- ('f50e8400-e29b-41d4-a716-446655440005', '750e8400-e29b-41d4-a716-446655440011',
+--  'a50e8400-e29b-41d4-a716-446655440001', '2025-10-13', '14:30:00', '15:00:00', 'CLINIC'),
+-- -- 2025-10-15 (Wednesday)
+-- ('f50e8400-e29b-41d4-a716-446655440006', '750e8400-e29b-41d4-a716-446655440011',
+--  'a50e8400-e29b-41d4-a716-446655440001', '2025-10-15', '08:00:00', '08:30:00', 'CLINIC'),
+-- ('f50e8400-e29b-41d4-a716-446655440007', '750e8400-e29b-41d4-a716-446655440011',
+--  'a50e8400-e29b-41d4-a716-446655440001', '2025-10-15', '10:00:00', '10:30:00', 'CLINIC'),
+-- ('f50e8400-e29b-41d4-a716-446655440008', '750e8400-e29b-41d4-a716-446655440011',
+--  'a50e8400-e29b-41d4-a716-446655440001', '2025-10-15', '15:00:00', '15:30:00', 'CLINIC');
+--
+-- -- BS. Lê Thị Mai - Các slot trong tuần tới
+-- INSERT INTO doctor_available_slots (id, doctor_id, clinic_specialty_id, appointment_date, start_time, end_time,
+--                                     appointment_type)
+-- VALUES ('f50e8400-e29b-41d4-a716-446655440011', '750e8400-e29b-41d4-a716-446655440012',
+--         'a50e8400-e29b-41d4-a716-446655440002', '2025-10-13', '09:00:00', '09:45:00', 'CLINIC'),
+--        ('f50e8400-e29b-41d4-a716-446655440012', '750e8400-e29b-41d4-a716-446655440012',
+--         'a50e8400-e29b-41d4-a716-446655440002', '2025-10-13', '10:00:00', '10:45:00', 'CLINIC'),
+--        ('f50e8400-e29b-41d4-a716-446655440013', '750e8400-e29b-41d4-a716-446655440012',
+--         'a50e8400-e29b-41d4-a716-446655440002', '2025-10-14', '09:00:00', '09:45:00', 'CLINIC'),
+--        ('f50e8400-e29b-41d4-a716-446655440014', '750e8400-e29b-41d4-a716-446655440012',
+--         'a50e8400-e29b-41d4-a716-446655440002', '2025-10-14', '14:00:00', '14:45:00', 'CLINIC');
+--
+-- -- BS. Phạm Văn Minh - Các slot trong tuần tới
+-- INSERT INTO doctor_available_slots (id, doctor_id, clinic_specialty_id, appointment_date, start_time, end_time,
+--                                     appointment_type)
+-- VALUES ('f50e8400-e29b-41d4-a716-446655440021', '750e8400-e29b-41d4-a716-446655440013',
+--         'a50e8400-e29b-41d4-a716-446655440013', '2025-10-14', '08:00:00', '08:20:00', 'CLINIC'),
+--        ('f50e8400-e29b-41d4-a716-446655440022', '750e8400-e29b-41d4-a716-446655440013',
+--         'a50e8400-e29b-41d4-a716-446655440013', '2025-10-14', '08:20:00', '08:40:00', 'CLINIC'),
+--        ('f50e8400-e29b-41d4-a716-446655440023', '750e8400-e29b-41d4-a716-446655440013',
+--         'a50e8400-e29b-41d4-a716-446655440013', '2025-10-17', '08:00:00', '08:20:00', 'CLINIC'),
+--        ('f50e8400-e29b-41d4-a716-446655440024', '750e8400-e29b-41d4-a716-446655440013',
+--         'a50e8400-e29b-41d4-a716-446655440013', '2025-10-17', '09:00:00', '09:20:00', 'CLINIC'),
+--        ('f50e8400-e29b-41d4-a716-446655440025', '750e8400-e29b-41d4-a716-446655440013',
+--         'a50e8400-e29b-41d4-a716-446655440013', '2025-10-18', '08:00:00', '08:20:00', 'CLINIC');
 
 -- Insert Appointments (Các cuộc hẹn đã được tạo)
 -- Cuộc hẹn đã hoàn thành

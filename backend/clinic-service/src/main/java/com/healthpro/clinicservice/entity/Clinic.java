@@ -66,6 +66,5 @@ public class Clinic {
     private String avatarUrl;
 
     @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
     private Set<ClinicSpecialty> clinicSpecialties;
 }

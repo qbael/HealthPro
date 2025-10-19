@@ -8,6 +8,7 @@ import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.exception.WrongPassWordException;
+import com.healthpro.authservice.repository.PatientRepository;
 import com.healthpro.authservice.utils.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -43,17 +44,14 @@ public class AuthService {
         user.setRole(role);
         User createdUser = userService.create(user);
 
-        switch (signupRequestDTO.getRole()) {
-            case "PATIENT": patientService.createPatient(createdUser);
-                break;
-            case "DOCTOR": doctorService.createDoctor(createdUser);
-                break;
-            case "CLINIC": clinicService.createClinic(createdUser);
-                break;
-            default: throw new BadCredentialsException("Invalid role");
-        }
+        UUID userRoleId = switch (signupRequestDTO.getRole()) {
+            case "PATIENT" -> patientService.createPatient(createdUser);
+            case "DOCTOR" -> doctorService.createDoctor(createdUser);
+            case "CLINIC" -> clinicService.createClinic(createdUser);
+            default -> throw new BadCredentialsException("Invalid role");
+        };
 
-        return new LoginResponseDTO(createdUser.getId(), createdUser.getEmail(), signupRequestDTO.getRole());
+        return new LoginResponseDTO(createdUser.getId(), userRoleId, createdUser.getEmail(), signupRequestDTO.getRole());
     }
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
@@ -65,14 +63,22 @@ public class AuthService {
             throw new WrongPassWordException("Sai mật khẩu");
         }
 
-        return new LoginResponseDTO(user.getId(), user.getEmail(), user.getRole().getRoleName());
+        UUID userRoleId = switch (user.getRole().getRoleName()) {
+            case "PATIENT" -> patientService.findByUserId(user.getId()).getPatientId();
+            case "DOCTOR" -> doctorService.findByUserId(user.getId()).getDoctorId();
+            case "CLINIC" -> clinicService.findByUserId(user.getId()).getClinicId();
+            default -> throw new BadCredentialsException("Invalid role");
+        };
+
+        return new LoginResponseDTO(user.getId(), userRoleId, user.getEmail(), user.getRole().getRoleName());
     }
 
     public LoginResponseDTO getCurrentUser( String token) {
         UUID id = jwtUtil.extractId(token);
+        UUID userRoleId = jwtUtil.extractUserRoleId(token);
         String email = jwtUtil.extractEmail(token);
         String role = jwtUtil.extractRole(token);
 
-        return new LoginResponseDTO(id, email, role);
+        return new LoginResponseDTO(id, userRoleId, email, role);
     }
 }

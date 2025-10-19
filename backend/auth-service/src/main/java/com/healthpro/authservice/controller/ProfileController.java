@@ -8,7 +8,6 @@ import com.healthpro.authservice.service.DoctorService;
 import com.healthpro.authservice.service.PatientService;
 import com.healthpro.authservice.utils.JwtUtil;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +20,12 @@ public class ProfileController {
     private final PatientService patientService;
     private final DoctorService doctorService;
     private final ClinicService clinicService;
-    private final JwtUtil jwtUtil;
 
-    @GetMapping
+    @GetMapping("/{userId}")
     public ResponseEntity<?> getProfile(
-            @CookieValue(value = "jwt", required = false) String token
+            @PathVariable UUID userId,
+            @RequestParam String role
     ) {
-        if (token == null || !jwtUtil.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        UUID userId = jwtUtil.extractId(token);
-        String role = jwtUtil.extractRole(token);
-
         return switch (role) {
             case "PATIENT" -> ResponseEntity.ok().body(patientService.findByUserId(userId));
             case "DOCTOR" -> ResponseEntity.ok().body(doctorService.findByUserId(userId));

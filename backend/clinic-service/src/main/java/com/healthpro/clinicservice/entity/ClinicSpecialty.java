@@ -21,6 +21,7 @@ public class ClinicSpecialty {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "clinic_id", nullable = false)
     private Clinic clinic;
 

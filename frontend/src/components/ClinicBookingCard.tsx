@@ -2,6 +2,7 @@ import React from "react";
 import {Clock, MapPin, Star} from "lucide-react";
 import {ClinicsType} from "@/types/clinics-types";
 import Image from "next/image";
+import Link from "next/link";
 
 interface ClinicBookingCardProps {
     clinic: ClinicsType;
@@ -39,16 +40,19 @@ export const ClinicBookingCard = ({clinic}: ClinicBookingCardProps) => {
                         ))}
                     </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                    <button
-                        className="bg-white hover:bg-gray-50 text-cyan-500 border border-cyan-500 px-5 py-2 rounded-lg font-medium text-sm">
+            </div>
+            <div className="flex flex-col gap-2 mt-4 h-full">
+                <Link href={`/clinics/${clinic.id}`}>
+                    <button className="w-full bg-white hover:bg-gray-50 hover:cursor-pointer text-cyan-500 border border-cyan-500 px-5 py-2 rounded-lg font-medium text-sm">
                         Xem chi tiết
                     </button>
-                    <button
-                        className="bg-cyan-400 hover:bg-cyan-500 text-white px-5 py-2 rounded-lg font-medium text-sm">
+                </Link>
+
+                <Link href={''}>
+                    <button className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
                         Đặt khám ngay
                     </button>
-                </div>
+                </Link>
             </div>
         </div>
     );
