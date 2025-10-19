@@ -27,9 +27,11 @@ export const useAuthAction = () => {
 
         }
         catch (err: any) {
-            const msg = err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.'
-            dispatch({ type: 'LOADING', payload: false })
+            const msg = err.response?.data?.message || 'Đăng ký thất bại. Vui lòng thử lại.'
             toast.error(msg)
+        }
+        finally {
+            dispatch({ type: 'LOADING', payload: false })
         }
     }
 
@@ -49,8 +51,10 @@ export const useAuthAction = () => {
         }
         catch (err: any) {
             const msg = err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.'
-            dispatch({ type: 'LOADING', payload: false })
             toast.error(msg)
+        }
+        finally {
+            dispatch({ type: 'LOADING', payload: false })
         }
     }
 

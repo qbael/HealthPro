@@ -1,11 +1,11 @@
 ### Signup user
-POST http://localhost:8080/api/v1/auth/signup
+POST http://localhost:4004/api/v1/auth/signup
 Content-Type: application/json
 
 {
-  "email": "mindang2@gmail.com",
+  "email": "mindang3@gmail.com",
   "phoneNumber": "0901234567",
-  "password": "mindang2",
-  "role": "DOCTOR"
+  "password": "mindang3",
+  "role": "CLINIC"
 }
 ###

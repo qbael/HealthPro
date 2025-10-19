@@ -27,7 +27,7 @@ spring:
             filters:
               - StripPrefix=0
               - JwtValidation
-              -
+
             # Route for /api/v1/profile/** to users-service
           - id: profile-service-route
             uri: http://localhost:8080

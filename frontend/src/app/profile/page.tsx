@@ -10,7 +10,8 @@ const Page = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const res = await api.get('v1/profile')
+                const res = await api.get(
+                    `v1/profile/${currentUser?.id}?role=${currentUser?.role}`)
                 setUser(res.data)
             } catch (err) {
                 console.error('Failed to fetch profile:', err)
@@ -30,8 +31,8 @@ const Page = () => {
         )
 
     return (
-        <main className={`${currentUser?.role === 'PATIENT' ? 'mt-30' : 'ml-0 md:ml-[11%] my-5'} flex justify-center`}>
-                <div className='w-[90%] max-w-[640px]'>
+        <main className='flex justify-center'>
+                <div className='my-10 w-[90%] max-w-[640px]'>
                 <ProfileForm user={user}/>
             </div>
         </main>

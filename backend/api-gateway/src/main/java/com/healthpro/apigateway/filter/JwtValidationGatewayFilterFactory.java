@@ -31,7 +31,7 @@ public class JwtValidationGatewayFilterFactory extends
             String token = jwtCookie.getValue();
 
             return webClient.get()
-                    .uri("/validate")
+                    .uri("/api/v1/auth/validate")
                     .cookie("jwt", token)
                     .retrieve()
                     .toBodilessEntity()
