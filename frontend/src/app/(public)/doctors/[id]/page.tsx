@@ -16,7 +16,7 @@ export default async function DoctorProfile({params}: { params: Promise<{ id: st
     const doctor: DoctorType = body.data;
 
     return (
-        <div className="max-w-4xl mx-auto mt-20 bg-gray-50 min-h-screen">
+        <div className="max-w-4xl mx-auto p-5 mt-22 bg-gray-50 min-h-screen">
             <div className="bg-white rounded-lg shadow-sm p-6 mb-4">
                 <div className="flex items-start gap-4">
                     <Image

@@ -1,6 +1,6 @@
 import React from "react";
 import {Clock, MapPin, Star} from "lucide-react";
-import {ClinicsType} from "@/types/clinics-types";
+import {ClinicsType} from "@/types/clinic-types";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -48,7 +48,7 @@ export const ClinicBookingCard = ({clinic}: ClinicBookingCardProps) => {
                     </button>
                 </Link>
 
-                <Link href={''}>
+                <Link href={`/clinics/${clinic.id}/specialties`}>
                     <button className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
                         Đặt khám ngay
                     </button>

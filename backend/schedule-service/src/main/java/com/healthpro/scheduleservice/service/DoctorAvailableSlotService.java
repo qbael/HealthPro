@@ -11,11 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -59,7 +57,6 @@ public class DoctorAvailableSlotService {
                 while (slotStart.plusMinutes(duration).isBefore(to) || slotStart.plusMinutes(duration).equals(to)) {
                     LocalTime slotEnd = slotStart.plusMinutes(duration);
 
-                    String uniqueCode = generateUniqueCode(template.getDoctorId(), date.getDayOfWeek(), date, slotStart, slotEnd);
                     DoctorAvailableSlot slot = DoctorAvailableSlot.builder()
                             .doctorId(template.getDoctorId())
                             .appointmentDate(date)
@@ -99,7 +96,6 @@ public class DoctorAvailableSlotService {
                     LocalTime slotEnd = slotStart.plusMinutes(duration);
 
                     for(ClinicSpecialtyDoctor doctor : doctors) {
-                        String uniqueCode = generateUniqueCode(doctor.getDoctorId(), date.getDayOfWeek(), date, slotStart, slotEnd);
                         DoctorAvailableSlot slot = DoctorAvailableSlot.builder()
                                 .doctorId(doctor.getDoctorId())
                                 .clinicSpecialtyId(template.getClinicSpecialtyId())
@@ -118,9 +114,5 @@ public class DoctorAvailableSlotService {
                 }
             }
         }
-    }
-
-    private String generateUniqueCode(UUID doctorId, DayOfWeek dayOfWeek, LocalDate date, LocalTime slotStart, LocalTime slotEnd) {
-        return doctorId.toString() + "_" + dayOfWeek.toString() + "_" + date.toString() + "_" + slotStart.toString() + "_" + slotEnd.toString();
     }
 }

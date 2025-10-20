@@ -20,7 +20,7 @@ const SideBar = ({ navItems }: SideBarProps) => {
   return (
     <nav
       className={cn(
-        "w-full bg-white border-t border-gray-200",
+        "w-full mb-5 bg-white border-t border-gray-200",
         "flex justify-center items-center gap-8 pt-5"
       )}
     >

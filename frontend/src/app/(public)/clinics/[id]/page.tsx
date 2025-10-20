@@ -1,7 +1,9 @@
 import React from 'react';
-import { MapPin, Clock, Phone, Mail, Globe, Calendar, Star, Award } from 'lucide-react';
+import {Award, Calendar, Clock, MapPin, Star} from 'lucide-react';
 import {CLINICS_API_URL} from "@/lib/utils";
-import {ClinicsType} from "@/types/clinics-types";
+import {ClinicsType} from "@/types/clinic-types";
+import Image from "next/image";
+import Link from "next/link";
 
 export default async function ClinicDetailPage({params}: {params: Promise<{ id: string }>}) {
 
@@ -17,11 +19,13 @@ export default async function ClinicDetailPage({params}: {params: Promise<{ id: 
     const clinic: ClinicsType = body.data;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 mt-10 to-indigo-50">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 mt-16 to-indigo-50">
             <div className="relative h-80 w-full overflow-hidden">
-                <img
+                <Image
                     src={clinic.avatarUrl}
                     alt={clinic.clinicName}
+                    width={1920}
+                    height={320}
                     className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -30,9 +34,11 @@ export default async function ClinicDetailPage({params}: {params: Promise<{ id: 
                     <div className="flex items-end gap-6">
                         {clinic.logoUrl && (
                             <div className="w-28 h-28 rounded-2xl border-4 border-white shadow-xl overflow-hidden bg-white">
-                                <img
+                                <Image
                                     src={clinic.logoUrl}
                                     alt="Logo"
+                                    width={112}
+                                    height={112}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
@@ -112,12 +118,11 @@ export default async function ClinicDetailPage({params}: {params: Promise<{ id: 
 
                     <div className="space-y-6">
                         <div className="bg-white rounded-2xl shadow-md p-6">
-                            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl transition-colors mb-3 shadow-lg shadow-blue-600/30">
-                                Đặt Lịch Khám
-                            </button>
-                            <button className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-4 rounded-xl transition-colors">
-                                Tư Vấn Trực Tuyến
-                            </button>
+                            <Link href={`/clinics/${clinic.id}/specialties`}>
+                                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl transition-colors mb-3 shadow-lg shadow-blue-600/30">
+                                    Đặt Lịch Khám
+                                </button>
+                            </Link>
                         </div>
 
                         <div className="bg-white rounded-2xl shadow-md p-6">

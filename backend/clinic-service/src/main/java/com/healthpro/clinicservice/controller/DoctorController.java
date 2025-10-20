@@ -2,6 +2,7 @@ package com.healthpro.clinicservice.controller;
 
 import com.healthpro.clinicservice.dto.ApiResponseDto;
 import com.healthpro.clinicservice.entity.Doctor;
+import com.healthpro.clinicservice.entity.DoctorSpecialty;
 import com.healthpro.clinicservice.service.DoctorService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -52,5 +54,16 @@ public class DoctorController {
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body(ApiResponseDto.error(404, "Bác sĩ không tồn tại")));
+    }
+
+    @GetMapping("/{id}/specialties")
+    @Operation(summary = "Get specialties by doctor id")
+    public ResponseEntity<ApiResponseDto<List<DoctorSpecialty>>> getSpecialtiesByClinicId(@PathVariable String id) {
+        Optional<List<DoctorSpecialty>> specialties = doctorService.getSpecialtiesByDoctorId(id);
+        return specialties.map(value -> ResponseEntity.ok().body(
+                        ApiResponseDto.success(value, "Lấy danh sách chuyên khoa của bác sĩ thành công")))
+                .orElseGet(() -> ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(ApiResponseDto.error(404, "Lấy danh sách chuyên khoa của bác sĩ thất bại")));
     }
 }

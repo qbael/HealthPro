@@ -1,7 +1,7 @@
 "use client";
 import React, {useState} from 'react';
 import {ChevronLeft, ChevronRight} from "lucide-react";
-import {ClinicsType} from "@/types/clinics-types";
+import {ClinicsType} from "@/types/clinic-types";
 import {ClinicCard} from "@/components/ClinicCard";
 import Link from "next/link";
 
