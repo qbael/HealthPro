@@ -25,6 +25,8 @@ public class DoctorScheduleTemplateService {
     public void createDoctorScheduleTemplate(
             UUID userId, DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
     ) {
+        doctorScheduleTemplateRepository.deleteByDoctorId(userId);
+
         for (int i = 0; i < doctorScheduleTemplateRequestDTO.getDayOfWeek().length; i++) {
             DoctorScheduleTemplate doctorScheduleTemplate = new DoctorScheduleTemplate();
             doctorScheduleTemplate.setDoctorId(userId);
@@ -36,37 +38,38 @@ public class DoctorScheduleTemplateService {
         }
     }
 
-    public void updateDoctorScheduleTemplate(
-            UUID userId, DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
-    ) {
-        List<DoctorScheduleTemplate> doctorScheduleTemplates = doctorScheduleTemplateRepository.
-                findByDoctorIdAndIsActiveTrue(userId).orElseThrow(() ->
-                        new UserNotFoundException("Doctor not found with this id " + userId));
+//    public void updateDoctorScheduleTemplate(
+//            UUID userId, DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
+//    ) {
+//        List<DoctorScheduleTemplate> doctorScheduleTemplates = doctorScheduleTemplateRepository.
+//                findByDoctorIdAndIsActiveTrue(userId).orElseThrow(() ->
+//                        new UserNotFoundException("Doctor not found with this id " + userId));
+//
+//        for (DoctorScheduleTemplate doctorScheduleTemplate : doctorScheduleTemplates) {
+//            for (int i = 0; i < doctorScheduleTemplateRequestDTO.getDayOfWeek().length; i++) {
+//                doctorScheduleTemplate.setDayOfWeek(doctorScheduleTemplateRequestDTO.getDayOfWeek()[i]);
+//            }
+//m
+//            doctorScheduleTemplate.setFromTime(doctorScheduleTemplateRequestDTO.getFromTime());
+//            doctorScheduleTemplate.setToTime(doctorScheduleTemplateRequestDTO.getToTime());
+//            doctorScheduleTemplate.setSlotDuration(doctorScheduleTemplateRequestDTO.getSlotDuration());
+//            doctorScheduleTemplateRepository.save(doctorScheduleTemplate);
+//        }
+//    }
 
-        for (int i = 0; i < doctorScheduleTemplateRequestDTO.getDayOfWeek().length; i++) {
-            doctorScheduleTemplate.setDayOfWeek(doctorScheduleTemplateRequestDTO.getDayOfWeek()[i]);
-            doctorScheduleTemplate.setFromTime(doctorScheduleTemplateRequestDTO.getFromTime());
-            doctorScheduleTemplate.setToTime(doctorScheduleTemplateRequestDTO.getToTime());
-            doctorScheduleTemplate.setSlotDuration(doctorScheduleTemplateRequestDTO.getSlotDuration());
-            doctorScheduleTemplateRepository.save(doctorScheduleTemplate);
-        }
-    }
-
-
-
-    public Map<DayOfWeek, List<DoctorAvailableSlot>> getWeeklyCalendar(UUID doctorId, LocalDate weekStart) {
-        List<DoctorScheduleTemplate> doctorScheduleTemplates = doctorScheduleTemplateRepository.findByDoctorIdAndIsActiveTrue(doctorId)
-                .orElseThrow(() -> new ScheduleNotFoundException("Schedule is empty with this ID " + doctorId));
-
-        Map<DayOfWeek, List<DoctorAvailableSlot>> calendar = new LinkedHashMap<>();
-
-        for (DoctorScheduleTemplate template : doctorScheduleTemplates) {
-            List<DoctorAvailableSlot> doctorSlots = doctorScheduleGenerator.generateDoctorSchedule(template, weekStart);
-            calendar.put(template.getDayOfWeek(), doctorSlots);
-        }
-
-        return calendar;
-    }
+//    public Map<DayOfWeek, List<DoctorAvailableSlot>> getWeeklyCalendar(UUID doctorId, LocalDate weekStart) {
+//        List<DoctorScheduleTemplate> doctorScheduleTemplates = doctorScheduleTemplateRepository.findByDoctorIdAndIsActiveTrue(doctorId)
+//                .orElseThrow(() -> new ScheduleNotFoundException("Schedule is empty with this ID " + doctorId));
+//
+//        Map<DayOfWeek, List<DoctorAvailableSlot>> calendar = new LinkedHashMap<>();
+//
+//        for (DoctorScheduleTemplate template : doctorScheduleTemplates) {
+//            List<DoctorAvailableSlot> doctorSlots = doctorScheduleGenerator.generateDoctorSchedule(template, weekStart);
+//            calendar.put(template.getDayOfWeek(), doctorSlots);
+//        }
+//
+//        return calendar;
+//    }
 
     public void deleteAll () {
         doctorScheduleTemplateRepository.deleteAll();

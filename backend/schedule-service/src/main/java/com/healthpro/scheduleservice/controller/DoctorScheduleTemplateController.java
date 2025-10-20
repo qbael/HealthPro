@@ -15,14 +15,14 @@ import java.util.UUID;
 public class DoctorScheduleTemplateController {
     private final DoctorScheduleTemplateService doctorScheduleTemplateService;
 
-    @GetMapping("/calendar/{userId}")
-    public ResponseEntity<?> getDoctorCalendar(
-            @PathVariable UUID userId,
-            @RequestParam LocalDate weekStart
-    ) {
-        var calendar = doctorScheduleTemplateService.getWeeklyCalendar(userId, weekStart);
-        return ResponseEntity.ok(calendar);
-    }
+//    @GetMapping("/calendar/{userId}")
+//    public ResponseEntity<?> getDoctorCalendar(
+//            @PathVariable UUID userId,
+//            @RequestParam LocalDate weekStart
+//    ) {
+//        var calendar = doctorScheduleTemplateService.getWeeklyCalendar(userId, weekStart);
+//        return ResponseEntity.ok(calendar);
+//    }
 
     @PostMapping("/{userId}")
     public ResponseEntity<?> createDoctorScheduleTemplate(
@@ -34,15 +34,15 @@ public class DoctorScheduleTemplateController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<?> updateDoctorScheduleTemplate(
-            @PathVariable UUID userId,
-            @RequestBody DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
-    ) {
-        doctorScheduleTemplateService.updateDoctorScheduleTemplate(
-                userId, doctorScheduleTemplateRequestDTO);
-        return ResponseEntity.noContent().build();
-    }
+//    @PutMapping("/{userId}")
+//    public ResponseEntity<?> updateDoctorScheduleTemplate(
+//            @PathVariable UUID userId,
+//            @RequestBody DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
+//    ) {
+//        doctorScheduleTemplateService.updateDoctorScheduleTemplate(
+//                userId, doctorScheduleTemplateRequestDTO);
+//        return ResponseEntity.noContent().build();
+//    }
 
     @DeleteMapping
     public void deleteDoctorScheduleTemplate(){

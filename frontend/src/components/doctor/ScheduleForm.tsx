@@ -139,19 +139,10 @@ const ScheduleForm = ({ schedule, mode = 'create', fetchSchedule }: ScheduleForm
 
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
         try {
-            if (mode == 'update') {
-                await api2.put(`v1/schedules/${user?.userRoleId}`, values)
-                // fetchSchedule()
-                toast.success('Chỉnh sửa thành công.')
-            }
-            else {
-                await api2.post(`v1/schedules/${user?.userRoleId}`, values)
-                // fetchSchedule()
-                toast.success('Tạo thành công.')
-            }
-
+            await api2.post(`v1/schedules/${user?.userRoleId}`, values)
+            // fetchSchedule()
+            toast.success(mode === 'update' ? 'Chỉnh sửa thành công.' : 'Tạo thành công.')
             form.reset()
-
         }
         catch (err: any) {
             console.error(err)

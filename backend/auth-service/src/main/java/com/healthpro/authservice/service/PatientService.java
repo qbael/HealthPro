@@ -1,15 +1,20 @@
 package com.healthpro.authservice.service;
 
+import com.healthpro.authservice.dto.DoctorResponseDTO;
 import com.healthpro.authservice.dto.PatientRequestDTO;
 import com.healthpro.authservice.dto.PatientResponseDTO;
+import com.healthpro.authservice.entity.Doctor;
 import com.healthpro.authservice.entity.Patient;
 import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.UserNotFoundException;
+import com.healthpro.authservice.mapper.DoctorMapper;
 import com.healthpro.authservice.mapper.PatientMapper;
 import com.healthpro.authservice.repository.PatientRepository;
 import com.healthpro.authservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,9 +30,9 @@ public class PatientService {
         this.userRepository = userRepository;
     }
 
-    public List<PatientResponseDTO> getPatients() {
-        List<Patient> patients = patientRepository.findAll();
-        return patients.stream().map(PatientMapper::toPatientResponseDTO).toList();
+    public Page<PatientResponseDTO> getPatients(Pageable pageable) {
+        Page<Patient> patients = patientRepository.findAll(pageable);
+        return patients.map(PatientMapper::toPatientResponseDTO);
     }
 
     public PatientResponseDTO findByUserId(UUID id) {

@@ -12,5 +12,7 @@ import java.util.UUID;
 
 @Repository
 public interface DoctorScheduleTemplateRepository extends JpaRepository<DoctorScheduleTemplate, UUID> {
-    Optional<List<DoctorScheduleTemplate>> findByDoctorIdAndIsActiveTrue(UUID id);
+//    void deleteByDoctorIdAndIsActiveTrue(UUID id);
+    void deleteByDoctorId(UUID id);
+    Page<DoctorScheduleTemplate> findByIsActiveTrue(Pageable pageable);
 }
