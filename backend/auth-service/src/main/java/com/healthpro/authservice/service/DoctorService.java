@@ -10,9 +10,12 @@ import com.healthpro.authservice.mapper.DoctorMapper;
 import com.healthpro.authservice.repository.DoctorRepository;
 import com.healthpro.authservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,9 +28,9 @@ public class DoctorService {
         this.userRepository = userRepository;
     }
 
-    public List<DoctorResponseDTO> getDoctors() {
-        List<Doctor> doctors = doctorRepository.findAll();
-        return doctors.stream().map(DoctorMapper::toDoctorResponseDTO).toList();
+    public Page<DoctorResponseDTO> getDoctors(Pageable pageable) {
+        Page<Doctor> doctors = doctorRepository.findAll(pageable);
+        return doctors.map(DoctorMapper::toDoctorResponseDTO);
     }
 
     public DoctorResponseDTO findByUserId(UUID id) {
@@ -46,7 +49,6 @@ public class DoctorService {
         return doctor.getId();
     }
 
-    @SuppressWarnings("DuplicatedCode")
     public void updateDoctor(UUID id, DoctorRequestDTO doctorRequestDTO) {
         Doctor doctor = doctorRepository.findByUser_Id(id).orElseThrow(
                 () -> new UserNotFoundException("User not found with this ID " + id));

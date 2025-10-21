@@ -15,4 +15,6 @@ public interface DoctorScheduleTemplateRepository extends JpaRepository<DoctorSc
     Optional<List<DoctorScheduleTemplate>> findByDoctorIdAndIsActiveTrue(UUID id);
 
     Page<DoctorScheduleTemplate> findByIsActiveTrue(Pageable pageable);
+//    void deleteByDoctorIdAndIsActiveTrue(UUID id);
+    void deleteByDoctorId(UUID id);
 }
