@@ -36,3 +36,21 @@ spring:
             filters:
               - StripPrefix=0
               - JwtValidation
+
+            # Route for /api/v1/doctor-available-slots/** to doctor-available-slots
+          - id: doctor-available-slots-service-route
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v1/doctor-available-slots/**
+            filters:
+              - StripPrefix=0
+              - JwtValidation
+
+            # Route for /api/v1/schedule-template/** to schedule-template
+          - id: schedule-template-service-route
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v1/schedule-template/**
+            filters:
+              - StripPrefix=0
+              - JwtValidation

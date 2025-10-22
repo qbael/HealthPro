@@ -64,4 +64,12 @@ public class ClinicController {
                         .status(HttpStatus.NOT_FOUND)
                         .body(ApiResponseDto.error(404, "Phòng khám không tồn tại hoặc không có chuyên khoa nào")));
     }
+
+    @PostMapping
+    @Operation(summary = "Tạo phòng khám mới")
+    public ResponseEntity<ApiResponseDto<Clinic>> createClinic(@RequestBody Clinic clinic) {
+        Clinic saved = clinicService.createClinic(clinic);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponseDto.success(saved, "Tạo phòng khám thành công"));
+    }
 }

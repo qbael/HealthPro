@@ -8,6 +8,7 @@ import com.healthpro.authservice.service.DoctorService;
 import com.healthpro.authservice.service.PatientService;
 import com.healthpro.authservice.utils.JwtUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,16 +21,18 @@ public class ProfileController {
     private final PatientService patientService;
     private final DoctorService doctorService;
     private final ClinicService clinicService;
+    private final JwtUtil jwtUtil;
 
-    @GetMapping("/{userId}")
+    @GetMapping
     public ResponseEntity<?> getProfile(
-            @PathVariable UUID userId,
-            @RequestParam String role
+            @RequestHeader("X-User-Id") UUID id,
+            @RequestHeader("X-User-Role") String role
     ) {
+
         return switch (role) {
-            case "PATIENT" -> ResponseEntity.ok().body(patientService.findByUserId(userId));
-            case "DOCTOR" -> ResponseEntity.ok().body(doctorService.findByUserId(userId));
-            case "CLINIC" -> ResponseEntity.ok().body(clinicService.findByUserId(userId));
+            case "PATIENT" -> ResponseEntity.ok().body(patientService.findByUserId(id));
+            case "DOCTOR" -> ResponseEntity.ok().body(doctorService.findByUserId(id));
+            case "CLINIC" -> ResponseEntity.ok().body(clinicService.findByUserId(id));
             default -> ResponseEntity.badRequest().body("Không tồn tại role");
         };
     }

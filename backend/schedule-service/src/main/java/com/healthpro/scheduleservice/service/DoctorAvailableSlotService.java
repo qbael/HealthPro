@@ -5,6 +5,7 @@ import com.healthpro.scheduleservice.entity.ClinicSpecialtyScheduleTemplate;
 import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
 import com.healthpro.scheduleservice.entity.enums.AppointmentType;
+import com.healthpro.scheduleservice.exception.ResourceNotFoundException;
 import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
 import com.healthpro.scheduleservice.repository.DoctorAvailableSlotRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -29,14 +32,15 @@ public class DoctorAvailableSlotService {
         this.clinicSpecialtyDoctorRepository = clinicSpecialtyDoctorRepository;
     }
 
-    public List<DoctorAvailableSlot> getAllSlot() {
-        return doctorAvailableSlotRepository.findAll();
+    public Optional<List<DoctorAvailableSlot>> getAllSlot(UUID userRoleId, AppointmentType appoinmentType) {
+        return Optional.ofNullable(doctorAvailableSlotRepository.findByDoctorIdAndAppointmentType(userRoleId, appoinmentType).orElseThrow(
+                () -> new ResourceNotFoundException("Slot not found")));
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
     public void deleteSlotBeforeToday() {
         try {
-            doctorAvailableSlotRepository.deleteByAppointmentDateBefore(LocalDate.now());
+            doctorAvailableSlotRepository.deleteByAppointmentDateBefore(LocalDate.now()); //mới thêm vào repo theo cái của ông
         } catch (RuntimeException e) {
             throw new RuntimeException("Lỗi khi xóa các khung giờ hẹn trước ngày hôm nay: " + e.getMessage());
         }

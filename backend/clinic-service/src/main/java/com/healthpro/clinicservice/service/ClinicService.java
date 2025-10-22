@@ -23,6 +23,10 @@ public class ClinicService {
         this.clinicSpecialtyRepository = clinicSpecialtyRepository;
     }
 
+    public Clinic createClinic(Clinic clinic) {
+        return clinicRepository.save(clinic);
+    }
+
     public Optional<Page<Clinic>> getClinics(Pageable pageable) {
         return Optional.of(clinicRepository.findAll(pageable));
     }

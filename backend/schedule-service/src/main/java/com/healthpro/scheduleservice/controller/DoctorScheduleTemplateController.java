@@ -1,46 +1,36 @@
 package com.healthpro.scheduleservice.controller;
 
 import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateRequestDTO;
+import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateResponseDTO;
 import com.healthpro.scheduleservice.service.DoctorScheduleTemplateService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/schedules")
+@RequestMapping("/api/v1/schedule-template")
 public class DoctorScheduleTemplateController {
     private final DoctorScheduleTemplateService doctorScheduleTemplateService;
 
-    @GetMapping("/calendar/{userId}")
-    public ResponseEntity<?> getDoctorCalendar(
-            @PathVariable UUID userId,
-            @RequestParam LocalDate weekStart
+    @GetMapping
+    public ResponseEntity<DoctorScheduleTemplateResponseDTO> getAllDoctorScheduleTemplates(
+            @RequestHeader("X-UserRole-Id") UUID userRoleId
     ) {
-        var calendar = doctorScheduleTemplateService.getWeeklyCalendar(userId, weekStart);
-        return ResponseEntity.ok(calendar);
+        DoctorScheduleTemplateResponseDTO template = doctorScheduleTemplateService
+                .getAllDoctorScheduleTemplates(userRoleId);
+        return ResponseEntity.ok().body(template);
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping()
     public ResponseEntity<?> createDoctorScheduleTemplate(
-            @PathVariable UUID userId,
+            @RequestHeader("X-UserRole-Id") UUID userRoleId,
             @RequestBody DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
     ) {
         doctorScheduleTemplateService.createDoctorScheduleTemplate(
-                userId, doctorScheduleTemplateRequestDTO);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{userId}")
-    public ResponseEntity<?> updateDoctorScheduleTemplate(
-            @PathVariable UUID userId,
-            @RequestBody DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
-    ) {
-        doctorScheduleTemplateService.updateDoctorScheduleTemplate(
-                userId, doctorScheduleTemplateRequestDTO);
+                userRoleId, doctorScheduleTemplateRequestDTO);
         return ResponseEntity.noContent().build();
     }
 

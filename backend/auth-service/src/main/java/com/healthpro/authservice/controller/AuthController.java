@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -97,16 +100,28 @@ public class AuthController {
 
     @Operation(summary = "Validate Token")
     @GetMapping("/validate")
-    public ResponseEntity<Void> validateToken(
-            @CookieValue(value = "jwt", required = false) String jwtCookie) {
-        if (jwtCookie == null || jwtCookie.isEmpty()) {
+    public ResponseEntity<?> validateToken(
+            @CookieValue(value = "jwt", required = false) String token) {
+        if (token == null || token.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        try {
-            jwtUtil.validateToken(jwtCookie);
+        UUID id = jwtUtil.extractId(token);
+        UUID userRoleId = jwtUtil.extractUserRoleId(token);
+        String email = jwtUtil.extractEmail(token);
+        String role = jwtUtil.extractRole(token);
 
-            return ResponseEntity.ok().build();
+        try {
+            jwtUtil.validateToken(token);
+
+            return  ResponseEntity.ok(Map.of(
+                    "valid", true,
+                    "id", id,
+                    "userRoleId", userRoleId,
+                    "email", email,
+                    "role", role
+            ));
+
         } catch (JwtException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
