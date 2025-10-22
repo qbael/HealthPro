@@ -105,7 +105,6 @@ const SchedulePage = ({ initialTemplate, initialSchedules } : any) => {
                     </div>
 
 
-
                     {/*<div className="grid grid-cols-7 text-center bg-white">*/}
                     {/*    {days.map((day, i) => (*/}
                     {/*        <div*/}
@@ -119,66 +118,7 @@ const SchedulePage = ({ initialTemplate, initialSchedules } : any) => {
                     {/*</div>*/}
 
                 <DoctorSchedule schedule={schedules} />
-
-                    <div className='flex gap-1 items-center mt-5'>
-                        <div className="bg-blue-500 w-[90%] h-[1px]"></div>
-                        <div className="text-right font-semibold py-2 px-4 text-sm">
-                            Đóng
-                        </div>
-                    </div>
-                {/*</div>*/}
             </section>
-
-            {/*<section className='relative top-10 mx-auto w-[90%] max-w-[800px]'>*/}
-            {/*    <div>*/}
-            {/*        <h1 className='text-4xl font-semibold mb-5'>Buổi sáng</h1>*/}
-            {/*        <div className='grid grid-cols-5 gap-3'>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center*/}
-            {/*            hover:cursor-pointer hover:text-white hover:bg-blue-400'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-
-            {/*    <div>*/}
-            {/*        <h1 className='text-4xl font-semibold mt-10 mb-5'>Buổi chiều</h1>*/}
-            {/*        <div className='grid grid-cols-5 gap-3'>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
-            {/*                06:00 - 07:00*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</section>*/}
         </main>
     );
 };

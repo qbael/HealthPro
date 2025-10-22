@@ -29,7 +29,7 @@ const DoctorSchedule = ({ schedule }: Props) => {
 
     const selectedSlots =
         schedule.find((s) => s.appointmentDate === selectedDate)?.slots || [];
-    
+
     const morningSlots = selectedSlots.filter(
         (s) => dayjs(s.startTime, "HH:mm:ss").hour() < 12
     );
@@ -54,44 +54,37 @@ const DoctorSchedule = ({ schedule }: Props) => {
                     </div>
                 ))}
             </div>
-
-            {/* Slot list */}
+            <div className='flex gap-1 items-center mt-5'>
+                <div className="bg-blue-500 w-[90%] h-[1px]"></div>
+                <div className=" hover:cursor-pointer text-right font-semibold py-2 px-4 text-sm" onClick={() => setSelectedDate(null)}>
+                    Đóng
+                </div>
+            </div>
             {selectedDate ? (
-                <div className="space-y-6">
-                    {/* Morning */}
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                            Buổi sáng
-                        </h3>
-                        {morningSlots.length > 0 ? (
-                            <div className="flex gap-2 flex-wrap">
-                                {morningSlots.map((s) => (
-                                    <div
-                                        key={s.id}
-                                        className="px-3 py-2 bg-green-100 text-green-800 rounded-lg text-sm font-medium"
-                                    >
-                                        {dayjs(s.startTime, "HH:mm:ss").format("HH:mm")} -{" "}
-                                        {dayjs(s.endTime, "HH:mm:ss").format("HH:mm")}
-                                    </div>
-                                ))}
+            <section className='relative top-10 mx-auto w-[90%] max-w-[800px]'>
+                <div>
+                    <h1 className='text-4xl font-semibold mb-5'>Buổi sáng</h1>
+                    <div className='grid grid-cols-5 gap-3'>
+                        {morningSlots.map((s) => (
+                            <div
+                                key={s.id}
+                                className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center
+                                hover:cursor-pointer hover:text-white hover:bg-blue-400'>
+                                {dayjs(s.startTime, "HH:mm:ss").format("HH:mm")} -{" "}
+                                {dayjs(s.endTime, "HH:mm:ss").format("HH:mm")}
                             </div>
-                        ) : (
-                            <p className="text-gray-500 text-sm">Không có lịch buổi sáng</p>
-                        )}
+                        ))}
                     </div>
+                </div>
 
-                    {/* Afternoon */}
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                            Buổi chiều
-                        </h3>
+                <div>
+                    <h1 className='text-4xl font-semibold mt-10 mb-5'>Buổi chiều</h1>
                         {afternoonSlots.length > 0 ? (
-                            <div className="flex gap-2 flex-wrap">
+                            <div className='grid grid-cols-5 gap-3'>
                                 {afternoonSlots.map((s) => (
                                     <div
                                         key={s.id}
-                                        className="px-3 py-2 bg-yellow-100 text-yellow-800 rounded-lg text-sm font-medium"
-                                    >
+                                        className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
                                         {dayjs(s.startTime).format("HH:mm")} -{" "}
                                         {dayjs(s.endTime).format("HH:mm")}
                                     </div>
@@ -100,8 +93,8 @@ const DoctorSchedule = ({ schedule }: Props) => {
                         ) : (
                             <p className="text-gray-500 text-sm">Không có lịch buổi chiều</p>
                         )}
-                    </div>
                 </div>
+            </section>
             ) : (
                 <p className="text-gray-500">Chọn ngày để xem lịch khám</p>
             )}
