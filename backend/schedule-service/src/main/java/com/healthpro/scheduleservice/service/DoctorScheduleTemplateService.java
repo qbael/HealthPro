@@ -1,9 +1,7 @@
 package com.healthpro.scheduleservice.service;
 
 import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateRequestDTO;
-import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateResponseDTO;
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
-import com.healthpro.scheduleservice.mapper.DoctorScheduleTemplateMapper;
 import com.healthpro.scheduleservice.repository.DoctorScheduleTemplateRepository;
 import lombok.AllArgsConstructor;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
