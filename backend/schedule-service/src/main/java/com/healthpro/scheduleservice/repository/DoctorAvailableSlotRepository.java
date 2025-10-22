@@ -14,5 +14,5 @@ import java.util.UUID;
 public interface DoctorAvailableSlotRepository extends JpaRepository<DoctorAvailableSlot, UUID> {
     void deleteByDoctorIdAndAppointmentDateBetween(UUID doctorId, LocalDate startDate, LocalDate endDate);
     void deleteByAppointmentDateBefore(LocalDate today);
-    Optional<List<DoctorAvailableSlot>> findByDoctorIdAndAppointmentType(UUID doctorId, AppointmentType appointmentType);
+    List<DoctorAvailableSlot> findByDoctorIdAndAppointmentType(UUID doctorId, AppointmentType appointmentType);
 }

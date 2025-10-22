@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import ScheduleForm from "@/components/doctor/ScheduleForm"
 import api from "@/lib/axios"
+import DoctorSchedule from "@/components/doctor/DoctorSchedule";
 
 const SchedulePage = ({ initialTemplate, initialSchedules } : any) => {
     const [schedules, setSchedules] = useState(initialSchedules)
@@ -19,6 +20,43 @@ const SchedulePage = ({ initialTemplate, initialSchedules } : any) => {
         const res = await api.get('v1/ok')
         setSchedules(res.data)
     }
+
+    const sampleData = [
+        {
+            appointmentDate: "2025-10-23",
+            slots: [
+                {
+                    id: "1",
+                    doctorId: "abc",
+                    clinicSpecialtyId: "xyz",
+                    startTime: "2025-10-23T08:00:00",
+                    endTime: "2025-10-23T09:00:00",
+                    appointmentType: "OFFLINE",
+                },
+                {
+                    id: "2",
+                    doctorId: "abc",
+                    clinicSpecialtyId: "xyz",
+                    startTime: "2025-10-23T14:00:00",
+                    endTime: "2025-10-23T15:00:00",
+                    appointmentType: "ONLINE",
+                },
+            ],
+        },
+        {
+            appointmentDate: "2025-10-24",
+            slots: [
+                {
+                    id: "3",
+                    doctorId: "abc",
+                    clinicSpecialtyId: "xyz",
+                    startTime: "2025-10-24T09:30:00",
+                    endTime: "2025-10-24T10:30:00",
+                    appointmentType: "OFFLINE",
+                },
+            ],
+        },
+    ];
 
     const days = [
         { label: "CN", color: "text-red-500" },
@@ -52,7 +90,9 @@ const SchedulePage = ({ initialTemplate, initialSchedules } : any) => {
                         </DialogContent>
                     </Dialog>
                 </div>
-                <div>
+
+
+                {/*<div>*/}
                     <div className="grid grid-cols-7 text-center bg-white">
                         {days.map((day, i) => (
                             <div
@@ -64,17 +104,21 @@ const SchedulePage = ({ initialTemplate, initialSchedules } : any) => {
                         ))}
                     </div>
 
-                    <div className="grid grid-cols-7 text-center bg-white">
-                        {days.map((day, i) => (
-                            <div
-                                key={i}
-                                className={`py-6 font-semibold border border-gray-200 border-t-0 bg-white ${day.color || "text-gray-700"}`}
-                            >
-                                <span className='p-2 rounded-md hover:cursor-pointer hover:text-white hover:bg-blue-400'>{day.label}</span>
 
-                            </div>
-                        ))}
-                    </div>
+
+                    {/*<div className="grid grid-cols-7 text-center bg-white">*/}
+                    {/*    {days.map((day, i) => (*/}
+                    {/*        <div*/}
+                    {/*            key={i}*/}
+                    {/*            className={`py-6 font-semibold border border-gray-200 border-t-0 bg-white ${day.color || "text-gray-700"}`}*/}
+                    {/*        >*/}
+                    {/*            <span className='p-2 rounded-md hover:cursor-pointer hover:text-white hover:bg-blue-400'>{day.label}</span>*/}
+
+                    {/*        </div>*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
+
+                <DoctorSchedule schedule={schedules} />
 
                     <div className='flex gap-1 items-center mt-5'>
                         <div className="bg-blue-500 w-[90%] h-[1px]"></div>
@@ -82,59 +126,59 @@ const SchedulePage = ({ initialTemplate, initialSchedules } : any) => {
                             Đóng
                         </div>
                     </div>
-                </div>
+                {/*</div>*/}
             </section>
 
-            <section className='relative top-10 mx-auto w-[90%] max-w-[800px]'>
-                <div>
-                    <h1 className='text-4xl font-semibold mb-5'>Buổi sáng</h1>
-                    <div className='grid grid-cols-5 gap-3'>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center
-                        hover:cursor-pointer hover:text-white hover:bg-blue-400'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                    </div>
-                </div>
+            {/*<section className='relative top-10 mx-auto w-[90%] max-w-[800px]'>*/}
+            {/*    <div>*/}
+            {/*        <h1 className='text-4xl font-semibold mb-5'>Buổi sáng</h1>*/}
+            {/*        <div className='grid grid-cols-5 gap-3'>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center*/}
+            {/*            hover:cursor-pointer hover:text-white hover:bg-blue-400'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
 
-                <div>
-                    <h1 className='text-4xl font-semibold mt-10 mb-5'>Buổi chiều</h1>
-                    <div className='grid grid-cols-5 gap-3'>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                        <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                            06:00 - 07:00
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/*    <div>*/}
+            {/*        <h1 className='text-4xl font-semibold mt-10 mb-5'>Buổi chiều</h1>*/}
+            {/*        <div className='grid grid-cols-5 gap-3'>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*            <div className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>*/}
+            {/*                06:00 - 07:00*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</section>*/}
         </main>
     );
 };

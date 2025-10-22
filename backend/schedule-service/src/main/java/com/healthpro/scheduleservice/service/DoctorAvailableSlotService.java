@@ -1,11 +1,13 @@
 package com.healthpro.scheduleservice.service;
 
+import com.healthpro.scheduleservice.dto.DoctorAvailableSlotDTO;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyDoctor;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyScheduleTemplate;
 import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
 import com.healthpro.scheduleservice.entity.enums.AppointmentType;
 import com.healthpro.scheduleservice.exception.ResourceNotFoundException;
+import com.healthpro.scheduleservice.mapper.DoctorAvailableSlotDTOMapper;
 import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
 import com.healthpro.scheduleservice.repository.DoctorAvailableSlotRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +34,9 @@ public class DoctorAvailableSlotService {
         this.clinicSpecialtyDoctorRepository = clinicSpecialtyDoctorRepository;
     }
 
-    public Optional<List<DoctorAvailableSlot>> getAllSlot(UUID userRoleId, AppointmentType appoinmentType) {
-        return Optional.ofNullable(doctorAvailableSlotRepository.findByDoctorIdAndAppointmentType(userRoleId, appoinmentType).orElseThrow(
-                () -> new ResourceNotFoundException("Slot not found")));
+    public List<DoctorAvailableSlotDTO> getAllSlot(UUID userRoleId, AppointmentType appoinmentType) {
+        List<DoctorAvailableSlot> doctorAvailableSlots = doctorAvailableSlotRepository.findByDoctorIdAndAppointmentType(userRoleId, appoinmentType);
+        return DoctorAvailableSlotDTOMapper.toDoctorAvailableSlotDTO(doctorAvailableSlots);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)

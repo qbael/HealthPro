@@ -1,5 +1,6 @@
 package com.healthpro.scheduleservice.controller;
 
+import com.healthpro.scheduleservice.dto.DoctorAvailableSlotDTO;
 import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
 import com.healthpro.scheduleservice.entity.enums.AppointmentType;
 import com.healthpro.scheduleservice.service.DoctorAvailableSlotService;
@@ -28,18 +29,14 @@ public class DoctorAvailableSlotController {
 //    }
 
     @GetMapping
-    public ResponseEntity<List<DoctorAvailableSlot>> getAllSlot(
+    public ResponseEntity<List<DoctorAvailableSlotDTO>> getAllSlot(
             @RequestHeader("X-UserRole-Id") UUID userRoleId,
             @RequestParam AppointmentType appointmentType
     ) {
         System.out.println(appointmentType);
-        Optional<List<DoctorAvailableSlot>> slots = doctorAvailableSlotService.getAllSlot(userRoleId, appointmentType);
+        List<DoctorAvailableSlotDTO> slots = doctorAvailableSlotService.getAllSlot(userRoleId, appointmentType);
 
-        if (slots.isEmpty() || slots.get().isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(slots.get());
+        return ResponseEntity.ok().body(slots);
     }
 
 }
