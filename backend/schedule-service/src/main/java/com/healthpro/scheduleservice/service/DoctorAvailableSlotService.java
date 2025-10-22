@@ -119,4 +119,9 @@ public class DoctorAvailableSlotService {
             }
         }
     }
+
+    public Optional<List<DoctorAvailableSlot>> getDoctorAvailableSlots(UUID doctorId) {
+//        return Optional.ofNullable(doctorAvailableSlotRepository.findAllDoctorAvailableDates(doctorId));
+        return Optional.ofNullable(doctorAvailableSlotRepository.findAllByDoctorId(doctorId));
+    }
 }

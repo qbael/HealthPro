@@ -1,26 +1,27 @@
-spring:
-  application:
-    name: auth-service
-
-  datasource:
-    url: jdbc:postgresql://localhost:5000/health_pro
-    username: root
-    password: password
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    defer-datasource-initialization: true
-
-  sql:
-    init:
-      mode: always
-jwt:
-  secret: VGhpcy1pcy1hLXNlY3JldC1rZXktZm9yLUpXVC0yNTYtYml0IQ==
-
+#spring:
+#  application:
+#    name: auth-service
+#
+#  datasource:
+#    url: jdbc:postgresql://localhost:5000/health_pro
+#    username: root
+#    password: password
+#    driver-class-name: org.postgresql.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#    defer-datasource-initialization: true
+#
+#  sql:
+#    init:
+#      mode: always
+#
+#jwt:
+#  secret: VGhpcy1pcy1hLXNlY3JldC1rZXktZm9yLUpXVC0yNTYtYml0IQ==
+#
 server:
   port: 8080
