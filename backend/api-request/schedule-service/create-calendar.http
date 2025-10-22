@@ -1,5 +1,5 @@
 ### GET request to example server
-POST http://localhost:8082/api/v1/schedules/0ea89ed0-5b11-4f9c-9c29-deb8f9ca2c41
+POST http://localhost:4004/api/v1/schedule-template
 Content-Type: application/json
 
 {

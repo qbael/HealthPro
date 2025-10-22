@@ -25,18 +25,9 @@ public class ProfileController {
 
     @GetMapping
     public ResponseEntity<?> getProfile(
-            @CookieValue(value = "jwt", required = false) String token
+            @RequestHeader("X-User-Id") UUID id,
+            @RequestHeader("X-User-Role") String role
     ) {
-        if (token == null || token.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        if (!jwtUtil.validateToken(token)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        UUID id = jwtUtil.extractId(token);
-        String role = jwtUtil.extractRole(token);
 
         return switch (role) {
             case "PATIENT" -> ResponseEntity.ok().body(patientService.findByUserId(id));

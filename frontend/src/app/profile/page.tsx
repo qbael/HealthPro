@@ -2,9 +2,9 @@ import { createServerApi } from '@/lib/axiosServer'
 import ProfileForm from "@/components/ProfileForm";
 
 const Page = async () => {
-    const api = createServerApi()
+    const api = await createServerApi()
     try {
-        const res = await api.get('/v1/profile')
+        const res = await api.get('v1/profile')
         const user = res.data
 
         return (
