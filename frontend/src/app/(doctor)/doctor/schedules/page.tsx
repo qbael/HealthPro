@@ -1,14 +1,18 @@
-import { createServerApi2 } from '@/lib/axiosServer'
+import { createServerApi } from '@/lib/axiosServer'
 import SchedulePage from "@/components/doctor/SchedulePage";
 
 const Page = async () => {
-    const api = createServerApi2()
+    const api = await createServerApi()
     try {
         const res = await api.get('/v1/doctor-available-slots?appointmentType=DOCTOR')
         const schedules = res.data
         console.log(schedules)
+
+        const res1 = await api.get('v1/schedule-template')
+        const template = res1.data
+
         return (
-            <SchedulePage initialSchedules={schedules} />
+            <SchedulePage initialTemplate={template} initialSchedules={schedules} />
         )
     }
     catch (error) {

@@ -8,11 +8,10 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@
 import {Checkbox} from "@/components/ui/checkbox"
 import {Label} from "@/components/ui/label"
 import {toast} from 'sonner'
-import api2 from '@/lib/axios'
+import api from '@/lib/axios'
 import * as React from "react"
 import {useEffect} from "react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {useAuth} from "@/contexts/AuthContext";
 
 const baseSchema = z.object({
     dayOfWeek: z
@@ -77,20 +76,17 @@ type DayType =
     | "SUNDAY"
 
 type ScheduleFormProps = {
-    schedule?: {
+    template?: {
         dayOfWeek: DayType[]
         fromTime: string
         toTime: string
         slotDuration: number
         doctor_id?: string
     }
-    mode?: 'create' | 'update'
     fetchSchedule: () => void
 }
 
-const ScheduleForm = ({ schedule, mode = 'create', fetchSchedule }: ScheduleFormProps) => {
-    const { user } = useAuth()
-
+const ScheduleForm = ({ template, fetchSchedule }: ScheduleFormProps) => {
     const days = [
         { value: "SUNDAY", label: "Chủ Nhật" },
         { value: "MONDAY", label: "Thứ Hai" },
@@ -116,7 +112,7 @@ const ScheduleForm = ({ schedule, mode = 'create', fetchSchedule }: ScheduleForm
 
     const form = useForm<z.infer<typeof baseSchema>>({
         resolver: zodResolver(baseSchema),
-        defaultValues: schedule ?? {
+        defaultValues: template ?? {
             dayOfWeek: [],
             fromTime: "",
             toTime: "",
@@ -125,8 +121,11 @@ const ScheduleForm = ({ schedule, mode = 'create', fetchSchedule }: ScheduleForm
     })
 
     useEffect(() => {
-        if (schedule)
-            form.reset(schedule)
+        if (template)
+            form.reset({
+                ...template,
+                dayOfWeek: template.dayOfWeek ?? [],
+            })
 
         else
             form.reset({
@@ -135,24 +134,26 @@ const ScheduleForm = ({ schedule, mode = 'create', fetchSchedule }: ScheduleForm
                 toTime: "",
                 slotDuration: undefined,
             })
-    }, [form, schedule])
+    }, [form, template])
 
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
         try {
-            await api2.post(`v1/schedules/${user?.userRoleId}`, values)
+            await api.post(`v1/schedule-template`, values)
+            console.log(values)
             // fetchSchedule()
-            toast.success(mode === 'update' ? 'Chỉnh sửa thành công.' : 'Tạo thành công.')
+            toast.success(template ? 'Chỉnh sửa thành công.' : 'Tạo thành công.')
             form.reset()
         }
         catch (err: any) {
             console.error(err)
-            toast.error(mode === 'update' ? 'Chỉnh sửa thất bại.' : 'Tạo thất bại.')
+            toast.error(template ? 'Chỉnh sửa thất bại.' : 'Tạo thất bại.')
         }
-
-        console.log(values)
     }
 
     const { isLoading } = form.formState
+
+    if (isLoading)
+        return <p>Loading...</p>
 
     return (
         <Form {...form}>
@@ -197,7 +198,7 @@ const ScheduleForm = ({ schedule, mode = 'create', fetchSchedule }: ScheduleForm
                                 <FormControl>
                                     <Select
                                         onValueChange={field.onChange}
-                                        value={field.value}
+                                        value={field.value || undefined}
                                     >
                                         <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Giờ Bắt Đầu" />
@@ -225,7 +226,7 @@ const ScheduleForm = ({ schedule, mode = 'create', fetchSchedule }: ScheduleForm
                                 <FormControl>
                                     <Select
                                         onValueChange={field.onChange}
-                                        value={field.value}
+                                        value={field.value || undefined}
                                     >
                                         <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Giờ Kết Thúc" />
@@ -273,7 +274,7 @@ const ScheduleForm = ({ schedule, mode = 'create', fetchSchedule }: ScheduleForm
                 />
 
                 <Button type="submit" className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
-                    {isLoading ? 'Đang xử lý...' : mode === 'update' ? 'Chỉnh sửa' : 'Đăng ký'}
+                    {isLoading ? 'Đang xử lý...' : template ? 'Chỉnh sửa' : 'Đăng ký'}
                 </Button>
             </form>
         </Form>

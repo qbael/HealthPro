@@ -3,9 +3,9 @@ POST http://localhost:4004/api/v1/auth/signup
 Content-Type: application/json
 
 {
-  "email": "mindang2@gmail.com",
+  "email": "mindang3@gmail.com",
   "phoneNumber": "0901234567",
-  "password": "mindang2",
+  "password": "mindang3",
   "role": "DOCTOR"
 }
 ###

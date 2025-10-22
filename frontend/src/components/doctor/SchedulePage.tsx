@@ -12,7 +12,7 @@ import {
 import ScheduleForm from "@/components/doctor/ScheduleForm"
 import api from "@/lib/axios"
 
-const SchedulePage = ({ initialSchedules } : any) => {
+const SchedulePage = ({ initialTemplate, initialSchedules } : any) => {
     const [schedules, setSchedules] = useState(initialSchedules)
 
     const fetchSchedule = async () => {
@@ -46,6 +46,7 @@ const SchedulePage = ({ initialSchedules } : any) => {
                                 <DialogTitle>Đăng Ký Lịch Làm</DialogTitle>
                             </DialogHeader>
                             <ScheduleForm
+                                template={initialTemplate}
                                 fetchSchedule={fetchSchedule}
                             />
                         </DialogContent>

@@ -21,26 +21,6 @@ public class JwtValidationGatewayFilterFactory extends
         this.webClient = webClientBuilder.baseUrl(authServiceUrl).build();
     }
 
-//    @Override
-//    public GatewayFilter apply(Object config) {
-//        return  (exchange, chain) -> {
-//            HttpCookie jwtCookie = exchange.getRequest().getCookies().getFirst("jwt");
-//
-//            if (jwtCookie == null) {
-//                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-//                return exchange.getResponse().setComplete();
-//            }
-//            String token = jwtCookie.getValue();
-//
-//            return webClient.get()
-//                    .uri("/api/v1/auth/validate")
-//                    .cookie("jwt", token)
-//                    .retrieve()
-//                    .toBodilessEntity()
-//                    .then(chain.filter(exchange));
-//        };
-//    }
-
     @Override
     public GatewayFilter apply(Object config) {
         return (exchange, chain) -> {
