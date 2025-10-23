@@ -6,7 +6,6 @@ const Page = async () => {
     try {
         const res = await api.get('/v1/doctor-available-slots?appointmentType=DOCTOR')
         const schedules = res.data
-        console.log(schedules)
 
         const res1 = await api.get('v1/schedule-template')
         const template = res1.data

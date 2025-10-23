@@ -5,6 +5,7 @@ import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateResponseDTO;
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
 import com.healthpro.scheduleservice.mapper.DoctorScheduleTemplateMapper;
 import com.healthpro.scheduleservice.repository.DoctorScheduleTemplateRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class DoctorScheduleTemplateService {
         return DoctorScheduleTemplateMapper.toDoctorScheduleTemplateResponseDTO(doctorScheduleTemplates);
     }
 
+    @Transactional
     public void createDoctorScheduleTemplate(
             UUID userRoleId, DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
     ) {

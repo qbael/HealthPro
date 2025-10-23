@@ -1,5 +1,4 @@
 ### GET request to example server
-GET http://localhost:8082/api/v1/schedules/calendar/
-    eb47d496-eb92-438a-a697-705a9a371b0?weekStart=2025-10-20
+GET http://localhost:4004/api/v1/doctor-available-slots?appointmentType=DOCTOR
 
 ###

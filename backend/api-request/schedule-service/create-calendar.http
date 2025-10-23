@@ -1,5 +1,5 @@
 ### GET request to example server
-POST http://localhost:4004/api/v1/schedule-template
+POST localhost:4004/api/v1/schedule-template
 Content-Type: application/json
 
 {

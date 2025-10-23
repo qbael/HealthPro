@@ -85,8 +85,8 @@ const DoctorSchedule = ({ schedule }: Props) => {
                                     <div
                                         key={s.id}
                                         className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center'>
-                                        {dayjs(s.startTime).format("HH:mm")} -{" "}
-                                        {dayjs(s.endTime).format("HH:mm")}
+                                        {dayjs(s.startTime, "HH:mm:ss").format("HH:mm")} -{" "}
+                                        {dayjs(s.endTime, "HH:mm:ss").format("HH:mm")}
                                     </div>
                                 ))}
                             </div>

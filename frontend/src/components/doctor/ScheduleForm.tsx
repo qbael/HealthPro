@@ -12,6 +12,7 @@ import api from '@/lib/axios'
 import * as React from "react"
 import {useEffect} from "react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import { useRouter } from 'next/navigation'
 
 const baseSchema = z.object({
     dayOfWeek: z
@@ -87,6 +88,8 @@ type ScheduleFormProps = {
 }
 
 const ScheduleForm = ({ template, fetchSchedule }: ScheduleFormProps) => {
+    const router = useRouter()
+
     const days = [
         { value: "SUNDAY", label: "Chủ Nhật" },
         { value: "MONDAY", label: "Thứ Hai" },
@@ -96,7 +99,6 @@ const ScheduleForm = ({ template, fetchSchedule }: ScheduleFormProps) => {
         { value: "FRIDAY", label: "Thứ Sáu" },
         { value: "SATURDAY", label: "Thứ Bảy" },
     ] as const;
-
     const hours = Array.from({ length: 10 }, (_, i) => {
         const h = i + 8;
         return h.toString().padStart(2, "0") + ":00";
@@ -137,16 +139,25 @@ const ScheduleForm = ({ template, fetchSchedule }: ScheduleFormProps) => {
     }, [form, template])
 
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
+        console.log(values)
         try {
             await api.post(`v1/schedule-template`, values)
             console.log(values)
-            // fetchSchedule()
-            toast.success(template ? 'Chỉnh sửa thành công.' : 'Tạo thành công.')
-            form.reset()
+            fetchSchedule()
+            toast.success(
+                Object.values(template ?? {}).every(v => v === null)
+                    ? 'Đăng ký thành công.'
+                    : 'Chỉnh sửa thành công.'
+            )
+            router.refresh()
         }
         catch (err: any) {
             console.error(err)
-            toast.error(template ? 'Chỉnh sửa thất bại.' : 'Tạo thất bại.')
+            toast.error(
+                Object.values(template ?? {}).every(v => v === null)
+                    ? 'Đăng ký thất bại.'
+                    : 'Chỉnh sửa thất bại.'
+            )
         }
     }
 
@@ -274,7 +285,10 @@ const ScheduleForm = ({ template, fetchSchedule }: ScheduleFormProps) => {
                 />
 
                 <Button type="submit" className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
-                    {isLoading ? 'Đang xử lý...' : template ? 'Chỉnh sửa' : 'Đăng ký'}
+                    {isLoading ? 'Đang xử lý...' :
+                        Object.values(template ?? {}).every(v => v === null)
+                            ? 'Đăng ký'
+                            : 'Chỉnh sửa'}
                 </Button>
             </form>
         </Form>
