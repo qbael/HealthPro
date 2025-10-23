@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import {ClinicsType} from "@/types/clinic-types";
-import {ClinicCard} from "@/components/ClinicCard";
+import {ClinicCard} from "@/components/cards/ClinicCard";
 import Link from "next/link";
 
 interface ClinicCarouselProps {

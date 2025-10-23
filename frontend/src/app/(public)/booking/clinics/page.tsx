@@ -2,7 +2,7 @@ import {CLINICS_API_URL} from "@/lib/utils";
 import {ResponseWithPaginationType} from "@/types/response";
 import {Pagination} from "@/components/ui/Pagination";
 import {ClinicsType} from "@/types/clinic-types";
-import {ClinicBookingCard} from "@/components/ClinicBookingCard";
+import {ClinicBookingCard} from "@/components/cards/ClinicBookingCard";
 
 export default async function ClinicListingPage({searchParams} : {searchParams: Promise<{page?: number; limit?: number; sortBy?: string; sortDir?: string} >}) {
     const {page = 0, limit = 10, sortBy = 'id', sortDir = 'acs'} = await searchParams;
