@@ -21,17 +21,27 @@ export function AddSpecialtyDialog({
   const [specialties, setSpecialties] = React.useState<Specialty[]>([])
   const [loading, setLoading] = React.useState(false)
 
-  React.useEffect(() => {
-    if (open) {
-      setLoading(true)
-      fetch('/api/specialties')
-        .then((res) => res.json())
-        .then((data) => setSpecialties(data))
-        .catch(() => toast.error('Không thể tải danh sách chuyên khoa'))
-        .finally(() => setLoading(false))
-    }
-  }, [open])
-
+ React.useEffect(() => {
+  if (open) {
+    setLoading(true)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}v1/specialties`)
+      .then((res) => {
+          if (!res.ok) {
+              throw new Error('Lỗi mạng hoặc server trả về status không thành công');
+          }
+          return res.json();
+      })
+      .then((data) => {
+          if (data && data.data) {
+              setSpecialties(data.data); 
+          } else {
+              throw new Error(data.message || 'Cấu trúc dữ liệu không hợp lệ');
+          }
+      })
+      .catch(() => toast.error('Không thể tải danh sách chuyên khoa'))
+      .finally(() => setLoading(false))
+  }
+}, [open])
   const handleSelect = (specialty: Specialty) => {
     onSelect(specialty)
     setOpen(false)

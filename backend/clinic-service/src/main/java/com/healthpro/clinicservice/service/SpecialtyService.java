@@ -15,4 +15,7 @@ public class SpecialtyService {
         this.specialtyRepository = specialtyRepository;
     }
 
+    public List<Specialty> getAllSpecialties() {
+        return specialtyRepository.findAll();
+    }
 }

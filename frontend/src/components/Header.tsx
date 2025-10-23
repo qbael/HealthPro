@@ -9,6 +9,7 @@ import {useAuthAction} from "@/hooks/useAuthAction"
 const Header = () => {
     const { user } = useAuth()
     const { logout } = useAuthAction()
+    console.log('Current User in Header:', user)
 
     return (
         <header className='fixed top-0 left-0 flex items-center justify-between w-full h-16 px-3 bg-white shadow-md z-20'>

@@ -16,42 +16,42 @@ const ClinicSpecialtyPage = () => {
   const [specialtyItems, setSpecialtyItems] = useState<ClinicSpecialty[]>([])
   const [loading, setLoading] = useState(false)
 
-  // 🧩 TRỰC TIẾP LẤY DANH SÁCH CHUYÊN KHOA (Gateway tự inject X-UserRole-Id)
+  // 🧩 1 CALL DUY NHẤT - GATEWAY TỰ XỬ LÝ!
   const fetchClinicSpecialties = async () => {
     try {
       setLoading(true)
       
-      // 🔥 KHÔNG cần clinicId! Gateway tự inject X-UserRole-Id từ JWT
-      const res = await fetch(`localhost:8081/api/v1/clinics/specialties`, {
+      // 🔥 GATEWAY: localhost:4004 → CLINIC: localhost:8081
+      //    TỰ inject X-UserRole-Id từ JWT cookie
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}v1/clinics/current/specialties`, {
         method: 'GET',
-        credentials: 'include', // Chỉ cần gửi cookie JWT
+        credentials: 'include',  // Chỉ cần gửi JWT cookie
       })
 
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: ${res.statusText}`)
-      }
+      console.log('📡 URL:', `${process.env.NEXT_PUBLIC_API_URL}v1/clinics/current/specialties`)
+      console.log('📡 Status:', res.status)
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
       const data = await res.json()
+      console.log('📡 Data:', data)
       
-      if (data.statusCode === 200 && Array.isArray(data.data)) {
-        setSpecialtyItems(data.data)
-        toast.success('Tải danh sách chuyên khoa thành công')
-      } else {
-        setSpecialtyItems([])
-        toast.info('Chưa có chuyên khoa nào')
+      if (data.statusCode === 200) {
+        setSpecialtyItems(data.data || [])
+        toast.success('Tải thành công')
       }
     } catch (err: any) {
       console.error('❌ Error:', err)
-      toast.error(err.message || 'Không thể tải chuyên khoa')
+      toast.error(err.message)
     } finally {
       setLoading(false)
     }
   }
 
-  // 🧩 THÊM CHUYÊN KHOA (Cũng không cần clinicId)
+  // 🧩 THÊM - CŨNG 1 CALL
   const handleAddSpecialty = async (specialty: any) => {
     try {
-      const res = await fetch(`localhost:8081/api/v1/clinics/specialties`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_GATEWAY_URL}clinics/specialties`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -63,11 +63,10 @@ const ClinicSpecialtyPage = () => {
       toast.success(`Đã thêm: ${specialty.name}`)
       fetchClinicSpecialties() // Refresh
     } catch (err: any) {
-      toast.error(err.message || 'Thêm thất bại')
+      toast.error(err.message)
     }
   }
 
-  // 🧩 LOAD NGAY KHI MOUNT - CHỈ 1 CALL!
   useEffect(() => {
     fetchClinicSpecialties()
   }, [])
