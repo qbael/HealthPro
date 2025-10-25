@@ -27,5 +27,5 @@ public interface DoctorAvailableSlotRepository extends JpaRepository<DoctorAvail
         """)
     List<LocalDate> findAllDoctorAvailableDates(@Param("doctorId") UUID doctorId);
 
-    List<DoctorAvailableSlot> findAllByDoctorId(UUID doctorId);
+    List<DoctorAvailableSlot> findAllByDoctorIdAndAppointmentType(UUID doctorId, AppointmentType appointmentType);
 }
