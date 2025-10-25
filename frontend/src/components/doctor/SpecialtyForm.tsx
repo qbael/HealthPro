@@ -50,23 +50,20 @@ const SpecialtyForm = ({ specialties } : any) => {
 
     const form = useForm<z.infer<typeof baseSchema>>({
         resolver: zodResolver(baseSchema),
-        defaultValues: specialties ?? {
-            specialty: []
+        defaultValues: {
+            specialty: specialties?.map((s: any) => s.specialtyId) ?? [],
         },
     })
 
     useEffect(() => {
-        if (specialties)
+        if (Array.isArray(specialties)) {
             form.reset({
-                ...specialties,
-                specialty: specialties.specialty ?? [],
-            })
-
-        else
-            form.reset({
-                specialty: [],
-            })
-    }, [form, specialties])
+                specialty: specialties.map((s: any) => s.specialtyId),
+            });
+        } else {
+            form.reset({ specialty: [] });
+        }
+    }, [form, specialties]);
 
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
         console.log(values)

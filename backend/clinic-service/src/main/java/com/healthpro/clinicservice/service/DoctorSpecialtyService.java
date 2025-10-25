@@ -1,12 +1,16 @@
 package com.healthpro.clinicservice.service;
 
-import com.healthpro.clinicservice.dto.ClinicResponseDTO;
-import com.healthpro.clinicservice.dto.ClinicSpecialtyRequestDTO;
 import com.healthpro.clinicservice.dto.DoctorResponseDTO;
 import com.healthpro.clinicservice.dto.DoctorSpecialtyRequestDTO;
-import com.healthpro.clinicservice.entity.*;
+import com.healthpro.clinicservice.dto.DoctorSpecialtyResponseDTO;
+import com.healthpro.clinicservice.entity.Doctor;
+import com.healthpro.clinicservice.entity.DoctorSpecialty;
+import com.healthpro.clinicservice.entity.Specialty;
 import com.healthpro.clinicservice.exception.ResourceNotFoundException;
-import com.healthpro.clinicservice.repository.*;
+import com.healthpro.clinicservice.mapper.DoctorSpecialtyDTOMapper;
+import com.healthpro.clinicservice.repository.DoctorRepository;
+import com.healthpro.clinicservice.repository.DoctorSpecialtyRepository;
+import com.healthpro.clinicservice.repository.SpecialtyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,14 +27,18 @@ public class DoctorSpecialtyService {
     private final DoctorRepository doctorRepository;
     private final WebClient webClient;
 
-    public List<DoctorSpecialty> getAllDoctorSpecialties(UUID doctorId) {
-        return doctorSpecialtyRepository.findAllByDoctor_Id(doctorId);
+    public List<DoctorSpecialtyResponseDTO> getAllDoctorSpecialties(UUID doctorId) {
+        List<DoctorSpecialty> doctorSpecialty = doctorSpecialtyRepository.findAllByDoctor_Id(doctorId);
+
+        return doctorSpecialty.stream().map(DoctorSpecialtyDTOMapper::toDTO).toList();
     }
 
     @Transactional
     public void createDoctorSpecialty(
             UUID doctorId, DoctorSpecialtyRequestDTO doctorSpecialtyRequestDTO
     ) {
+        doctorSpecialtyRepository.deleteByDoctorId(doctorId);
+
         DoctorResponseDTO doctorDTO = webClient.get()
                 .uri("http://localhost:8080/api/v1/doctors/{id}", doctorId)
                 .retrieve()

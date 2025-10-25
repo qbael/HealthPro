@@ -45,54 +45,29 @@ import {useRouter} from "next/navigation";
         { value: "850e8400-e29b-41d4-a716-446655440010", label: "Chỉnh hình" },
     ] as const;
 
-// type SpecialtyType =
-//     | { value: "850e8400-e29b-41d4-a716-446655440001", label: "Nội tổng quát" }
-//     | "Sản - Phụ khoa"
-//     | "Nhi khoa"
-//     | "Da liễu"
-//     | "Ngoại tổng hợp"
-//     | "Tim mạch"
-//     | "Tiêu hóa"
-//     | "Hô hấp"
-//     | "Thần kinh"
-//     | "Chỉnh hình"
-//
-// type SpecialtyFormProps = {
-//     specialties?: {
-//         specialty: SpecialtyType[]
-//     }
-//     fetchSpecialty: () => void
-// }
-
 const SpecialtyForm = ({ specialties } : any) => {
     const router = useRouter()
 
     const form = useForm<z.infer<typeof baseSchema>>({
         resolver: zodResolver(baseSchema),
-        defaultValues: specialties ?? {
-            specialty: []
+        defaultValues: {
+            specialty: specialties?.map((s: any) => s.specialtyId) ?? [],
         },
     })
 
     useEffect(() => {
-        if (specialties)
+        if (Array.isArray(specialties)) {
             form.reset({
-                ...specialties,
-                specialty: specialties.specialty ?? [],
-            })
-
-        else
-            form.reset({
-                specialty: [],
-            })
-    }, [form, specialties])
+                specialty: specialties.map((s: any) => s.specialtyId),
+            });
+        } else {
+            form.reset({ specialty: [] });
+        }
+    }, [form, specialties]);
 
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
-        console.log(values)
         try {
             await api.post(`v1/clinic-specialty`, values)
-            console.log(values)
-            // fetchSchedule()
             toast.success(
                 Object.values(specialties ?? {}).every(v => v === null)
                     ? 'Đăng ký thành công.'

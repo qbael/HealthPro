@@ -1,6 +1,7 @@
 package com.healthpro.clinicservice.controller;
 
 import com.healthpro.clinicservice.dto.DoctorSpecialtyRequestDTO;
+import com.healthpro.clinicservice.dto.DoctorSpecialtyResponseDTO;
 import com.healthpro.clinicservice.entity.ClinicSpecialty;
 import com.healthpro.clinicservice.entity.DoctorSpecialty;
 import com.healthpro.clinicservice.service.DoctorSpecialtyService;
@@ -18,10 +19,10 @@ public class DoctorSpecialtyController {
     private DoctorSpecialtyService doctorSpecialtyService;
 
     @GetMapping
-    public ResponseEntity<List<DoctorSpecialty>> getAllDoctorSpecialties(
+    public ResponseEntity<List<DoctorSpecialtyResponseDTO>> getAllDoctorSpecialties(
             @RequestHeader("X-UserRole-Id") UUID userRoleId
     ) {
-        List<DoctorSpecialty> template = doctorSpecialtyService
+        List<DoctorSpecialtyResponseDTO> template = doctorSpecialtyService
                 .getAllDoctorSpecialties(userRoleId);
         return ResponseEntity.ok(template);
     }

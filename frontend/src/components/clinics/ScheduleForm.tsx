@@ -12,7 +12,7 @@ import api from '@/lib/axios'
 import * as React from "react"
 import {useEffect} from "react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import { useRouter } from 'next/navigation'
+import {useRouter} from 'next/navigation'
 
 const baseSchema = z.object({
     dayOfWeek: z
@@ -45,48 +45,48 @@ const baseSchema = z.object({
 
 })
 
-.superRefine((data, ctx) => {
-    const toMinutes = (t: string) => {
-        const [h, m] = t.split(":").map(Number);
-        return h * 60 + m;
-    }
-
-    if (data.fromTime && data.toTime) {
-        if (toMinutes(data.fromTime) >= toMinutes(data.toTime)) {
-            ctx.addIssue({
-                path: ["fromTime"],
-                code: z.ZodIssueCode.custom,
-                message: "Giờ bắt đầu phải nhỏ hơn giờ kết thúc.",
-            });
-            ctx.addIssue({
-                path: ["toTime"],
-                code: z.ZodIssueCode.custom,
-                message: "Giờ kết thúc phải lớn hơn giờ bắt đầu.",
-            });
+    .superRefine((data, ctx) => {
+        const toMinutes = (t: string) => {
+            const [h, m] = t.split(":").map(Number);
+            return h * 60 + m;
         }
-    }
-})
 
-type DayType =
-    | "MONDAY"
-    | "TUESDAY"
-    | "WEDNESDAY"
-    | "THURSDAY"
-    | "FRIDAY"
-    | "SATURDAY"
-    | "SUNDAY"
+        if (data.fromTime && data.toTime) {
+            if (toMinutes(data.fromTime) >= toMinutes(data.toTime)) {
+                ctx.addIssue({
+                    path: ["fromTime"],
+                    code: z.ZodIssueCode.custom,
+                    message: "Giờ bắt đầu phải nhỏ hơn giờ kết thúc.",
+                });
+                ctx.addIssue({
+                    path: ["toTime"],
+                    code: z.ZodIssueCode.custom,
+                    message: "Giờ kết thúc phải lớn hơn giờ bắt đầu.",
+                });
+            }
+        }
+    })
 
-type ScheduleFormProps = {
-    template?: {
-        dayOfWeek: DayType[]
-        fromTime: string
-        toTime: string
-        slotDuration: number
-        doctor_id?: string
-    }
-}
+// type DayType =
+//     | "MONDAY"
+//     | "TUESDAY"
+//     | "WEDNESDAY"
+//     | "THURSDAY"
+//     | "FRIDAY"
+//     | "SATURDAY"
+//     | "SUNDAY"
+//
+// type ScheduleFormProps = {
+//     template?: {
+//         dayOfWeek: DayType[]
+//         fromTime: string
+//         toTime: string
+//         slotDuration: number
+//         doctor_id?: string
+//     }
+// }
 
-const ScheduleForm = ({ template } : ScheduleFormProps) => {
+const ScheduleForm = ({ template, clinicSpecialtyId } : any) => {
     const router = useRouter()
 
     const days = [
@@ -140,7 +140,7 @@ const ScheduleForm = ({ template } : ScheduleFormProps) => {
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
         console.log(values)
         try {
-            await api.post(`v1/doctor-schedule-template`, values)
+            await api.post(`v1/clinic-specialty-schedule-template/${clinicSpecialtyId}`, values)
 
             toast.success(
                 Object.values(template ?? {}).every(v => v === null)

@@ -1,0 +1,13 @@
+POST http://localhost:4004/api/v1/clinic-specialty-schedule-template
+    /850e8400-e29b-41d4-a716-446655440001
+Content-Type: application/json
+
+{
+  "dayOfWeek": [
+    "MONDAY", "TUESDAY", "WEDNESDAY","THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"
+  ],
+  "fromTime": "08:00",
+  "toTime": "12:00",
+  "slotDuration": 30
+}
+###

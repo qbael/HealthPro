@@ -10,13 +10,13 @@ interface Slot {
     id: string;
     doctorId: string;
     clinicSpecialtyId: string;
-    startTime: string; // ISO string
+    startTime: string;
     endTime: string;
     appointmentType: string;
 }
 
 interface SlotDay {
-    appointmentDate: string; // e.g., "2025-10-23"
+    appointmentDate: string;
     slots: Slot[];
 }
 
@@ -25,6 +25,16 @@ interface Props {
 }
 
 const DoctorSchedule = ({ schedule }: Props) => {
+    const days = [
+        { label: "CN", color: "text-red-500" },
+        { label: "Hai" },
+        { label: "Ba" },
+        { label: "Tư" },
+        { label: "Năm" },
+        { label: "Sáu" },
+        { label: "Bảy", color: "text-orange-500" },
+    ]
+
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
     const selectedSlots =
@@ -38,8 +48,19 @@ const DoctorSchedule = ({ schedule }: Props) => {
         (s) => dayjs(s.startTime, "HH:mm:ss").hour() >= 12
     );
 
-    return (
+
+    return schedule && schedule.length > 0 ? (
         <div>
+            <div className="grid grid-cols-7 text-center bg-white">
+                {days.map((day, i) => (
+                    <div
+                        key={i}
+                        className={`py-4 font-semibold border border-gray-200 bg-gray-50 ${day.color || "text-gray-700"}`}
+                    >
+                        {day.label}
+                    </div>
+                ))}
+            </div>
             <div className="grid grid-cols-7 text-center bg-white">
                 {schedule.map(s => (
                     <div
@@ -61,24 +82,24 @@ const DoctorSchedule = ({ schedule }: Props) => {
                 </div>
             </div>
             {selectedDate ? (
-            <section className='relative top-10 mx-auto w-[90%] max-w-[800px]'>
-                <div>
-                    <h1 className='text-4xl font-semibold mb-5'>Buổi sáng</h1>
-                    <div className='grid grid-cols-5 gap-3'>
-                        {morningSlots.map((s) => (
-                            <div
-                                key={s.id}
-                                className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center
+                <section className='relative top-10 mx-auto w-[90%] max-w-[800px]'>
+                    <div>
+                        <h1 className='text-4xl font-semibold mb-5'>Buổi sáng</h1>
+                        <div className='grid grid-cols-5 gap-3'>
+                            {morningSlots.map((s) => (
+                                <div
+                                    key={s.id}
+                                    className='border border-blue-300 rounded-xs p-3 font-semibold text-xl text-center
                                 hover:cursor-pointer hover:text-white hover:bg-blue-400'>
-                                {dayjs(s.startTime, "HH:mm:ss").format("HH:mm")} -{" "}
-                                {dayjs(s.endTime, "HH:mm:ss").format("HH:mm")}
-                            </div>
-                        ))}
+                                    {dayjs(s.startTime, "HH:mm:ss").format("HH:mm")} -{" "}
+                                    {dayjs(s.endTime, "HH:mm:ss").format("HH:mm")}
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div>
-                    <h1 className='text-4xl font-semibold mt-10 mb-5'>Buổi chiều</h1>
+                    <div>
+                        <h1 className='text-4xl font-semibold mt-10 mb-5'>Buổi chiều</h1>
                         {afternoonSlots.length > 0 ? (
                             <div className='grid grid-cols-5 gap-3'>
                                 {afternoonSlots.map((s) => (
@@ -93,13 +114,15 @@ const DoctorSchedule = ({ schedule }: Props) => {
                         ) : (
                             <p className="text-gray-500 text-sm">Không có lịch buổi chiều</p>
                         )}
-                </div>
-            </section>
+                    </div>
+                </section>
             ) : (
-                <p className="text-gray-500">Chọn ngày để xem lịch khám</p>
+                <p className="text-gray-500">Chọn ngày để xem lịch làm</p>
             )}
         </div>
-    );
+    ) : (
+        <div>Chưa đăng ký lịch làm</div>
+    )
 };
 
 export default DoctorSchedule;

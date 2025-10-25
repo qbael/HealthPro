@@ -2,7 +2,6 @@ package com.healthpro.clinicservice.controller;
 
 import com.healthpro.clinicservice.dto.ClinicSpecialtyRequestDTO;
 import com.healthpro.clinicservice.dto.ClinicSpecialtyResponseDTO;
-import com.healthpro.clinicservice.entity.ClinicSpecialty;
 import com.healthpro.clinicservice.service.ClinicSpecialtyService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +17,10 @@ public class ClinicSpecialtyController {
     private ClinicSpecialtyService clinicSpecialtyService;
 
     @GetMapping
-    public ResponseEntity<List<ClinicSpecialty>> getAllClinicSpecialties(
+    public ResponseEntity<List<ClinicSpecialtyResponseDTO>> getAllClinicSpecialties(
             @RequestHeader("X-UserRole-Id") UUID userRoleId
     ) {
-        List<ClinicSpecialty> template = clinicSpecialtyService
+        List<ClinicSpecialtyResponseDTO> template = clinicSpecialtyService
                 .getAllClinicSpecialties(userRoleId);
         return ResponseEntity.ok(template);
     }

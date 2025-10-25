@@ -1,5 +1,5 @@
 import React from 'react';
-import SpecialtyCard from "@/components/clinics/SpecialtyCard";
+import SpecialtyCard from "@/components/doctor/SpecialtyCard";
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import SpecialtyForm from "@/components/doctor/SpecialtyForm";
@@ -16,8 +16,8 @@ interface SpecialtyPageProps {
 const SpecialtyPage = ({ specialties } : SpecialtyPageProps) => {
     return (
         <main className='relative top-10 w-[90%] max-w-400 m-auto'>
-            <div className='flex gap-3 mb-5'>
-                <h1 className='text-3xl font-bold'>Chuyên Khoa</h1>
+            <div className='flex items-center justify-center gap-3 mb-5'>
+                <h1 className='text-3xl font-bold '>Chuyên Khoa</h1>
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>

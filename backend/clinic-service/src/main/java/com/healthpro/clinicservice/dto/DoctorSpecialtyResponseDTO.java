@@ -7,9 +7,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class ClinicSpecialtyResponseDTO {
+public class DoctorSpecialtyResponseDTO {
     private UUID id;
-    private UUID clinicId;
+    private UUID doctorId;
     private UUID specialtyId;
     private String specialtyName;
 }
