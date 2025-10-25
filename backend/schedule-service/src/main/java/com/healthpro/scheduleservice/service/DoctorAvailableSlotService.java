@@ -36,6 +36,8 @@ public class DoctorAvailableSlotService {
 
     public List<DoctorAvailableSlotDTO> getAllSlot(UUID userRoleId, AppointmentType appoinmentType) {
         List<DoctorAvailableSlot> doctorAvailableSlots = doctorAvailableSlotRepository.findByDoctorIdAndAppointmentType(userRoleId, appoinmentType);
+
+
         return DoctorAvailableSlotDTOMapper.toDoctorAvailableSlotDTO(doctorAvailableSlots);
     }
 

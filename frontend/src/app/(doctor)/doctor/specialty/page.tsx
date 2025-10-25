@@ -1,12 +1,12 @@
 import {createServerApi} from '@/lib/axiosServer'
-import SpecialtyPage from "@/components/clinics/SpecialtyPage";
+import SpecialtyPage from "@/components/doctor/SpecialtyPage";
 
 const Page = async () => {
     const api = await createServerApi()
     try {
-        const res = await api.get('/v1/clinic-specialty')
+        const res = await api.get('/v1/doctor-specialty')
         const specialties = res.data
-        console.log(specialties)
+
         return (
             <SpecialtyPage specialties={specialties} />
         )

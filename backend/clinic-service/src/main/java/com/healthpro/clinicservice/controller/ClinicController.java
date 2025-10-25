@@ -5,6 +5,7 @@ import com.healthpro.clinicservice.entity.Clinic;
 import com.healthpro.clinicservice.entity.ClinicSpecialty;
 import com.healthpro.clinicservice.service.ClinicService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,14 +18,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/clinics")
 public class ClinicController {
     public final ClinicService clinicService;
-
-    public ClinicController(ClinicService clinicService) {
-        this.clinicService = clinicService;
-    }
 
     @GetMapping
     public ResponseEntity<ApiResponseDto<Page<Clinic>>> getClinics(

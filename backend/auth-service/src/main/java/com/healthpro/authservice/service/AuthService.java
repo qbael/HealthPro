@@ -8,7 +8,6 @@ import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.exception.WrongPassWordException;
-import com.healthpro.authservice.repository.PatientRepository;
 import com.healthpro.authservice.utils.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

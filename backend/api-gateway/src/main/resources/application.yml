@@ -1,9 +1,92 @@
+#server:
+#  port: 4004 # Gateway listens on port 4004
+#
+#auth:
+#  service:
+#    url: http://auth-service:8080
+#
+#spring:
+#  cloud:
+#    gateway:
+#      server:
+#        webflux:
+#          routes:
+#            # Route for /api/v1/auth/** to auth-service
+#          - id: auth-service-route
+#            uri: http://auth-service:8080
+#            predicates:
+#              - Path=/api/v1/auth/**
+#
+#            # Route for /api/v1/users/** to users-service
+#          - id: user-service-route
+#            uri: http://auth-service:8080
+#            predicates:
+#              - Path=/api/v1/users/**
+#            filters:
+#              - JwtValidation
+#
+#            # Route for /api/v1/profile/** to users-service
+#          - id: profile-service-route
+#            uri: http://auth-service:8080
+#            predicates:
+#              - Path=/api/v1/profile/**
+#            filters:
+#              - JwtValidation
+#
+#            # Route for /api/v1/doctor-available-slots/** to doctor-available-slots
+#          - id: doctor-available-slots-service-route
+#            uri: http://schedule-service:8082
+#            predicates:
+#              - Path=/api/v1/doctor-available-slots/**
+#            filters:
+#              - JwtValidation
+#
+#            # Route for /api/v1/doctor-available-slots/** to doctor-available-slots
+#          - id: schedule-template-service-route
+#            uri: http://schedule-service:8082
+#            predicates:
+#              - Path=/api/v1/schedule-template/**
+#            filters:
+#              - JwtValidation
+#
+#            # Route for /api/v1/clinics/**
+#          - id: clinic-service-route
+#            uri: http://clinic-service:8081
+#            predicates:
+#            - Path=/api/v1/clinics/**
+#            filters:
+#            - JwtValidation
+#
+#            # Route for /api/v1/specialties/**
+#          - id: specialties-service-route
+#            uri: http://clinic-service:8081
+#            predicates:
+#              - Path=/api/v1/specialties/**
+#            filters:
+#              - JwtValidation
+#
+#            # Route for /api/v1/clinic-specialty/**
+#          - id: clinic-specialty-service-route
+#            uri: http://clinic-service:8081
+#            predicates:
+#              - Path=/api/v1/clinic-specialty
+#            filters:
+#              - JwtValidation
+
+#            # Route for /api/v1/doctor-specialty/**
+#          - id: doctor-specialty-service-route
+#            uri: clinic-service:8081
+#            predicates:
+#              - Path=/api/v1/doctor-specialty
+#            filters:
+#              - JwtValidation
+
 server:
   port: 4004 # Gateway listens on port 4004
 
 auth:
   service:
-    url: http://auth-service:8080
+    url: http://localhost:8080
 
 spring:
   cloud:
@@ -13,61 +96,78 @@ spring:
           routes:
             # Route for /api/v1/auth/** to auth-service
           - id: auth-service-route
-            uri: http://auth-service:8080
+            uri: http://localhost:8080
             predicates:
               - Path=/api/v1/auth/**
-            filters:
-              - StripPrefix=0
 
             # Route for /api/v1/users/** to users-service
           - id: user-service-route
-            uri: http://auth-service:8080
+            uri: http://localhost:8080
             predicates:
               - Path=/api/v1/users/**
             filters:
-              - StripPrefix=0
               - JwtValidation
 
             # Route for /api/v1/profile/** to users-service
           - id: profile-service-route
-            uri: http://auth-service:8080
+            uri: http://localhost:8080
             predicates:
               - Path=/api/v1/profile/**
             filters:
-              - StripPrefix=0
               - JwtValidation
 
             # Route for /api/v1/doctor-available-slots/** to doctor-available-slots
           - id: doctor-available-slots-service-route
-            uri: http://schedule-service:8082
+            uri: http://localhost:8082
             predicates:
               - Path=/api/v1/doctor-available-slots/**
             filters:
-              - StripPrefix=0
               - JwtValidation
 
-            # Route for /api/v1/schedule-template/** to schedule-template
+            # Route for /api/v1/doctor-available-slots/** to doctor-available-slots
           - id: schedule-template-service-route
             uri: http://localhost:8082
             predicates:
               - Path=/api/v1/schedule-template/**
             filters:
-              - StripPrefix=0
               - JwtValidation
 
-            # Route for /api/v1/clinics/** to clinic-service (Assumed to be on port 8081)
+            # Route for /api/v1/clinics/**
           - id: clinic-service-route
-            uri: http://localhost:8081 # Thay thế bằng cổng của Clinic Service (vd: 8081)
+            uri: http://localhost:8081
             predicates:
             - Path=/api/v1/clinics/**
             filters:
-            - StripPrefix=0
-            - JwtValidation # Quan trọng: Áp dụng Filter xác thực và inject Header
+            - JwtValidation
 
-            # Route for /api/v1/specialties/** to clinic-service (Assumed to be on port 8081)
-          - id: clinic-service-route
-            uri: http://localhost:8081 # Thay thế bằng cổng của Clinic Service (vd: 8081)
+            # Route for /api/v1/specialties/**
+          - id: specialties-service-route
+            uri: http://localhost:8081
             predicates:
               - Path=/api/v1/specialties/**
             filters:
-              - StripPrefix=0
+              - JwtValidation
+
+            # Route for /api/v1/clinic-specialty/**
+          - id: clinic-specialty-service-route
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/v1/clinic-specialty
+            filters:
+              - JwtValidation
+
+            # Route for /api/v1/doctor-specialty/**
+          - id: doctor-specialty-service-route
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/v1/doctor-specialty
+            filters:
+              - JwtValidation
+
+            # Route for /api/v1/doctor-specialty/**
+          - id: doctor-specialty-service-route
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/v1/doctor-specialty
+            filters:
+              - JwtValidation

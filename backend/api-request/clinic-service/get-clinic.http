@@ -1,1 +1,1 @@
-GET http://localhost:8081/api/v1/clinics/750e8400-e29b-41d4-a716-446655440031
+GET http://localhost:8080/api/v1/doctors/425d6f4c-05fe-4a1e-b85f-d535c81036e6

@@ -1,10 +1,14 @@
 package com.healthpro.authservice.service;
 
+import com.healthpro.authservice.dto.ClinicResponseWebClientDTO;
 import com.healthpro.authservice.dto.DoctorRequestDTO;
 import com.healthpro.authservice.dto.DoctorResponseDTO;
+import com.healthpro.authservice.dto.DoctorResponseWebClientDTO;
+import com.healthpro.authservice.entity.Clinic;
 import com.healthpro.authservice.entity.Doctor;
 import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
+import com.healthpro.authservice.exception.ResourceNotFoundException;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.mapper.DoctorMapper;
 import com.healthpro.authservice.repository.DoctorRepository;
@@ -14,8 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -69,5 +71,22 @@ public class DoctorService {
 
         userRepository.save(user);
         doctorRepository.save(doctor);
+    }
+
+    public DoctorResponseWebClientDTO getDoctorById(UUID id) {
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not found doctor"));
+
+        DoctorResponseWebClientDTO dto = new DoctorResponseWebClientDTO();
+
+        dto.setId(doctor.getId());
+        dto.setUserId(doctor.getUser().getId());
+        dto.setFullName(doctor.getFullName());
+        dto.setBio(doctor.getBio());
+        dto.setGender(doctor.getGender());
+        dto.setAddress(doctor.getAddress());
+        dto.setAvatarUrl(doctor.getAvatarUrl());
+
+        return dto;
     }
 }

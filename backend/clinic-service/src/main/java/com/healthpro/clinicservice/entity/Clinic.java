@@ -21,16 +21,15 @@ import java.util.UUID;
 public class Clinic {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
     @NotNull(message = "Id người dùng không được trống")
     @Column(name = "user_id", unique = true, nullable = false)
     private UUID userId;
 
-    @NotBlank(message = "Tên phòng khám không được trống")
     @Size(max = 255, message = "Tên phòng khám phải dưới 255 kí tự")
-    @Column(name = "clinic_name", nullable = false)
+    @Column(name = "clinic_name")
     private String clinicName;
 
     @Size(max = 255, message = "Địa chỉ phải dưới 255 kí tự")

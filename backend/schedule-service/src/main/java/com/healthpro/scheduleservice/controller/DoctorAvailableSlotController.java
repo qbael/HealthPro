@@ -5,6 +5,7 @@ import com.healthpro.scheduleservice.dto.ApiResponseDto;
 import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
 import com.healthpro.scheduleservice.entity.enums.AppointmentType;
 import com.healthpro.scheduleservice.service.DoctorAvailableSlotService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,23 +15,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@CrossOrigin("*")
+@AllArgsConstructor
 @RestController
-@RequestMapping("api/v1/doctor-available-slots")
+@RequestMapping("/api/v1/doctor-available-slots")
 public class DoctorAvailableSlotController {
     private final DoctorAvailableSlotService doctorAvailableSlotService;
-
-    public DoctorAvailableSlotController(DoctorAvailableSlotService doctorAvailableSlotService) {
-        this.doctorAvailableSlotService = doctorAvailableSlotService;
-    }
-
-//    @GetMapping
-//    public Optional<List<DoctorAvailableSlot>> getAllSlot(
-//            @RequestHeader("X-UserRole-Id") UUID userRoleId,
-//            @RequestParam AppointmentType appointmentType
-//    ) {
-//        return doctorAvailableSlotService.getAllSlot(userRoleId, appointmentType);
-//    }
 
     @GetMapping
     public ResponseEntity<List<DoctorAvailableSlotDTO>> getAllSlot(
