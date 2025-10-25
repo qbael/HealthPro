@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-public class DoctorScheduleTemplateResponseDTO {
+public class ClinicSpecialtyScheduleTemplateDTO {
     private DayOfWeek[] dayOfWeek;
     @JsonFormat(pattern = "HH:mm")
     private LocalTime fromTime;

@@ -6,12 +6,10 @@ import lombok.Setter;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.UUID;
 
 @Getter
 @Setter
-public class DoctorScheduleTemplateRequestDTO {
-    private UUID doctorId;
+public class DoctorScheduleTemplateDTO {
     private DayOfWeek[] dayOfWeek;
     @JsonFormat(pattern = "HH:mm")
     private LocalTime fromTime;

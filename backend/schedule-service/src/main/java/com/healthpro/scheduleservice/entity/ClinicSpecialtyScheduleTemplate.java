@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClinicSpecialtyScheduleTemplate {
+public class  ClinicSpecialtyScheduleTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

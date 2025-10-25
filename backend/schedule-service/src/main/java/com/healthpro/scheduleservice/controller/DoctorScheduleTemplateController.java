@@ -1,7 +1,6 @@
 package com.healthpro.scheduleservice.controller;
 
-import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateRequestDTO;
-import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateResponseDTO;
+import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateDTO;
 import com.healthpro.scheduleservice.service.DoctorScheduleTemplateService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +10,15 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/schedule-template")
+@RequestMapping("/api/v1/doctor-schedule-template")
 public class DoctorScheduleTemplateController {
     private final DoctorScheduleTemplateService doctorScheduleTemplateService;
 
     @GetMapping
-    public ResponseEntity<DoctorScheduleTemplateResponseDTO> getAllDoctorScheduleTemplates(
+    public ResponseEntity<DoctorScheduleTemplateDTO> getAllDoctorScheduleTemplates(
             @RequestHeader("X-UserRole-Id") UUID userRoleId
     ) {
-        DoctorScheduleTemplateResponseDTO template = doctorScheduleTemplateService
+        DoctorScheduleTemplateDTO template = doctorScheduleTemplateService
                 .getAllDoctorScheduleTemplates(userRoleId);
         return ResponseEntity.ok().body(template);
     }
@@ -27,10 +26,10 @@ public class DoctorScheduleTemplateController {
     @PostMapping()
     public ResponseEntity<?> createDoctorScheduleTemplate(
             @RequestHeader("X-UserRole-Id") UUID userRoleId,
-            @RequestBody DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
+            @RequestBody DoctorScheduleTemplateDTO doctorScheduleTemplateDTO
     ) {
         doctorScheduleTemplateService.createDoctorScheduleTemplate(
-                userRoleId, doctorScheduleTemplateRequestDTO);
+                userRoleId, doctorScheduleTemplateDTO);
         return ResponseEntity.noContent().build();
     }
 

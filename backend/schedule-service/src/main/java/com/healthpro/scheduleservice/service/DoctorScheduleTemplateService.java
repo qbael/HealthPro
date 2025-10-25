@@ -1,13 +1,13 @@
 package com.healthpro.scheduleservice.service;
 
-import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateRequestDTO;
+import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateDTO;
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
+import com.healthpro.scheduleservice.mapper.DoctorScheduleTemplateMapper;
 import com.healthpro.scheduleservice.repository.DoctorScheduleTemplateRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,28 +17,29 @@ public class DoctorScheduleTemplateService {
     private final DoctorScheduleTemplateRepository doctorScheduleTemplateRepository;
     private final ScheduleGenerationService scheduleGenerationService;
 
-    public DoctorScheduleTemplateResponseDTO getAllDoctorScheduleTemplates(UUID doctorId) {
+    public DoctorScheduleTemplateDTO getAllDoctorScheduleTemplates(UUID doctorId) {
         List<DoctorScheduleTemplate> doctorScheduleTemplates = doctorScheduleTemplateRepository.findByDoctorId(doctorId);
 
         if (doctorScheduleTemplates.isEmpty()) {
-            return new DoctorScheduleTemplateResponseDTO();
+            return new DoctorScheduleTemplateDTO();
         }
 
         return DoctorScheduleTemplateMapper.toDoctorScheduleTemplateResponseDTO(doctorScheduleTemplates);
     }
 
+    @Transactional
     public void createDoctorScheduleTemplate(
-            UUID userRoleId, DoctorScheduleTemplateRequestDTO doctorScheduleTemplateRequestDTO
+            UUID userRoleId, DoctorScheduleTemplateDTO doctorScheduleTemplateDTO
     ) {
         doctorScheduleTemplateRepository.deleteByDoctorId(userRoleId);
 
-        for (int i = 0; i < doctorScheduleTemplateRequestDTO.getDayOfWeek().length; i++) {
+        for (int i = 0; i < doctorScheduleTemplateDTO.getDayOfWeek().length; i++) {
             DoctorScheduleTemplate doctorScheduleTemplate = new DoctorScheduleTemplate();
             doctorScheduleTemplate.setDoctorId(userRoleId);
-            doctorScheduleTemplate.setDayOfWeek(doctorScheduleTemplateRequestDTO.getDayOfWeek()[i]);
-            doctorScheduleTemplate.setFromTime(doctorScheduleTemplateRequestDTO.getFromTime());
-            doctorScheduleTemplate.setToTime(doctorScheduleTemplateRequestDTO.getToTime());
-            doctorScheduleTemplate.setSlotDuration(doctorScheduleTemplateRequestDTO.getSlotDuration());
+            doctorScheduleTemplate.setDayOfWeek(doctorScheduleTemplateDTO.getDayOfWeek()[i]);
+            doctorScheduleTemplate.setFromTime(doctorScheduleTemplateDTO.getFromTime());
+            doctorScheduleTemplate.setToTime(doctorScheduleTemplateDTO.getToTime());
+            doctorScheduleTemplate.setSlotDuration(doctorScheduleTemplateDTO.getSlotDuration());
             doctorScheduleTemplateRepository.save(doctorScheduleTemplate);
         }
 

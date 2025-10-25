@@ -1,7 +1,9 @@
 package com.healthpro.authservice.controller;
 
 import com.healthpro.authservice.dto.ApiResponseDTO;
+import com.healthpro.authservice.dto.ClinicResponseWebClientDTO;
 import com.healthpro.authservice.dto.DoctorResponseDTO;
+import com.healthpro.authservice.dto.DoctorResponseWebClientDTO;
 import com.healthpro.authservice.service.DoctorService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
@@ -11,10 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
@@ -44,6 +45,11 @@ public class DoctorController {
         return ResponseEntity.ok(
                 ApiResponseDTO.success(doctors, "Lấy danh sách bác sĩ thành công")
         );
+    }
+
+    @GetMapping("/{id}")
+    public DoctorResponseWebClientDTO getClinicById(@PathVariable UUID id) {
+        return doctorService.getDoctorById(id);
     }
 
 //    @PostMapping
