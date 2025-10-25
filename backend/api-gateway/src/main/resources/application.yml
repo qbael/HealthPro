@@ -54,3 +54,20 @@ spring:
             filters:
               - StripPrefix=0
               - JwtValidation
+
+            # Route for /api/v1/clinics/** to clinic-service (Assumed to be on port 8081)
+          - id: clinic-service-route
+            uri: http://localhost:8081 # Thay thế bằng cổng của Clinic Service (vd: 8081)
+            predicates:
+            - Path=/api/v1/clinics/**
+            filters:
+            - StripPrefix=0
+            - JwtValidation # Quan trọng: Áp dụng Filter xác thực và inject Header
+
+            # Route for /api/v1/specialties/** to clinic-service (Assumed to be on port 8081)
+          - id: clinic-service-route
+            uri: http://localhost:8081 # Thay thế bằng cổng của Clinic Service (vd: 8081)
+            predicates:
+              - Path=/api/v1/specialties/**
+            filters:
+              - StripPrefix=0

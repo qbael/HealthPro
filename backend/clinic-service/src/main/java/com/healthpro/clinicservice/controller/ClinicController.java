@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,4 +65,18 @@ public class ClinicController {
                         .status(HttpStatus.NOT_FOUND)
                         .body(ApiResponseDto.error(404, "Phòng khám không tồn tại hoặc không có chuyên khoa nào")));
     }
+
+    @GetMapping("/current/specialties")  // ← /api/v1/clinics/current/specialties
+    @Operation(summary = "Get specialties of CURRENT clinic")
+    public ResponseEntity<ApiResponseDto<List<ClinicSpecialty>>> getCurrentClinicSpecialties(
+            @RequestHeader("X-UserRole-Id") String clinicId  // ← GATEWAY TỰ INJECT!
+    ) {
+        Optional<List<ClinicSpecialty>> specialties = clinicService.getSpecialtiesByClinicId(clinicId);
+        return specialties.map(value -> ResponseEntity.ok().body(
+                        ApiResponseDto.success(value, "Lấy danh sách chuyên khoa thành công")))
+                .orElseGet(() -> ResponseEntity.ok().body(
+                        ApiResponseDto.success(Collections.emptyList(), "Chưa có chuyên khoa nào")));
+    }
+
+
 }

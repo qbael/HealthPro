@@ -35,4 +35,5 @@ public class DoctorService {
     public Optional<List<DoctorSpecialty>> getSpecialtiesByDoctorId(String id) {
         return Optional.ofNullable(doctorSpecialtyRepository.findAllByDoctor_Id(UUID.fromString(id)));
     }
+
 }

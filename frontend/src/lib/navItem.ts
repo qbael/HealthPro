@@ -25,3 +25,9 @@ export const clinicNav: NavItem[] = [
     { label: 'Lịch Làm', href: '/schedule', icon: 'Calendar' },
     { label: 'Chuyên Khoa', href: '/specialty', icon: 'BriefcaseMedical' },
 ]
+
+export const specialtiesNav: NavItem[] = [
+    { label: 'Thêm chuyên khoa', href: '/specialty/add', icon: 'PersonStanding' },
+    { label: 'Mời bác sĩ', href: '/specialty/invite', icon: 'Calendar' },
+    
+]
