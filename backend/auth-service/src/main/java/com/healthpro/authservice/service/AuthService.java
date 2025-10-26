@@ -35,6 +35,7 @@ public class AuthService {
         }
 
         String hashedPassword = passwordEncoder.encode(signupRequestDTO.getPassword());
+        System.out.println("hashed password: " + hashedPassword);
         User user = new User();
         user.setEmail(signupRequestDTO.getEmail());
         user.setPhoneNumber(signupRequestDTO.getPhoneNumber());

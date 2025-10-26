@@ -1,6 +1,6 @@
 package com.healthpro.clinicservice.controller;
 
-import com.healthpro.clinicservice.dto.ApiResponseDto;
+import com.healthpro.clinicservice.dto.ApiResponseDTO;
 import com.healthpro.clinicservice.entity.Doctor;
 import com.healthpro.clinicservice.entity.DoctorSpecialty;
 import com.healthpro.clinicservice.service.DoctorService;
@@ -28,7 +28,7 @@ public class DoctorController {
 
     @GetMapping
     @Operation(summary = "Get doctors with pagination and sorting")
-    public ResponseEntity<ApiResponseDto<Page<Doctor>>> getDoctors(
+    public ResponseEntity<ApiResponseDTO<Page<Doctor>>> getDoctors(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "12") Integer limit,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
@@ -39,31 +39,31 @@ public class DoctorController {
         ));
         Optional<Page<Doctor>> doctors = doctorService.getDoctors(pageable);
         return doctors.map(doctorList -> ResponseEntity.ok().body(
-                        ApiResponseDto.success(doctorList, "Lấy danh sách bác sĩ thành công")))
+                        ApiResponseDTO.success(doctorList, "Lấy danh sách bác sĩ thành công")))
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
-                        .body(ApiResponseDto.error(404, "Lấy danh sách bác sĩ thất bại")));
+                        .body(ApiResponseDTO.error(404, "Lấy danh sách bác sĩ thất bại")));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get doctor by id")
-    public ResponseEntity<ApiResponseDto<Doctor>> getDoctorById(@PathVariable String id) {
+    public ResponseEntity<ApiResponseDTO<Doctor>> getDoctorById(@PathVariable String id) {
         Optional<Doctor> doctor = doctorService.getDoctorById(id);
         return doctor.map(value -> ResponseEntity.ok().body(
-                        ApiResponseDto.success(value, "Lấy thông tin bác sĩ thành công")))
+                        ApiResponseDTO.success(value, "Lấy thông tin bác sĩ thành công")))
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
-                        .body(ApiResponseDto.error(404, "Bác sĩ không tồn tại")));
+                        .body(ApiResponseDTO.error(404, "Bác sĩ không tồn tại")));
     }
 
     @GetMapping("/{id}/specialties")
     @Operation(summary = "Get specialties by doctor id")
-    public ResponseEntity<ApiResponseDto<List<DoctorSpecialty>>> getSpecialtiesByClinicId(@PathVariable String id) {
+    public ResponseEntity<ApiResponseDTO<List<DoctorSpecialty>>> getSpecialtiesByClinicId(@PathVariable String id) {
         Optional<List<DoctorSpecialty>> specialties = doctorService.getSpecialtiesByDoctorId(id);
         return specialties.map(value -> ResponseEntity.ok().body(
-                        ApiResponseDto.success(value, "Lấy danh sách chuyên khoa của bác sĩ thành công")))
+                        ApiResponseDTO.success(value, "Lấy danh sách chuyên khoa của bác sĩ thành công")))
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
-                        .body(ApiResponseDto.error(404, "Lấy danh sách chuyên khoa của bác sĩ thất bại")));
+                        .body(ApiResponseDTO.error(404, "Lấy danh sách chuyên khoa của bác sĩ thất bại")));
     }
 }

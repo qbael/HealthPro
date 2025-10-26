@@ -77,7 +77,7 @@
 #          - id: clinic-specialty-service-route
 #            uri: http://clinic-service:8081
 #            predicates:
-#              - Path=/api/v1/clinic-specialty
+#              - Path=/api/v1/clinic-specialty/**
 #            filters:
 #              - JwtValidation
 
@@ -85,7 +85,23 @@
 #          - id: doctor-specialty-service-route
 #            uri: clinic-service:8081
 #            predicates:
-#              - Path=/api/v1/doctor-specialty
+#              - Path=/api/v1/doctor-specialty/**
+#            filters:
+#              - JwtValidation
+
+#            # Route for /api/v1/doctors/**
+#          - id: doctors-service-route
+#            uri: clinic-service:8081
+#            predicates:
+#              - Path=/api/v1/doctors/**
+#            filters:
+#              - JwtValidation
+
+#            # Route for /api/v1/clinic-invitation/**
+#          - id: clinic-invitation-service-route
+#            uri: clinic-invitation-service:8081
+#            predicates:
+#              - Path=/api/v1/clinic-invitation/**
 #            filters:
 #              - JwtValidation
 
@@ -168,7 +184,7 @@ spring:
           - id: clinic-specialty-service-route
             uri: http://localhost:8081
             predicates:
-              - Path=/api/v1/clinic-specialty
+              - Path=/api/v1/clinic-specialty/**
             filters:
               - JwtValidation
 
@@ -176,14 +192,22 @@ spring:
           - id: doctor-specialty-service-route
             uri: http://localhost:8081
             predicates:
-              - Path=/api/v1/doctor-specialty
+              - Path=/api/v1/doctor-specialty/**
             filters:
               - JwtValidation
 
-            # Route for /api/v1/doctor-specialty/**
-          - id: doctor-specialty-service-route
+            # Route for /api/v1/doctors/**
+          - id: doctors-service-route
             uri: http://localhost:8081
             predicates:
-              - Path=/api/v1/doctor-specialty
+              - Path=/api/v1/doctors/**
+            filters:
+              - JwtValidation
+
+            # Route for /api/v1/clinic-invitation/**
+          - id: clinic-invitation-service-route
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/v1/clinic-invitation/**
             filters:
               - JwtValidation
