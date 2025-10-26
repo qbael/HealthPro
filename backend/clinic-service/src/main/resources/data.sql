@@ -27,6 +27,9 @@ VALUES ('750e8400-e29b-41d4-a716-446655440011', '650e8400-e29b-41d4-a716-4466554
         false, '89 Võ Văn Tần, Quận 3, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440015', '650e8400-e29b-41d4-a716-446655440015', 'BS. Hoàng Văn Tuấn',
         'Bác sĩ chuyên khoa Ngoại tổng hợp với 20 năm kinh nghiệm. Chuyên phẫu thuật nội soi và các ca phẫu thuật về ổ bụng.',
+        true, '123 Trần Hưng Đạo, Quận 5, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop'),
+       ('750e8400-e29b-41d4-a716-446655440016', '650e8400-e29b-41d4-a716-446655440016', 'BS. Trần Minh Đăng 2',
+        'Bác sĩ chuyên khoa Ngoại tổng hợp với 20 năm kinh nghiệm. Chuyên phẫu thuật nội soi và các ca phẫu thuật về ổ bụng.',
         true, '123 Trần Hưng Đạo, Quận 5, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop');
 
 -- Insert Clinics (matching user_ids from auth-service)
@@ -41,6 +44,10 @@ VALUES ('750e8400-e29b-41d4-a716-446655440031', '650e8400-e29b-41d4-a716-4466554
         '08:00', '20:00', '08:00', '17:00', 'https://res.cloudinary.com/dwkjsecri/image/upload/v1760282444/jwzn0b5e3amdapletedu.jpg', 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=400&h=250&fit=crop'),
        ('750e8400-e29b-41d4-a716-446655440033', '650e8400-e29b-41d4-a716-446655440033',
         'Trung tâm Y tế Medical Center', '789 Nguyễn Thị Minh Khai, Quận 3, TP.HCM',
+        'Trung tâm y tế hiện đại với trang thiết bị tiên tiến. Cung cấp dịch vụ khám chữa bệnh, xét nghiệm và chẩn đoán hình ảnh chất lượng cao.',
+        '08:00', '18:00', '08:00', '18:00','https://res.cloudinary.com/dwkjsecri/image/upload/v1760283326/ggm2hmwvz358ww0ub7ek.jpg', 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&h=250&fit=crop'),
+       ('750e8400-e29b-41d4-a716-446655440034', '650e8400-e29b-41d4-a716-446655440034', 'Trung tâm Y tế Trần Minh Đăng 3',
+        '789 Nguyễn Thị Minh Khai, Quận 3, TP.HCM',
         'Trung tâm y tế hiện đại với trang thiết bị tiên tiến. Cung cấp dịch vụ khám chữa bệnh, xét nghiệm và chẩn đoán hình ảnh chất lượng cao.',
         '08:00', '18:00', '08:00', '18:00','https://res.cloudinary.com/dwkjsecri/image/upload/v1760283326/ggm2hmwvz358ww0ub7ek.jpg', 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&h=250&fit=crop');
 
@@ -65,6 +72,9 @@ VALUES
  '850e8400-e29b-41d4-a716-446655440004'),
 -- BS. Hoàng Văn Tuấn - Ngoại tổng hợp
 ('950e8400-e29b-41d4-a716-446655440007', '750e8400-e29b-41d4-a716-446655440015',
+ '850e8400-e29b-41d4-a716-446655440005'),
+    -- BS. Trần Minh Đăng 2 - Ngoại tổng hợp
+('950e8400-e29b-41d4-a716-446655440008', '750e8400-e29b-41d4-a716-446655440016',
  '850e8400-e29b-41d4-a716-446655440005');
 
 -- Insert Clinic Specialties (Chuyên khoa mà phòng khám cung cấp)
@@ -98,7 +108,28 @@ VALUES
 ('a50e8400-e29b-41d4-a716-446655440022', '750e8400-e29b-41d4-a716-446655440033',
  '850e8400-e29b-41d4-a716-446655440007'),
 ('a50e8400-e29b-41d4-a716-446655440023', '750e8400-e29b-41d4-a716-446655440033',
- '850e8400-e29b-41d4-a716-446655440009');
+ '850e8400-e29b-41d4-a716-446655440009'),
+-- Bệnh viện Trần Minh Đăng 3 - Có đầy đủ các chuyên khoa
+('a50e8400-e29b-41d4-a716-446655440024', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440001'),
+('a50e8400-e29b-41d4-a716-446655440025', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440002'),
+('a50e8400-e29b-41d4-a716-446655440026', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440003'),
+('a50e8400-e29b-41d4-a716-446655440027', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440004'),
+('a50e8400-e29b-41d4-a716-446655440028', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440005'),
+('a50e8400-e29b-41d4-a716-446655440029', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440006'),
+('a50e8400-e29b-41d4-a716-446655440030', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440007'),
+('a50e8400-e29b-41d4-a716-446655440031', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440008'),
+('a50e8400-e29b-41d4-a716-446655440032', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440009'),
+('a50e8400-e29b-41d4-a716-446655440033', '750e8400-e29b-41d4-a716-446655440034',
+ '850e8400-e29b-41d4-a716-446655440010');
 
 -- Insert Clinic Invitations (Lời mời từ phòng khám đến bác sĩ)
 INSERT INTO clinic_invitations (id, clinic_specialty_id, doctor_id, status, invited_at, responded_at, title)

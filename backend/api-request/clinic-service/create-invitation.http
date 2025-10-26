@@ -1,0 +1,10 @@
+### GET request to example server
+POST localhost:4004/api/v1/clinic-invitation
+Content-Type: application/json
+
+{
+  "specialtyId": "850e8400-e29b-41d4-a716-446655440001",
+  "doctorId": "750e8400-e29b-41d4-a716-446655440011"
+}
+
+###

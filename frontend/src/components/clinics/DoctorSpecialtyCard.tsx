@@ -1,13 +1,13 @@
-import React from 'react';
 import Image from "next/image";
 import {MapPin} from "lucide-react";
 import Link from "next/link";
+import InviteButton from "@/components/clinics/InviteButton";
 
-const DoctorSpecialtyCard = ({ doctor, specialtyId } : any) => {
+const DoctorSpecialtyCard = async ({ doctor, specialtyId } : any) => {
     const specialties = doctor.doctorSpecialties
         .map((ds: { specialty: { name: any; }; }) => ds.specialty.name)
         .join(" • ");
-    console.log(doctor)
+
     return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-3 max-w-3xl">
             <div className="flex gap-4 items-center">
@@ -40,9 +40,7 @@ const DoctorSpecialtyCard = ({ doctor, specialtyId } : any) => {
                     </button>
                 </Link>
 
-                <button className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
-                    Mời vào chuyên khoa
-                </button>
+                <InviteButton specialtyId={specialtyId} doctorId={doctor.id} />
             </div>
         </div>
     );

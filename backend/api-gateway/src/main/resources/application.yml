@@ -97,6 +97,14 @@
 #            filters:
 #              - JwtValidation
 
+#            # Route for /api/v1/clinic-invitation/**
+#          - id: clinic-invitation-service-route
+#            uri: clinic-invitation-service:8081
+#            predicates:
+#              - Path=/api/v1/clinic-invitation/**
+#            filters:
+#              - JwtValidation
+
 server:
   port: 4004 # Gateway listens on port 4004
 
@@ -193,5 +201,13 @@ spring:
             uri: http://localhost:8081
             predicates:
               - Path=/api/v1/doctors/**
+            filters:
+              - JwtValidation
+
+            # Route for /api/v1/clinic-invitation/**
+          - id: clinic-invitation-service-route
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/v1/clinic-invitation/**
             filters:
               - JwtValidation

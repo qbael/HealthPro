@@ -14,10 +14,10 @@ import api from "@/lib/axios";
 import {toast} from "sonner";
 import {Textarea} from "@/components/ui/textarea"
 import {Calendar} from "@/components/ui/calendar"
-import { cn } from '@/lib/utils'
-import { CalendarIcon } from "lucide-react"
-import { format } from "date-fns"
-import { vi } from "date-fns/locale"
+import {cn} from '@/lib/utils'
+import {CalendarIcon} from "lucide-react"
+import {format} from "date-fns"
+import {vi} from "date-fns/locale"
 import Image from 'next/image'
 import {Loading} from '@/components/ui/Loading'
 
@@ -190,8 +190,8 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
     const [loading, setLoading] = useState(false)
     const [avatarPreview, setAvatarPreview] = useState<string | null>(user.avatarUrl || null)
     const [logoPreview, setLogoPreview] = useState<string | null>(user.logoUrl || null)
-
-    const hours = Array.from({ length: 10 }, (_, i) => {
+    console.log(user.weekdayCloseHour)
+    const hours = Array.from({ length: 11 }, (_, i) => {
         const h = i + 8;
         return h.toString().padStart(2, "0") + ":00";
     })

@@ -26,13 +26,11 @@ const Page = async ({ params, searchParams }: PageProps) => {
 
     const res1 = await api
         .get(`v1/doctor-specialty/${specialtyId}${queryParams ? `?${queryParams}` : ""}`)
-    console.log(res1)
+
     const doctors = res1?.data?.data?.content;
     const totalPages = res1?.data?.data?.totalPages;
     const currentPage = res1?.data?.data?.pageable?.pageNumber;
-    console.log(doctors)
-    console.log(totalPages)
-    console.log(currentPage)
+
     return (
         <main>
             <section className='relative top-5 mx-auto w-[90%] max-w-[900px]'>
