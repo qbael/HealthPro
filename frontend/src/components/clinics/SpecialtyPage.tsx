@@ -16,7 +16,7 @@ interface SpecialtyPageProps {
 const SpecialtyPage = ({ specialties } : SpecialtyPageProps) => {
     return (
         <main className='relative top-10 w-[90%] max-w-400 m-auto'>
-            <div className='flex items-center justify-center gap-3 mb-5'>
+            <div className='flex items-center justify-center gap-3 mb-7'>
                 <h1 className='text-3xl font-bold'>Chuyên Khoa</h1>
                 <Dialog>
                     <DialogTrigger asChild>
@@ -45,7 +45,7 @@ const SpecialtyPage = ({ specialties } : SpecialtyPageProps) => {
                     ))}
                 </div>
             ) : (
-                <div>Chưa Đăng Ký Chuyên Khoa</div>
+                <div className='text-center'>Chưa Đăng Ký Chuyên Khoa</div>
             )}
         </main>
     );

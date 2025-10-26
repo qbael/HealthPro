@@ -13,6 +13,8 @@ import com.healthpro.clinicservice.repository.DoctorSpecialtyRepository;
 import com.healthpro.clinicservice.repository.SpecialtyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -31,6 +33,12 @@ public class DoctorSpecialtyService {
         List<DoctorSpecialty> doctorSpecialty = doctorSpecialtyRepository.findAllByDoctor_Id(doctorId);
 
         return doctorSpecialty.stream().map(DoctorSpecialtyDTOMapper::toDTO).toList();
+    }
+
+    @Transactional
+    public Page<Doctor> getAllDoctorSpecialtiesBySpecialty(UUID specialtyId, Pageable pageable) {
+        return doctorRepository
+                .findAllBySpecialtyId(specialtyId, pageable);
     }
 
     @Transactional

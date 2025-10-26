@@ -9,7 +9,7 @@ const SpecialtyCard = ({ specialty } : any) => {
             <h3 className="text-xl font-semibold text-center">{specialty.specialtyName}</h3>
             <div className='flex items-center gap-3'>
                 <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
-                    <Link href={`/clinic/specialty/doctor/${specialty.specialtyId}`}>Mời Bác Sĩ</Link>
+                    <Link href={`/clinic/specialty/doctors/${specialty.specialtyId}`}>Mời Bác Sĩ</Link>
                 </Button>
                 <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
                     <Link href={`/clinic/specialty/schedules/${specialty.specialtyId}`}>Đăng Ký Lịch Làm</Link>

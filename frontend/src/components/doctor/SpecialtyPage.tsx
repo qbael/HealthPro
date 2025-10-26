@@ -45,7 +45,7 @@ const SpecialtyPage = ({ specialties } : SpecialtyPageProps) => {
                     ))}
                 </div>
             ) : (
-                <div>Chưa Đăng Ký Chuyên Khoa</div>
+                <div className='text-center'>Chưa Đăng Ký Chuyên Khoa</div>
             )}
         </main>
     );

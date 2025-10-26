@@ -5,14 +5,14 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ApiResponseDto<T> {
+public class ApiResponseDTO<T> {
     private int status;
     private boolean success;
     private String message;
     private T data;
     private LocalDateTime timestamp;
 
-    public ApiResponseDto(int status, boolean success, String message, T data) {
+    public ApiResponseDTO(int status, boolean success, String message, T data) {
         this.status = status;
         this.success = success;
         this.message = message;
@@ -20,12 +20,12 @@ public class ApiResponseDto<T> {
         this.timestamp = LocalDateTime.now();
     }
 
-    public static <T> ApiResponseDto<T> success(T data, String message) {
-        return new ApiResponseDto<>(200, true, message, data);
+    public static <T> ApiResponseDTO<T> success(T data, String message) {
+        return new ApiResponseDTO<>(200, true, message, data);
     }
 
-    public static <T> ApiResponseDto<T> error(int status, String message) {
-        return new ApiResponseDto<>(status, false, message, null);
+    public static <T> ApiResponseDTO<T> error(int status, String message) {
+        return new ApiResponseDTO<>(status, false, message, null);
     }
 
 }

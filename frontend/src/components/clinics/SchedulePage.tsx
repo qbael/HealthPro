@@ -1,10 +1,13 @@
-'use client'
-
 import {Button} from '@/components/ui/button'
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog"
 import ScheduleForm from "@/components/clinics/ScheduleForm"
+import {createServerApi} from "@/lib/axiosServer";
 
-const SchedulePage = ({ initialTemplate, clinicSpecialtyId } : any) => {
+const SchedulePage = async ({ initialTemplate, clinicSpecialtyId } : any) => {
+    const api = await createServerApi()
+    const res = await api.get(`v1/specialties/${clinicSpecialtyId}`)
+    const specialtyName = res.data.name
+
     const days = [
         { label: "CN", color: "text-red-500" },
         { label: "Hai" },
@@ -19,7 +22,7 @@ const SchedulePage = ({ initialTemplate, clinicSpecialtyId } : any) => {
         <main>
             <section className='relative top-5 mx-auto w-[90%] max-w-[900px]'>
                 <div className='flex justify-center gap-3'>
-                    <h1 className='text-blue-400 text-2xl text-center font-bold mb-7'>Tháng 10-2025</h1>
+                    <h1 className='text-blue-400 text-2xl text-center font-bold mb-7'>Lịch Làm: {specialtyName}</h1>
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
