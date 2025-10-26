@@ -1,4 +1,4 @@
-export interface DoctorAvailableSlot {
+export interface AvailableSlotType {
     id: string;
     doctorId: string;
     clinicSpecialtyId?: string;
@@ -8,7 +8,7 @@ export interface DoctorAvailableSlot {
     appointmentType: 'DOCTOR' | 'CLINIC';
 }
 
-export interface TimeSlot {
+export interface TimeSlotType {
     startTime: string;
     endTime: string;
     available: boolean;

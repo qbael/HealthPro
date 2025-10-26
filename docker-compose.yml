@@ -50,7 +50,7 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
     volumes:
-      - auth-service-db:/var/lib/postgresql/data
+      - auth-service-db:/var/lib/postgresql
     networks:
       - internal
 
@@ -64,7 +64,7 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
     volumes:
-      - clinic-service-db:/var/lib/postgresql/data
+      - clinic-service-db:/var/lib/postgresql
     networks:
       - internal
 
@@ -78,7 +78,7 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
     volumes:
-      - schedule-service:/var/lib/postgresql/data
+      - schedule-service:/var/lib/postgresql
     networks:
       - internal
 

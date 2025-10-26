@@ -1,25 +1,22 @@
 "use client";
-import React, {useState, useEffect} from 'react';
-import {ChevronLeft, ChevronRight} from 'lucide-react';
-import {DoctorAvailableSlot, TimeSlot} from "@/types/calendar-types";
+import React, {useEffect, useRef, useState} from "react";
+import {AvailableSlotType, TimeSlotType} from "@/types/calendar-types";
 import {SCHEDULE_API_URL} from "@/lib/utils";
+import {ChevronLeft, ChevronRight} from "lucide-react";
 
-interface AppointmentCalendarProps {
-    doctorId: string;
-    clinicSpecialtyId?: string;
-    appointmentType?: 'AT_CLINIC' | 'AT_HOME' | 'ONLINE';
-    onSlotSelect?: (date: string, startTime: string, endTime: string) => void;
+interface CalendarProps {
+    id: string;
+    type: 'DOCTOR' | 'CLINIC';
+    availableDates: string[];
 }
 
-const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
-                                                                     doctorId,
-                                                                     clinicSpecialtyId,
-                                                                     appointmentType = 'AT_CLINIC',
-                                                                     onSlotSelect,
-                                                                 }) => {
+export const Calendar = ({id, type, availableDates}: CalendarProps) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [availableSlots, setAvailableSlots] = useState<DoctorAvailableSlot[]>([]);
+    const [availableSlots, setAvailableSlots] = useState<AvailableSlotType[]>([]);
+    const [dates, setDates] = useState<string[]>(availableDates);
+    const pageType = useRef<string>(type);
+    const bottomRef = useRef<HTMLDivElement | null>(null);
     const [loading, setLoading] = useState(false);
 
     const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
@@ -29,15 +26,37 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
     ];
 
     useEffect(() => {
-        fetchAvailableSlots();
-    }, [doctorId, clinicSpecialtyId, appointmentType]);
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [availableSlots]);
 
-    const fetchAvailableSlots = async () => {
+
+    useEffect(() => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }, []);
+
+    useEffect(() => {
+        if (!selectedDate) return
+        setAvailableSlots([])
+        fetchAvailableSlots(selectedDate)
+    }, [selectedDate]);
+
+    const fetchAvailableSlots = async (date: Date) => {
         setLoading(true);
+        const dateStr = new Intl.DateTimeFormat("en-CA").format(date);
+        let url = '';
+        if (pageType.current === 'DOCTOR') {
+            url = `${SCHEDULE_API_URL}/doctor/available-slots/${id}`;
+        } else if (pageType.current === 'CLINIC') {
+            url = `${SCHEDULE_API_URL}/clinic-specialty/available-slots/${id}`;
+        }
+        url += `?date=${dateStr}`;
         try {
-            const response = await fetch(`${SCHEDULE_API_URL}/doctor-available-slots/750e8400-e29b-41d4-a716-446655440011`, {
+            const response = await fetch(url, {
                 method: 'GET',
             });
+            if (!response.ok) {
+                throw new Error('Failed to fetch available slots');
+            }
             const data = await response.json();
             setAvailableSlots(data.data);
         } catch (error) {
@@ -70,7 +89,7 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
 
     const hasAvailableSlots = (date: Date): boolean => {
         const dateStr = new Intl.DateTimeFormat("en-CA").format(date);
-        return availableSlots.some(slot => slot.appointmentDate === dateStr);
+        return dates.some(date => date === dateStr);
     };
 
     const isToday = (date: Date): boolean => {
@@ -103,7 +122,7 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
         setSelectedDate(date);
     };
 
-    const getTimeSlots = (): TimeSlot[] => {
+    const getTimeSlots = (): TimeSlotType[] => {
         if (!selectedDate) return [];
 
         const dateStr = new Intl.DateTimeFormat("en-CA").format(selectedDate);
@@ -118,9 +137,9 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
 
     const groupSlotsByPeriod = () => {
         const timeSlots = getTimeSlots();
-        const morning: TimeSlot[] = [];
-        const afternoon: TimeSlot[] = [];
-        const evening: TimeSlot[] = [];
+        const morning: TimeSlotType[] = [];
+        const afternoon: TimeSlotType[] = [];
+        const evening: TimeSlotType[] = [];
 
         timeSlots.forEach(slot => {
             const hour = parseInt(slot.startTime.split(':')[0]);
@@ -136,17 +155,16 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
         return {morning, afternoon, evening};
     };
 
-    const handleSlotClick = (slot: TimeSlot) => {
-        if (!selectedDate || !onSlotSelect || loading) return;
-        const dateStr = selectedDate.toISOString().split('T')[0];
-        onSlotSelect(dateStr, slot.startTime, slot.endTime);
-    };
+    // const handleSlotClick = (slot: TimeSlot) => {
+    //     if (!selectedDate || !onSlotSelect || loading) return;
+    //     const dateStr = selectedDate.toISOString().split('T')[0];
+    //     onSlotSelect(dateStr, slot.startTime, slot.endTime);
+    // };
 
     const days = getDaysInMonth();
     const {morning, afternoon, evening} = groupSlotsByPeriod();
-
     return (
-        <div className="relative max-w-4xl mx-auto p-4 bg-white">
+        <div className="relative max-w-3xl mx-auto p-4 bg-white">
             {loading && (
                 <div className="text-center py-12 w-full h-screen flex justify-center items-center">
                     <div
@@ -206,7 +224,6 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
                         const isPast = isPastDate(date);
                         const isTodayDate = isToday(date);
                         const isSundayDate = isSunday(date);
-                        console.log(date, hasSlots);
 
                         return (
                             <button
@@ -228,11 +245,14 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
                 </div>
             </div>
 
-            {selectedDate && (
+            {selectedDate && availableSlots?.length > 0 && (
                 <div className="mt-6 border-t pt-6">
                     <div className="flex items-center justify-between mb-4">
                         <div className="h-1 flex-1 bg-cyan-400"/>
-                        <span className="px-4 font-semibold text-gray-700">Đóng</span>
+                        <span className="px-4 font-semibold text-gray-700 hover:cursor-pointer"
+                              onClick={() => setSelectedDate(null)}>
+                            Đóng
+                        </span>
                     </div>
 
                     {morning.length > 0 && (
@@ -242,7 +262,7 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
                                 {morning.map((slot, index) => (
                                     <button
                                         key={`morning-${index}`}
-                                        onClick={() => handleSlotClick(slot)}
+                                        // onClick={() => handleSlotClick(slot)}
                                         disabled={loading}
                                         className="border-2 border-cyan-400 text-gray-700 py-3 px-4 rounded-lg
                                  hover:bg-cyan-400 hover:text-white transition-all font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed"
@@ -261,7 +281,7 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
                                 {afternoon.map((slot, index) => (
                                     <button
                                         key={`afternoon-${index}`}
-                                        onClick={() => handleSlotClick(slot)}
+                                        // onClick={() => handleSlotClick(slot)}
                                         disabled={loading}
                                         className="border-2 border-cyan-400 text-gray-700 py-3 px-4 rounded-lg
                                  hover:bg-cyan-400 hover:text-white transition-all font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed"
@@ -280,7 +300,7 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
                                 {evening.map((slot, index) => (
                                     <button
                                         key={`evening-${index}`}
-                                        onClick={() => handleSlotClick(slot)}
+                                        // onClick={() => handleSlotClick(slot)}
                                         disabled={loading}
                                         className="border-2 border-cyan-400 text-gray-700 py-3 px-4 rounded-lg
                                  hover:bg-cyan-400 hover:text-white transition-all font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed"
@@ -292,7 +312,7 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
                         </div>
                     )}
 
-                    <p className="text-orange-400 text-sm mt-6">
+                    <p className="text-orange-400 text-sm mt-6" ref={bottomRef}>
                         Tất cả thời gian theo múi giờ Việt Nam GMT +7
                     </p>
                 </div>
@@ -300,5 +320,3 @@ const AppointmentCalendar: React.FC<AppointmentCalendarProps> = ({
         </div>
     );
 };
-
-export default AppointmentCalendar;

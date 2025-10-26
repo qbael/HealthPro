@@ -1,0 +1,1 @@
+GET http://localhost:8082/api/v1/schedule/clinic-specialty/available-dates/a50e8400-e29b-41d4-a716-446655440001

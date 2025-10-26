@@ -1,12 +1,12 @@
 package com.healthpro.scheduleservice.service;
 
+import com.healthpro.scheduleservice.dto.AvailableTimeSlot;
 import com.healthpro.scheduleservice.dto.DoctorAvailableSlotDTO;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyDoctor;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyScheduleTemplate;
 import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
 import com.healthpro.scheduleservice.entity.enums.AppointmentType;
-import com.healthpro.scheduleservice.exception.ResourceNotFoundException;
 import com.healthpro.scheduleservice.mapper.DoctorAvailableSlotDTOMapper;
 import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
 import com.healthpro.scheduleservice.repository.DoctorAvailableSlotRepository;
@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -34,17 +32,10 @@ public class DoctorAvailableSlotService {
         this.clinicSpecialtyDoctorRepository = clinicSpecialtyDoctorRepository;
     }
 
-    public List<DoctorAvailableSlotDTO> getAllSlot(UUID userRoleId, AppointmentType appoinmentType) {
-        List<DoctorAvailableSlot> doctorAvailableSlots = doctorAvailableSlotRepository.findByDoctorIdAndAppointmentType(userRoleId, appoinmentType);
-
-
-        return DoctorAvailableSlotDTOMapper.toDoctorAvailableSlotDTO(doctorAvailableSlots);
-    }
-
     @Transactional(rollbackFor = RuntimeException.class)
     public void deleteSlotBeforeToday() {
         try {
-            doctorAvailableSlotRepository.deleteByAppointmentDateBefore(LocalDate.now()); //mới thêm vào repo theo cái của ông
+            doctorAvailableSlotRepository.deleteByAppointmentDateBefore(LocalDate.now());
         } catch (RuntimeException e) {
             throw new RuntimeException("Lỗi khi xóa các khung giờ hẹn trước ngày hôm nay: " + e.getMessage());
         }
@@ -52,7 +43,7 @@ public class DoctorAvailableSlotService {
 
     @Transactional
     public void generateSlots(DoctorScheduleTemplate template) {
-        LocalDate startDate = LocalDate.now();
+        LocalDate startDate = LocalDate.now().plusDays(1);
         LocalDate endDate = startDate.plusDays(DEFAULT_DAYS_AHEAD);
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
@@ -86,7 +77,7 @@ public class DoctorAvailableSlotService {
 
     @Transactional
     public void generateSlots(ClinicSpecialtyScheduleTemplate template) {
-        LocalDate startDate = LocalDate.now();
+        LocalDate startDate = LocalDate.now().plusDays(1);
         LocalDate endDate = startDate.plusDays(DEFAULT_DAYS_AHEAD);
         List<ClinicSpecialtyDoctor> doctors = clinicSpecialtyDoctorRepository.findByClinicSpecialtyId(template.getClinicSpecialtyId());
         if (doctors.isEmpty()) {
@@ -124,8 +115,13 @@ public class DoctorAvailableSlotService {
         }
     }
 
-    public Optional<List<DoctorAvailableSlot>> getDoctorAvailableSlots(UUID doctorId) {
-//        return Optional.ofNullable(doctorAvailableSlotRepository.findAllDoctorAvailableDates(doctorId));
-        return Optional.ofNullable(doctorAvailableSlotRepository.findAllByDoctorIdAndAppointmentType(doctorId, AppointmentType.DOCTOR));
+    public Optional<List<LocalDate>> getAvailableDatesByDoctorId(UUID doctorId) {
+        return Optional.ofNullable(doctorAvailableSlotRepository.findAllDoctorAvailableDates(doctorId));
+    }
+
+    public Optional<List<AvailableTimeSlot>> getDoctorTypeAvailableSlotsByDoctorId(UUID doctorId, LocalDate appointmentDate) {
+        return Optional.of(doctorAvailableSlotRepository
+                .findAllByDoctorIdAndAppointmentTypeAndAppointmentDate(doctorId, AppointmentType.DOCTOR, appointmentDate)
+                .stream().sorted(Comparator.comparing(AvailableTimeSlot::startTime)).toList());
     }
 }
