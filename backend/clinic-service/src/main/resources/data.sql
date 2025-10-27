@@ -161,7 +161,10 @@ VALUES
 -- Bệnh viện Chợ Rẫy mời BS. Hoàng Văn Tuấn - Ngoại tổng hợp (bị từ chối)
 ('b50e8400-e29b-41d4-a716-446655440007', 'a50e8400-e29b-41d4-a716-446655440005',
  '750e8400-e29b-41d4-a716-446655440015', 'REJECTED', '2024-03-10 08:00:00', '2024-03-12 10:00:00',
- 'Mời tham gia Khoa Ngoại tổng hợp - Bệnh viện Chợ Rẫy');
+ 'Mời tham gia Khoa Ngoại tổng hợp - Bệnh viện Chợ Rẫy'),
+('b50e8400-e29b-41d4-a716-446655440008', 'a50e8400-e29b-41d4-a716-446655440028',
+ '750e8400-e29b-41d4-a716-446655440016', 'PENDING', '2024-10-27 08:00:00', '2024-03-12 10:00:00',
+ 'Mời tham gia Khoa Ngoại tổng hợp - Bệnh viện Trần Minh Đăng 3');
 
 -- Insert Clinic Specialty Doctors (Bác sĩ đã được phân công vào chuyên khoa của phòng khám)
 INSERT INTO clinic_specialty_doctors (id, clinic_specialty_id, doctor_id, assignment_count)

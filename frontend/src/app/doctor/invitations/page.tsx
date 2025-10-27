@@ -2,6 +2,7 @@ import {createServerApi} from "@/lib/axiosServer";
 import DoctorSpecialtyCard from "@/components/clinics/DoctorSpecialtyCard";
 import {Pagination} from "@/components/ui/Pagination";
 import React from "react";
+import ClinicInvitation from "@/components/doctor/ClinicInvitation";
 
 interface PageProps {
     params: { id: string };
@@ -34,13 +35,13 @@ const Page = async ({ searchParams }: PageProps) => {
                 <h1 className='text-blue-400 text-2xl text-center font-bold mb-7'>Lời Mời Chuyên Khoa</h1>
 
                 <div className="flex flex-wrap flex-col w-full items-center">
-                    {/*{invitations?.length ? (*/}
-                    {/*    invitations.map((invitation: any) => (*/}
-                    {/*        <DoctorSpecialtyCard key={invitation.id} invitation={invitation}/>*/}
-                    {/*    ))*/}
-                    {/*) : (*/}
-                    {/*    <p className="text-center text-gray-500">Không có lời mời.</p>*/}
-                    {/*)}*/}
+                    {invitations?.length ? (
+                        invitations.map((invitation: any) => (
+                            <ClinicInvitation key={invitation.id} invitation={invitation}/>
+                        ))
+                    ) : (
+                        <p className="text-center text-gray-500">Không có lời mời.</p>
+                    )}
                 </div>
                 <div className={'w-full justify-items-center'}>
                     <Pagination

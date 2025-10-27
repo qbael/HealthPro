@@ -4,6 +4,7 @@ import com.healthpro.clinicservice.dto.ApiResponseDTO;
 import com.healthpro.clinicservice.dto.ClinicInvitationRequestDTO;
 import com.healthpro.clinicservice.entity.ClinicInvitation;
 import com.healthpro.clinicservice.entity.Doctor;
+import com.healthpro.clinicservice.entity.enums.InvitationStatus;
 import com.healthpro.clinicservice.service.ClinicInvitationService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -61,5 +62,13 @@ public class ClinicInvitationController {
         return ResponseEntity.ok().build();
     }
 
-
+    @PutMapping("/{id}")
+    public ResponseEntity<?> approveClinicInvitation(
+            @PathVariable UUID id,
+            @RequestBody InvitationStatus status
+    ) {
+        clinicInvitationService
+                .approveClinicInvitation(id, status);
+        return ResponseEntity.ok().build();
+    }
 }

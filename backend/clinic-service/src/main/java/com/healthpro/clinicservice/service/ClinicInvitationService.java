@@ -4,6 +4,7 @@ import com.healthpro.clinicservice.dto.ClinicInvitationRequestDTO;
 import com.healthpro.clinicservice.entity.ClinicInvitation;
 import com.healthpro.clinicservice.entity.ClinicSpecialty;
 import com.healthpro.clinicservice.entity.Doctor;
+import com.healthpro.clinicservice.entity.enums.InvitationStatus;
 import com.healthpro.clinicservice.repository.ClinicInvitationRepository;
 import com.healthpro.clinicservice.repository.ClinicSpecialtyRepository;
 import com.healthpro.clinicservice.repository.DoctorRepository;
@@ -35,6 +36,14 @@ public class ClinicInvitationService {
         ClinicInvitation clinicInvitation = new ClinicInvitation();
         clinicInvitation.setClinicSpecialty(clinicSpecialty);
         clinicInvitation.setDoctor(doctor);
+        clinicInvitationRepository.save(clinicInvitation);
+    }
+
+    public void approveClinicInvitation(UUID clinicInvitationId, InvitationStatus status) {
+        ClinicInvitation clinicInvitation = clinicInvitationRepository.findById(clinicInvitationId)
+                .orElseThrow(() -> new RuntimeException("clinicInvitation not found"));
+
+        clinicInvitation.setStatus(status);
         clinicInvitationRepository.save(clinicInvitation);
     }
 }
