@@ -34,12 +34,17 @@ public class ClinicController {
         Pageable pageable = PageRequest.of(page, limit, Sort.by(
                 sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy
         ));
-        return clinicService.getClinics(pageable)
-                .map(clinics -> ResponseEntity.ok().body(
-                        ApiResponseDTO.success(clinics, "Lấy danh sách phòng khám thành công")))
-                .orElseGet(() -> ResponseEntity
-                        .status(404)
-                        .body(ApiResponseDTO.error(404, "Lấy danh sách phòng khám thất bại")));
+        Page<Clinic> clinics = clinicService.getClinics(pageable);
+
+        if (clinics.isEmpty()) {
+            return ResponseEntity.ok(
+                    ApiResponseDTO.success(clinics, "Không có phòng khám nào")
+            );
+        }
+
+        return ResponseEntity.ok(
+                ApiResponseDTO.success(clinics, "Lấy danh sách phòng khám thành công")
+        );
     }
 
     @GetMapping("/{id}")

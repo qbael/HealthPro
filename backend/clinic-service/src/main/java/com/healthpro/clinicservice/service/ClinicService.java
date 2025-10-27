@@ -23,8 +23,8 @@ public class ClinicService {
         this.clinicSpecialtyRepository = clinicSpecialtyRepository;
     }
 
-    public Optional<Page<Clinic>> getClinics(Pageable pageable) {
-        return Optional.of(clinicRepository.findAll(pageable));
+    public Page<Clinic> getClinics(Pageable pageable) {
+        return clinicRepository.findAll(pageable);
     }
 
     public Optional<Clinic> getClinicById(String id) {

@@ -47,9 +47,9 @@ public class DoctorSpecialtyController {
                 .getAllDoctorSpecialtiesBySpecialty(specialtyId, pageable);
 
         if (doctors.isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponseDTO.error(404, "Không tìm thấy bác sĩ nào"));
+            return ResponseEntity.ok(
+                    ApiResponseDTO.success(doctors, "Không có bác sĩ nào")
+            );
         }
 
         return ResponseEntity.ok(

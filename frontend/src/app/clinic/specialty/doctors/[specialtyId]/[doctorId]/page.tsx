@@ -2,13 +2,14 @@ import React from 'react';
 import Image from "next/image";
 import {ChevronLeft, ChevronRight, Clock, Phone} from "lucide-react";
 import {createServerApi} from "@/lib/axiosServer";
+import InviteButton from "@/components/clinics/InviteButton";
 
 const Page = async ({ params }: { params: Promise<{ doctorId: string }> }) => {
-    const { doctorId } = await params
+    const { specialtyId, doctorId } = await params
     const api = await createServerApi()
     const res = await api.get(`v1/doctors/${doctorId}`)
     const doctor = res.data.data
-    console.log(doctor)
+
     return (
         <main className="max-w-4xl mx-auto p-5 mt-22 bg-gray-50 min-h-screen">
             <div className="bg-white rounded-lg shadow-sm p-6 mb-4">
@@ -109,21 +110,7 @@ const Page = async ({ params }: { params: Promise<{ doctorId: string }> }) => {
                 </a>
             </div>
 
-            <div className="bg-white border-t border-gray-200 p-4 sticky bottom-0">
-                <div className="flex items-center justify-between max-w-4xl mx-auto">
-                    <div className="text-sm">
-                        <div className="text-gray-600">Hỗ trợ đặt khám</div>
-                        <div className="font-bold text-gray-900 flex items-center gap-1">
-                            <Phone className="w-4 h-4"/>
-                            1800-2805
-                        </div>
-                    </div>
-                    <button
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                        MỜI VÀO CHUYÊN KHOA
-                    </button>
-                </div>
-            </div>
+            <InviteButton specialtyId={specialtyId} doctorId={doctor.id} />
         </main>
     );
 };

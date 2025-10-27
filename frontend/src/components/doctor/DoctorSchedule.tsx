@@ -121,7 +121,7 @@ const DoctorSchedule = ({ schedule }: Props) => {
             )}
         </div>
     ) : (
-        <div>Chưa đăng ký lịch làm</div>
+        <div className='text-center'>Chưa đăng ký lịch làm</div>
     )
 };
 

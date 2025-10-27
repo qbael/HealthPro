@@ -8,6 +8,8 @@ import com.healthpro.clinicservice.repository.ClinicInvitationRepository;
 import com.healthpro.clinicservice.repository.ClinicSpecialtyRepository;
 import com.healthpro.clinicservice.repository.DoctorRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -18,6 +20,10 @@ public class ClinicInvitationService {
     private final ClinicInvitationRepository clinicInvitationRepository;
     private final ClinicSpecialtyRepository clinicSpecialtyRepository;
     private final DoctorRepository doctorRepository;
+
+    public Page<ClinicInvitation> getClinicInvitations(UUID doctorId, Pageable pageable) {
+        return clinicInvitationRepository.findAllByDoctor_Id(doctorId, pageable);
+    }
 
     public void createClinicInvitation(UUID clinicId, UUID specialtyId, UUID doctorId) {
         ClinicSpecialty clinicSpecialty = clinicSpecialtyRepository
