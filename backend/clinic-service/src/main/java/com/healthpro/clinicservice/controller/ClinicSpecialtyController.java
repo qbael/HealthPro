@@ -27,11 +27,11 @@ public class ClinicSpecialtyController {
 
     @PostMapping()
     public ResponseEntity<?> createClinicSpecialty(
-            @RequestHeader("X-UserRole-Id") UUID userRoleId,
+            @RequestHeader("X-UserRole-Id") UUID clinicId,
             @RequestBody ClinicSpecialtyRequestDTO clinicSpecialtyRequestDTO
             ) {
         clinicSpecialtyService.createClinicSpecialty(
-                userRoleId, clinicSpecialtyRequestDTO);
+                clinicId, clinicSpecialtyRequestDTO);
         return ResponseEntity.noContent().build();
     }
 }

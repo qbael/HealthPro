@@ -14,8 +14,8 @@ import java.util.UUID;
 @Repository
 public interface ClinicSpecialtyRepository extends JpaRepository<ClinicSpecialty, UUID> {
     List<ClinicSpecialty> findAllByClinic_Id(UUID clinicId);
-    @Modifying
-    @Query("DELETE FROM ClinicSpecialty ds WHERE ds.clinic.id = :clinicId")
-    void deleteByClinicId(@Param("clinicId") UUID clinicId);
+
     Optional<ClinicSpecialty> findByClinic_IdAndSpecialty_Id(UUID clinicId, UUID specialtyId);
+
+    void deleteByClinic_Id(UUID clinicId);
 }

@@ -1,5 +1,4 @@
 import {createServerApi} from "@/lib/axiosServer";
-import DoctorSpecialtyCard from "@/components/clinics/DoctorSpecialtyCard";
 import {Pagination} from "@/components/ui/Pagination";
 import React from "react";
 import ClinicInvitation from "@/components/doctor/ClinicInvitation";
@@ -27,7 +26,6 @@ const Page = async ({ searchParams }: PageProps) => {
     const invitations = res?.data?.data?.content;
     const totalPages = res?.data?.data?.totalPages;
     const currentPage = res?.data?.data?.pageable?.pageNumber;
-    console.log(invitations)
 
     return (
         <main>

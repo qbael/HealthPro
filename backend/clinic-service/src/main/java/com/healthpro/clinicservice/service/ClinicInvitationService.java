@@ -1,10 +1,12 @@
 package com.healthpro.clinicservice.service;
 
-import com.healthpro.clinicservice.dto.ClinicInvitationRequestDTO;
+import com.healthpro.clinicservice.dto.ClinicInvitationResponseDTO;
 import com.healthpro.clinicservice.entity.ClinicInvitation;
 import com.healthpro.clinicservice.entity.ClinicSpecialty;
 import com.healthpro.clinicservice.entity.Doctor;
 import com.healthpro.clinicservice.entity.enums.InvitationStatus;
+import com.healthpro.clinicservice.mapper.ClinicInvitationDTOMapper;
+import com.healthpro.clinicservice.mapper.ClinicSpecialtyDTOMapper;
 import com.healthpro.clinicservice.repository.ClinicInvitationRepository;
 import com.healthpro.clinicservice.repository.ClinicSpecialtyRepository;
 import com.healthpro.clinicservice.repository.DoctorRepository;
@@ -22,8 +24,9 @@ public class ClinicInvitationService {
     private final ClinicSpecialtyRepository clinicSpecialtyRepository;
     private final DoctorRepository doctorRepository;
 
-    public Page<ClinicInvitation> getClinicInvitations(UUID doctorId, Pageable pageable) {
-        return clinicInvitationRepository.findAllByDoctor_Id(doctorId, pageable);
+    public Page<ClinicInvitationResponseDTO> getClinicInvitations(UUID doctorId, Pageable pageable) {
+        Page<ClinicInvitation> clinicInvitations = clinicInvitationRepository.findAllByDoctor_Id(doctorId, pageable);
+        return clinicInvitations.map(ClinicInvitationDTOMapper::toDTO);
     }
 
     public void createClinicInvitation(UUID clinicId, UUID specialtyId, UUID doctorId) {

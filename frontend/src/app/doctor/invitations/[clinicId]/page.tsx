@@ -7,21 +7,10 @@ import {ClinicsType} from "@/types/clinic-types";
 import {createServerApi} from "@/lib/axiosServer";
 
 const Page = async ({ params } : any) => {
-
-    const { specialtyId } = await params;
-    const api = createServerApi()
-    const res = await fetch(`${CLINICS_API_URL}/${specialtyId}`,{
-        method: 'GET',
-        cache: 'no-cache',
-    })
-
-    // const res = api.get(``)
-    // const invitation = res.data
-
-    const body = await res.json();
-
-    const clinic: ClinicsType = body.data;
-
+    const { clinicId } = await params;
+    const api = await createServerApi()
+    const res = await api.get(`v1/clinics/${clinicId}`)
+    const clinic = res.data
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-blue-50 mt-16 to-indigo-50">
@@ -123,11 +112,14 @@ const Page = async ({ params } : any) => {
 
                     <div className="space-y-6">
                         <div className="bg-white rounded-2xl shadow-md p-6">
-                            <Link href={`/clinics/${clinic.id}/specialties`}>
-                                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl transition-colors mb-3 shadow-lg shadow-blue-600/30">
-                                    Đặt Lịch Khám
+                            <div className='flex flex-1 gap-5 items-center'>
+                                <button className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
+                                    Đồng ý
                                 </button>
-                            </Link>
+                                <button className="w-full bg-red-400 hover:bg-red-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
+                                    Từ chối
+                                </button>
+                            </div>
                         </div>
 
                         <div className="bg-white rounded-2xl shadow-md p-6">

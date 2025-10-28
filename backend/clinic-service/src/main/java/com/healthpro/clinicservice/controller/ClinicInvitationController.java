@@ -2,6 +2,7 @@ package com.healthpro.clinicservice.controller;
 
 import com.healthpro.clinicservice.dto.ApiResponseDTO;
 import com.healthpro.clinicservice.dto.ClinicInvitationRequestDTO;
+import com.healthpro.clinicservice.dto.ClinicInvitationResponseDTO;
 import com.healthpro.clinicservice.entity.ClinicInvitation;
 import com.healthpro.clinicservice.entity.Doctor;
 import com.healthpro.clinicservice.entity.enums.InvitationStatus;
@@ -24,7 +25,7 @@ public class ClinicInvitationController {
     private final ClinicInvitationService  clinicInvitationService;
 
     @GetMapping
-    public ResponseEntity<ApiResponseDTO<Page<ClinicInvitation>>> getClinicInvitations(
+    public ResponseEntity<ApiResponseDTO<Page<ClinicInvitationResponseDTO>>> getClinicInvitations(
             @RequestHeader("X-UserRole-Id") UUID doctorId,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer limit,
@@ -35,7 +36,7 @@ public class ClinicInvitationController {
                 sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy
         ));
 
-        Page<ClinicInvitation> clinicInvitations = clinicInvitationService
+        Page<ClinicInvitationResponseDTO> clinicInvitations = clinicInvitationService
                 .getClinicInvitations(doctorId, pageable);
 
         if (clinicInvitations.isEmpty()) {
