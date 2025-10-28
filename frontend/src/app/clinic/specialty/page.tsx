@@ -6,7 +6,6 @@ const Page = async () => {
     try {
         const res = await api.get('/v1/clinic-specialty')
         const specialties = res.data
-
         return (
             <SpecialtyPage specialties={specialties} />
         )

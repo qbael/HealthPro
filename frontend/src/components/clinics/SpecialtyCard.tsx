@@ -27,6 +27,9 @@ const SpecialtyCard = ({ specialty } : any) => {
                     <Link href={`/clinic/specialty/doctors/${specialty.specialtyId}`}>Mời Bác Sĩ</Link>
                 </Button>
                 <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
+                    <Link href={`/clinic/specialty/invitations/${specialty.id}`}>Lời Mời Đã Gửi</Link>
+                </Button>
+                <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
                     <Link href={`/clinic/specialty/schedules/${specialty.specialtyId}`}>Đăng Ký Lịch Làm</Link>
                 </Button>
             </div>

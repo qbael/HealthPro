@@ -9,12 +9,11 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class ClinicInvitationResponseDTO {
+public class ClinicInvitationClinicDTO {
     private UUID id;
     private InvitationStatus status;
     private LocalDateTime invitedAt;
     private LocalDateTime respondedAt;
-    private String title;
 
     private UUID clinicSpecialtyId;
     private UUID specialtyId;
