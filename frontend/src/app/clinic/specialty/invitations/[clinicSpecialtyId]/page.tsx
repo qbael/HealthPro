@@ -22,7 +22,7 @@ const Page = async ({ params, searchParams } : any) => {
     const invitations = res1?.data?.data?.content;
     const totalPages = res1?.data?.data?.totalPages;
     const currentPage = res1?.data?.data?.pageable?.pageNumber;
-
+    console.log(invitations)
     return (
         <main>
             <section className='relative top-5 mx-auto w-[90%] max-w-[900px]'>

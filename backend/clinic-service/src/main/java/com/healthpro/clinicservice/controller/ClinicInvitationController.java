@@ -23,8 +23,8 @@ public class ClinicInvitationController {
     private final ClinicInvitationService  clinicInvitationService;
 
     @GetMapping
-    public ResponseEntity<ApiResponseDTO<Page<ClinicInvitationDoctorDTO>>>
-        getClinicInvitationsByDoctor(
+    public ResponseEntity<ApiResponseDTO<Page<ClinicInvitationClinicDTO>>>
+        getClinicInvitationsForDoctor(
             @RequestHeader("X-UserRole-Id") UUID userRoleId,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer limit,
@@ -35,8 +35,8 @@ public class ClinicInvitationController {
                 sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy
         ));
 
-        Page<ClinicInvitationDoctorDTO> clinicInvitations = clinicInvitationService
-                .getClinicInvitationsByDoctor(userRoleId, pageable);
+        Page<ClinicInvitationClinicDTO> clinicInvitations = clinicInvitationService
+                .getClinicInvitationsForDoctor(userRoleId, pageable);
 
         if (clinicInvitations.isEmpty()) {
             return ResponseEntity.ok(
@@ -50,8 +50,8 @@ public class ClinicInvitationController {
     }
 
     @GetMapping("/{clinicSpecialtyId}")
-    public ResponseEntity<ApiResponseDTO<Page<ClinicInvitationClinicDTO>>>
-        getClinicInvitationsByClinicSpecialty(
+    public ResponseEntity<ApiResponseDTO<Page<ClinicInvitationDoctorDTO>>>
+        getClinicInvitationsForClinicSpecialty(
             @PathVariable UUID clinicSpecialtyId,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer limit,
@@ -62,8 +62,8 @@ public class ClinicInvitationController {
                 sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy
         ));
 
-        Page<ClinicInvitationClinicDTO> clinicInvitations = clinicInvitationService
-                .getClinicInvitationsByClinicSpecialty(clinicSpecialtyId, pageable);
+        Page<ClinicInvitationDoctorDTO> clinicInvitations = clinicInvitationService
+                .getClinicInvitationsForClinicSpecialty(clinicSpecialtyId, pageable);
 
         if (clinicInvitations.isEmpty()) {
             return ResponseEntity.ok(
@@ -92,7 +92,7 @@ public class ClinicInvitationController {
     @PutMapping("/{invitationId}")
     public ResponseEntity<?> approveClinicInvitation(
             @PathVariable UUID invitationId,
-            @RequestBody InvitationStatus status
+            @RequestBody String status
     ) {
         clinicInvitationService
                 .approveClinicInvitation(invitationId, status);

@@ -1,9 +1,25 @@
-import React from 'react';
+'use client'
+
 import Image from "next/image";
 import {Clock, MapPin, Star} from "lucide-react";
 import Link from "next/link";
+import {toast} from "sonner";
+import api from "@/lib/axios";
 
 const ClinicInvitation = ({ invitation } : any) => {
+    const handleInvitation = async (status: string) => {
+        try {
+            await api.put(`v1/clinic-invitation/${invitation.id}`, JSON.stringify(status))
+            {
+                status == 'ACCEPTED' ? toast.success('Đồng ý thành công')
+                    : toast.error('Hủy thành công')
+            }
+        }
+        catch (error: any) {
+            console.error(error)
+        }
+    }
+
     return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-3 w-full">
             <div className="flex items-center gap-4">
@@ -44,10 +60,16 @@ const ClinicInvitation = ({ invitation } : any) => {
                 </Link>
 
                 <div className='flex flex-1 gap-5 items-center'>
-                    <button className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
+                    <button
+                        className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm"
+                        onClick={() => handleInvitation('ACCEPTED')}
+                    >
                         Đồng ý
                     </button>
-                    <button className="w-full bg-red-400 hover:bg-red-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
+                    <button
+                        className="w-full bg-red-400 hover:bg-red-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm"
+                        onClick={() => handleInvitation('REJECTED')}
+                    >
                         Từ chối
                     </button>
                 </div>

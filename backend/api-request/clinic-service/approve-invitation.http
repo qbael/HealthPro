@@ -1,0 +1,7 @@
+PUT http://localhost:4004/api/v1/clinic-invitation/b50e8400-e29b-41d4-a716-446655440008
+Content-Type: application/json
+
+"ACCEPTED"
+
+
+###

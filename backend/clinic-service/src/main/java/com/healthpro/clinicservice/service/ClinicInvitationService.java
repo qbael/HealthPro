@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -26,14 +27,14 @@ public class ClinicInvitationService {
     private final ClinicSpecialtyDoctorService clinicSpecialtyDoctorService;
     private final DoctorRepository doctorRepository;
 
-    public Page<ClinicInvitationDoctorDTO> getClinicInvitationsByDoctor(UUID doctorId, Pageable pageable) {
+    public Page<ClinicInvitationClinicDTO> getClinicInvitationsForDoctor(UUID doctorId, Pageable pageable) {
         Page<ClinicInvitation> clinicInvitations = clinicInvitationRepository.findAllByDoctor_Id(doctorId, pageable);
-        return clinicInvitations.map(ClinicInvitationDTOMapper::toDoctorDTO);
+        return clinicInvitations.map(ClinicInvitationDTOMapper::toClinicDTO);
     }
 
-    public Page<ClinicInvitationClinicDTO> getClinicInvitationsByClinicSpecialty(UUID clinicSpecialtyId, Pageable pageable) {
+    public Page<ClinicInvitationDoctorDTO> getClinicInvitationsForClinicSpecialty(UUID clinicSpecialtyId, Pageable pageable) {
         Page<ClinicInvitation> clinicInvitations = clinicInvitationRepository.findAllByClinicSpecialty_Id(clinicSpecialtyId, pageable);
-        return clinicInvitations.map(ClinicInvitationDTOMapper::toClinicDTO);
+        return clinicInvitations.map(ClinicInvitationDTOMapper::toDoctorDTO);
     }
 
     public void createClinicInvitation(UUID clinicId, UUID specialtyId, UUID doctorId) {
@@ -50,14 +51,15 @@ public class ClinicInvitationService {
     }
 
     @Transactional
-    public void approveClinicInvitation(UUID clinicInvitationId, InvitationStatus status) {
+    public void approveClinicInvitation(UUID clinicInvitationId, String status) {
         ClinicInvitation clinicInvitation = clinicInvitationRepository.findById(clinicInvitationId)
                 .orElseThrow(() -> new RuntimeException("clinicInvitation not found"));
 
-        if (status == InvitationStatus.ACCEPTED)
+        if (Objects.equals(status, "ACCEPTED"))
             handleAcceptedInvitation(clinicInvitation);
 
-        clinicInvitation.setStatus(status);
+        clinicInvitation.setStatus(InvitationStatus.valueOf(status.replace("\"", "").trim()));
+
         clinicInvitationRepository.save(clinicInvitation);
     }
 
