@@ -12,25 +12,71 @@ VALUES ('850e8400-e29b-41d4-a716-446655440001', 'Nội tổng quát'),
        ('850e8400-e29b-41d4-a716-446655440010', 'Chỉnh hình');
 
 -- Insert Doctors (matching user_ids from auth-service)
-INSERT INTO doctors (id, user_id, full_name, bio, gender, address, avatar_url)
-VALUES ('750e8400-e29b-41d4-a716-446655440011', '650e8400-e29b-41d4-a716-446655440011', 'BS. Trần Văn Nguyên',
-        'Bác sĩ chuyên khoa Nội tổng quát với hơn 15 năm kinh nghiệm. Chuyên điều trị các bệnh về tim mạch, tiểu đường và cao huyết áp.',
-        true, '78 Pasteur, Quận 1, TP.HCM', 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop'),
-       ('750e8400-e29b-41d4-a716-446655440012', '650e8400-e29b-41d4-a716-446655440012', 'BS. Lê Thị Mai',
-        'Bác sĩ chuyên khoa Sản - Phụ khoa, tốt nghiệp Đại học Y Hà Nội. Có kinh nghiệm 10 năm trong lĩnh vực chăm sóc sức khỏe sinh sản và điều trị vô sinh.',
-        false, '234 Điện Biên Phủ, Quận Bình Thạnh, TP.HCM', 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop'),
-       ('750e8400-e29b-41d4-a716-446655440013', '650e8400-e29b-41d4-a716-446655440013', 'BS. Phạm Văn Minh',
-        'Bác sĩ chuyên khoa Nhi với 12 năm kinh nghiệm. Chuyên điều trị các bệnh về hô hấp, tiêu hóa và phát triển ở trẻ em.',
-        true, '567 Cách Mạng Tháng 8, Quận 10, TP.HCM', 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=200&h=200&fit=crop'),
-       ('750e8400-e29b-41d4-a716-446655440014', '650e8400-e29b-41d4-a716-446655440014', 'BS. Nguyễn Thị Hạnh',
-        'Bác sĩ chuyên khoa Da liễu, tốt nghiệp loại Giỏi Đại học Y Dược TP.HCM. Chuyên điều trị mụn trứng cá, viêm da và các bệnh nấm da.',
-        false, '89 Võ Văn Tần, Quận 3, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop'),
-       ('750e8400-e29b-41d4-a716-446655440015', '650e8400-e29b-41d4-a716-446655440015', 'BS. Hoàng Văn Tuấn',
-        'Bác sĩ chuyên khoa Ngoại tổng hợp với 20 năm kinh nghiệm. Chuyên phẫu thuật nội soi và các ca phẫu thuật về ổ bụng.',
-        true, '123 Trần Hưng Đạo, Quận 5, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop'),
-       ('750e8400-e29b-41d4-a716-446655440016', '650e8400-e29b-41d4-a716-446655440016', 'BS. Trần Minh Đăng 2',
-        'Bác sĩ chuyên khoa Ngoại tổng hợp với 20 năm kinh nghiệm. Chuyên phẫu thuật nội soi và các ca phẫu thuật về ổ bụng.',
-        true, '123 Trần Hưng Đạo, Quận 5, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop');
+INSERT INTO doctors (
+    id, user_id, full_name, bio, gender, address, avatar_url, is_in_clinic_specialty
+)
+VALUES
+    ('750e8400-e29b-41d4-a716-446655440011', '650e8400-e29b-41d4-a716-446655440011',
+     'BS. Trần Văn Nguyên',
+     'Bác sĩ chuyên khoa Nội tổng quát với hơn 15 năm kinh nghiệm. Chuyên điều trị các bệnh về tim mạch, tiểu đường và cao huyết áp.',
+     true, '78 Pasteur, Quận 1, TP.HCM',
+     'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop',
+     false),
+
+    ('750e8400-e29b-41d4-a716-446655440012', '650e8400-e29b-41d4-a716-446655440012',
+     'BS. Lê Thị Mai',
+     'Bác sĩ chuyên khoa Sản - Phụ khoa, tốt nghiệp Đại học Y Hà Nội. Có kinh nghiệm 10 năm trong lĩnh vực chăm sóc sức khỏe sinh sản và điều trị vô sinh.',
+     false, '234 Điện Biên Phủ, Quận Bình Thạnh, TP.HCM',
+     'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop',
+     false),
+
+    ('750e8400-e29b-41d4-a716-446655440013', '650e8400-e29b-41d4-a716-446655440013',
+     'BS. Phạm Văn Minh',
+     'Bác sĩ chuyên khoa Nhi với 12 năm kinh nghiệm. Chuyên điều trị các bệnh về hô hấp, tiêu hóa và phát triển ở trẻ em.',
+     true, '567 Cách Mạng Tháng 8, Quận 10, TP.HCM',
+     'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=200&h=200&fit=crop',
+     false),
+
+    ('750e8400-e29b-41d4-a716-446655440014', '650e8400-e29b-41d4-a716-446655440014',
+     'BS. Nguyễn Thị Hạnh',
+     'Bác sĩ chuyên khoa Da liễu, tốt nghiệp loại Giỏi Đại học Y Dược TP.HCM. Chuyên điều trị mụn trứng cá, viêm da và các bệnh nấm da.',
+     false, '89 Võ Văn Tần, Quận 3, TP.HCM',
+     'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop',
+     false),
+
+    ('750e8400-e29b-41d4-a716-446655440015', '650e8400-e29b-41d4-a716-446655440015',
+     'BS. Hoàng Văn Tuấn',
+     'Bác sĩ chuyên khoa Ngoại tổng hợp với 20 năm kinh nghiệm. Chuyên phẫu thuật nội soi và các ca phẫu thuật về ổ bụng.',
+     true, '123 Trần Hưng Đạo, Quận 5, TP.HCM',
+     'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop',
+     false),
+
+    ('750e8400-e29b-41d4-a716-446655440016', '650e8400-e29b-41d4-a716-446655440016',
+     'BS. Trần Minh Đăng 2',
+     'Bác sĩ chuyên khoa Ngoại tổng hợp với 20 năm kinh nghiệm. Chuyên phẫu thuật nội soi và các ca phẫu thuật về ổ bụng.',
+     true, '123 Trần Hưng Đạo, Quận 5, TP.HCM',
+     'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop',
+     false);
+
+-- INSERT INTO doctors (id, user_id, full_name, bio, gender, address, avatar_url)
+-- VALUES ('750e8400-e29b-41d4-a716-446655440011', '650e8400-e29b-41d4-a716-446655440011', 'BS. Trần Văn Nguyên',
+--         'Bác sĩ chuyên khoa Nội tổng quát với hơn 15 năm kinh nghiệm. Chuyên điều trị các bệnh về tim mạch, tiểu đường và cao huyết áp.',
+--         true, '78 Pasteur, Quận 1, TP.HCM', 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop'),
+--        ('750e8400-e29b-41d4-a716-446655440012', '650e8400-e29b-41d4-a716-446655440012', 'BS. Lê Thị Mai',
+--         'Bác sĩ chuyên khoa Sản - Phụ khoa, tốt nghiệp Đại học Y Hà Nội. Có kinh nghiệm 10 năm trong lĩnh vực chăm sóc sức khỏe sinh sản và điều trị vô sinh.',
+--         false, '234 Điện Biên Phủ, Quận Bình Thạnh, TP.HCM', 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop'),
+--        ('750e8400-e29b-41d4-a716-446655440013', '650e8400-e29b-41d4-a716-446655440013', 'BS. Phạm Văn Minh',
+--         'Bác sĩ chuyên khoa Nhi với 12 năm kinh nghiệm. Chuyên điều trị các bệnh về hô hấp, tiêu hóa và phát triển ở trẻ em.',
+--         true, '567 Cách Mạng Tháng 8, Quận 10, TP.HCM', 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=200&h=200&fit=crop'),
+--        ('750e8400-e29b-41d4-a716-446655440014', '650e8400-e29b-41d4-a716-446655440014', 'BS. Nguyễn Thị Hạnh',
+--         'Bác sĩ chuyên khoa Da liễu, tốt nghiệp loại Giỏi Đại học Y Dược TP.HCM. Chuyên điều trị mụn trứng cá, viêm da và các bệnh nấm da.',
+--         false, '89 Võ Văn Tần, Quận 3, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop'),
+--        ('750e8400-e29b-41d4-a716-446655440015', '650e8400-e29b-41d4-a716-446655440015', 'BS. Hoàng Văn Tuấn',
+--         'Bác sĩ chuyên khoa Ngoại tổng hợp với 20 năm kinh nghiệm. Chuyên phẫu thuật nội soi và các ca phẫu thuật về ổ bụng.',
+--         true, '123 Trần Hưng Đạo, Quận 5, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop'),
+--        ('750e8400-e29b-41d4-a716-446655440016', '650e8400-e29b-41d4-a716-446655440016', 'BS. Trần Minh Đăng 2',
+--         'Bác sĩ chuyên khoa Ngoại tổng hợp với 20 năm kinh nghiệm. Chuyên phẫu thuật nội soi và các ca phẫu thuật về ổ bụng.',
+--         true, '123 Trần Hưng Đạo, Quận 5, TP.HCM', 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop');
 
 -- Insert Clinics (matching user_ids from auth-service)
 INSERT INTO clinics (id, user_id, clinic_name, address, description, weekday_open_hour, weekday_close_hour, weekend_open_hour,  weekend_close_hour, logo_url, avatar_url)
@@ -75,7 +121,9 @@ VALUES
  '850e8400-e29b-41d4-a716-446655440005'),
     -- BS. Trần Minh Đăng 2 - Ngoại tổng hợp
 ('950e8400-e29b-41d4-a716-446655440008', '750e8400-e29b-41d4-a716-446655440016',
- '850e8400-e29b-41d4-a716-446655440005');
+ '850e8400-e29b-41d4-a716-446655440005'),
+('950e8400-e29b-41d4-a716-446655440009', '750e8400-e29b-41d4-a716-446655440016',
+ '850e8400-e29b-41d4-a716-446655440001');
 
 -- Insert Clinic Specialties (Chuyên khoa mà phòng khám cung cấp)
 INSERT INTO clinic_specialties (id, clinic_id, specialty_id)

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/doctor-schedule-template")
+@RequestMapping("/api/v3/doctor-schedule-template")
 public class DoctorScheduleTemplateController {
     private final DoctorScheduleTemplateService doctorScheduleTemplateService;
 

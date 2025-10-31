@@ -6,9 +6,7 @@ import com.healthpro.authservice.dto.PatientRequestDTO;
 import com.healthpro.authservice.service.ClinicService;
 import com.healthpro.authservice.service.DoctorService;
 import com.healthpro.authservice.service.PatientService;
-import com.healthpro.authservice.utils.JwtUtil;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +19,6 @@ public class ProfileController {
     private final PatientService patientService;
     private final DoctorService doctorService;
     private final ClinicService clinicService;
-    private final JwtUtil jwtUtil;
 
     @GetMapping
     public ResponseEntity<?> getProfile(

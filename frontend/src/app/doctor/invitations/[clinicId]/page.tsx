@@ -1,9 +1,6 @@
 import React from 'react';
 import Image from "next/image";
 import {Award, Calendar, Clock, MapPin, Star} from "lucide-react";
-import Link from "next/link";
-import {CLINICS_API_URL} from "@/lib/utils";
-import {ClinicsType} from "@/types/clinic-types";
 import {createServerApi} from "@/lib/axiosServer";
 
 const Page = async ({ params } : any) => {
@@ -70,7 +67,7 @@ const Page = async ({ params } : any) => {
                                     Chuyên Khoa
                                 </h2>
                                 <div className="flex flex-wrap gap-3">
-                                    {clinic.clinicSpecialties.map((specialty) => (
+                                    {clinic.clinicSpecialties.map((specialty : any) => (
                                         <span
                                             key={specialty.id}
                                             className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors cursor-pointer"
@@ -111,17 +108,6 @@ const Page = async ({ params } : any) => {
                     </div>
 
                     <div className="space-y-6">
-                        <div className="bg-white rounded-2xl shadow-md p-6">
-                            <div className='flex flex-1 gap-5 items-center'>
-                                <button className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
-                                    Đồng ý
-                                </button>
-                                <button className="w-full bg-red-400 hover:bg-red-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
-                                    Từ chối
-                                </button>
-                            </div>
-                        </div>
-
                         <div className="bg-white rounded-2xl shadow-md p-6">
                             <h3 className="text-xl font-bold text-gray-800 mb-4">
                                 Thông Tin Liên Hệ

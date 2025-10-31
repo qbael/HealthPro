@@ -66,9 +66,8 @@ const SpecialtyForm = ({ specialties } : any) => {
     }, [form, specialties]);
 
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
-        console.log(values)
         try {
-            await api.post(`v1/doctor-specialty`, values)
+            await api.post(`v2/doctor-specialty`, values)
 
             toast.success(
                 Object.values(specialties ?? {}).every(v => v === null)

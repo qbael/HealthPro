@@ -21,7 +21,7 @@ const Page = async ({ searchParams }: PageProps) => {
     }).toString();
 
     const res = await api
-        .get(`v1/clinic-invitation${queryParams ? `?${queryParams}` : ""}`)
+        .get(`v2/clinic-invitation${queryParams ? `?${queryParams}` : ""}`)
 
     const invitations = res?.data?.data?.content;
     const totalPages = res?.data?.data?.totalPages;

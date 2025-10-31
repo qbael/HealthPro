@@ -1,8 +1,40 @@
+'use client'
+
 import {renderSpecialtyIcon} from "@/lib/icon-provider";
 import Link from "next/link";
 import {Button} from "@/components/ui/button"
+import api from "@/lib/axios";
+import {useAuth} from "@/contexts/AuthContext";
+import {toast} from "sonner";
+import {useRouter} from "next/navigation";
 
 const SpecialtyCard = ({ specialty } : any) => {
+    const { user } = useAuth()
+    const router = useRouter()
+
+    const checkClinicHasRegisteredTime = async () => {
+        try {
+            const res = await api.get(`/v1/clinics/${user?.userRoleId}`);
+            const clinic = res.data;
+
+            if (
+                !clinic.weekdayOpenHour ||
+                !clinic.weekdayCloseHour ||
+                !clinic.weekendOpenHour ||
+                !clinic.weekendCloseHour
+            ) {
+                toast.error("Phòng khám chưa đăng ký thời gian làm.");
+                return;
+            }
+
+            router.push(`/clinic/specialty/schedules/${specialty.specialtyId}`);
+        }
+        catch (err) {
+            toast.error("Không thể kiểm tra thời gian làm của phòng khám.");
+            console.error(err);
+        }
+    }
+
     return (
         <div
             key={specialty.id}
@@ -23,14 +55,15 @@ const SpecialtyCard = ({ specialty } : any) => {
                 </h3>
             </div>
             <div className='flex items-center gap-3 mt-5'>
-                <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
+                <Button asChild className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
                     <Link href={`/clinic/specialty/doctors/${specialty.specialtyId}`}>Mời Bác Sĩ</Link>
                 </Button>
-                <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
+                <Button asChild className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
                     <Link href={`/clinic/specialty/invitations/${specialty.id}`}>Lời Mời Đã Gửi</Link>
                 </Button>
-                <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
-                    <Link href={`/clinic/specialty/schedules/${specialty.specialtyId}`}>Đăng Ký Lịch Làm</Link>
+                <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'
+                        onClick={checkClinicHasRegisteredTime}>
+                    Đăng Ký Lịch Làm
                 </Button>
             </div>
         </div>

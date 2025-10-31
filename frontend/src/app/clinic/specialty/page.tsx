@@ -4,7 +4,7 @@ import SpecialtyPage from "@/components/clinics/SpecialtyPage";
 const Page = async () => {
     const api = await createServerApi()
     try {
-        const res = await api.get('/v1/clinic-specialty')
+        const res = await api.get('/v2/clinic-specialty')
         const specialties = res.data
         return (
             <SpecialtyPage specialties={specialties} />

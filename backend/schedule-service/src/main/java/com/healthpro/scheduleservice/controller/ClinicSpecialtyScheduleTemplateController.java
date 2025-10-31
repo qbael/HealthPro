@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/clinic-specialty-schedule-template")
+@RequestMapping("/api/v3/clinic-specialty-schedule-template")
 public class ClinicSpecialtyScheduleTemplateController {
     private final ClinicSpecialtyScheduleTemplateService clinicSpecialtyScheduleTemplateService;
 
@@ -21,6 +21,15 @@ public class ClinicSpecialtyScheduleTemplateController {
         ClinicSpecialtyScheduleTemplateDTO template = clinicSpecialtyScheduleTemplateService
                 .getAllClinicSpecialtyScheduleTemplates(id);
         return ResponseEntity.ok(template);
+    }
+
+    @GetMapping("/check/{clinicSpecialtyId}")
+    public ResponseEntity<Boolean> checkClinicSpecialtyScheduleExists(
+            @PathVariable UUID clinicSpecialtyId
+            ) {
+        boolean check = clinicSpecialtyScheduleTemplateService
+                .checkClinicSpecialtyScheduleExists(clinicSpecialtyId);
+        return ResponseEntity.ok(check);
     }
 
     @PostMapping("/{id}")

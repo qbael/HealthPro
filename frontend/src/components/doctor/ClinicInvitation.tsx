@@ -5,15 +5,19 @@ import {Clock, MapPin, Star} from "lucide-react";
 import Link from "next/link";
 import {toast} from "sonner";
 import api from "@/lib/axios";
+import {useRouter} from "next/navigation";
 
 const ClinicInvitation = ({ invitation } : any) => {
+    const router = useRouter()
+
     const handleInvitation = async (status: string) => {
         try {
-            await api.put(`v1/clinic-invitation/${invitation.id}`, JSON.stringify(status))
+            await api.put(`v2/clinic-invitation/${invitation.id}`, JSON.stringify(status))
             {
                 status == 'ACCEPTED' ? toast.success('Đồng ý thành công')
                     : toast.error('Hủy thành công')
             }
+            router.refresh()
         }
         catch (error: any) {
             console.error(error)
@@ -38,7 +42,7 @@ const ClinicInvitation = ({ invitation } : any) => {
                         <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0"/>
                         <span>{invitation.address}</span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">chuyen khoa</p>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Chuyên khoa: {invitation.specialtyName}</p>
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                         <Clock className="w-4 h-4"/>
                         <span>T2-T6: {invitation.weekdayOpenHour} - {invitation.weekdayCloseHour} | T7-CN:{' '}
@@ -59,20 +63,37 @@ const ClinicInvitation = ({ invitation } : any) => {
                     </button>
                 </Link>
 
-                <div className='flex flex-1 gap-5 items-center'>
-                    <button
-                        className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm"
-                        onClick={() => handleInvitation('ACCEPTED')}
-                    >
-                        Đồng ý
-                    </button>
-                    <button
-                        className="w-full bg-red-400 hover:bg-red-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm"
-                        onClick={() => handleInvitation('REJECTED')}
-                    >
-                        Từ chối
-                    </button>
-                </div>
+                {
+                    invitation.status == 'PENDING' ? (
+                        <div className='flex flex-1 gap-5 items-center'>
+                            <button
+                                className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm"
+                                onClick={() => handleInvitation('ACCEPTED')}
+                            >
+                                Đồng ý
+                            </button>
+                            <button
+                                className="w-full bg-red-400 hover:bg-red-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm"
+                                onClick={() => handleInvitation('REJECTED')}
+                            >
+                                Từ chối
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="w-full text-white text-center bg-cyan-500 px-3 py-2 rounded-lg font-medium text-sm">
+                            Trạng thái: {
+                                invitation.status == 'ACCEPTED' ? 'Đã đồng ý' :
+                                invitation.status == 'REJECTED' ? 'Đã từ chối' :
+                                invitation.status == 'CANCELLED' ? 'Phòng khám đã hủy' : null
+                            }
+                        </div>
+                    )
+                }
+
+
+
+
+
             </div>
         </div>
     );

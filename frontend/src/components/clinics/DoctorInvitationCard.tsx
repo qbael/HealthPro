@@ -8,7 +8,7 @@ import {toast} from "sonner";
 const DoctorInvitationCard = ({ invitation } : any) => {
     const handleInvitation = async () => {
         try {
-            await api.put(`v1/clinic-invitation/${invitation.id}`, JSON.stringify("CANCELLED"))
+            await api.put(`v2/clinic-invitation/${invitation.id}`, JSON.stringify("CANCELLED"))
             toast.success('Hủy thành công')
         }
         catch (error: any) {
@@ -42,7 +42,7 @@ const DoctorInvitationCard = ({ invitation } : any) => {
             </div>
 
             <div className="flex flex-1 gap-2 mt-4 h-full">
-                <div className="w-full bg-white hover:bg-gray-50 hover:cursor-pointer text-cyan-500 border border-cyan-500 px-5 py-2 rounded-lg font-medium text-sm">
+                <div className="w-full text-white text-center bg-cyan-500 px-3 py-2 rounded-lg font-medium text-sm">
                     Trạng thái: {
                         invitation.status === 'PENDING' ? 'Đang xử lý' :
                         invitation.status === 'ACCEPTED' ? 'Đồng ý' :
@@ -51,12 +51,14 @@ const DoctorInvitationCard = ({ invitation } : any) => {
                         'Không xác định'
                     }
                 </div>
-                <button
-                    className="w-full bg-red-400 hover:bg-red-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm"
-                    onClick={handleInvitation}
-                >
-                    Hủy
-                </button>
+                {invitation.status === 'PENDING' && (
+                    <button
+                        className="w-full bg-red-400 hover:bg-red-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm"
+                        onClick={handleInvitation}
+                    >
+                        Hủy
+                    </button>
+                )}
             </div>
         </div>
     );

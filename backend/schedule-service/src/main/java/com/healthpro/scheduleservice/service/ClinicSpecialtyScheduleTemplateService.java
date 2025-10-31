@@ -1,5 +1,6 @@
 package com.healthpro.scheduleservice.service;
 
+import com.healthpro.scheduleservice.dto.CheckClinicSpecialtyScheduleDTO;
 import com.healthpro.scheduleservice.dto.ClinicSpecialtyScheduleTemplateDTO;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyScheduleTemplate;
 import com.healthpro.scheduleservice.mapper.ClinicSpecialtyScheduleTemplateMapper;
@@ -25,6 +26,10 @@ public class ClinicSpecialtyScheduleTemplateService {
         }
 
         return ClinicSpecialtyScheduleTemplateMapper.toClinicSpecialtyScheduleTemplateResponseDTO(clinicSpecialtyScheduleTemplates);
+    }
+
+    public boolean checkClinicSpecialtyScheduleExists(UUID clinicSpecialtyId) {
+        return clinicSpecialtyScheduleTemplateRepository.existsByClinicSpecialtyId(clinicSpecialtyId);
     }
 
     @Transactional

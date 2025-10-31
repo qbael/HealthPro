@@ -190,7 +190,7 @@ const ProfileForm = ({ user } : ProfileFormProps) => {
     const [loading, setLoading] = useState(false)
     const [avatarPreview, setAvatarPreview] = useState<string | null>(user.avatarUrl || null)
     const [logoPreview, setLogoPreview] = useState<string | null>(user.logoUrl || null)
-    console.log(user.weekdayCloseHour)
+
     const hours = Array.from({ length: 11 }, (_, i) => {
         const h = i + 8;
         return h.toString().padStart(2, "0") + ":00";

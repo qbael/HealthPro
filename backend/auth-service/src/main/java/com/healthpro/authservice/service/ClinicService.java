@@ -3,22 +3,19 @@ package com.healthpro.authservice.service;
 import com.healthpro.authservice.dto.ClinicRequestDTO;
 import com.healthpro.authservice.dto.ClinicResponseDTO;
 import com.healthpro.authservice.dto.ClinicResponseWebClientDTO;
-import com.healthpro.authservice.dto.DoctorResponseDTO;
+import com.healthpro.authservice.dto.ClinicTimeDTO;
 import com.healthpro.authservice.entity.Clinic;
-import com.healthpro.authservice.entity.Doctor;
 import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.ResourceNotFoundException;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import com.healthpro.authservice.mapper.ClinicMapper;
-import com.healthpro.authservice.mapper.DoctorMapper;
 import com.healthpro.authservice.repository.ClinicRepository;
 import com.healthpro.authservice.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -97,5 +94,11 @@ public class ClinicService {
         dto.setAvatarUrl(clinic.getAvatarUrl());
 
         return dto;
+    }
+
+    public ClinicTimeDTO getTimeClinic(UUID id) {
+        Clinic clinic = clinicRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Not found clinic"));
+        return new ClinicTimeDTO(clinic.getWeekdayOpenHour(), clinic.getWeekdayCloseHour());
     }
 }

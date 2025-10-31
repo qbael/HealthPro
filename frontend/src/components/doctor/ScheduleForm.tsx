@@ -140,7 +140,7 @@ const ScheduleForm = ({ template } : ScheduleFormProps) => {
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
         console.log(values)
         try {
-            await api.post(`v1/doctor-schedule-template`, values)
+            await api.post(`v3/doctor-schedule-template`, values)
 
             toast.success(
                 Object.values(template ?? {}).every(v => v === null)

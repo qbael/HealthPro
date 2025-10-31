@@ -5,7 +5,7 @@ import InviteButton from "@/components/clinics/InviteButton";
 
 const DoctorSpecialtyCard = async ({ doctor, specialtyId } : any) => {
     const specialties = doctor.doctorSpecialties
-        .map((ds: { specialty: { name: any; }; }) => ds.specialty.name)
+        .map((ds: { specialty: { name: never; }; }) => ds.specialty.name)
         .join(" • ");
 
     return (

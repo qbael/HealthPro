@@ -17,16 +17,18 @@ const Page = async ({ params, searchParams } : any) => {
     }).toString();
 
     const res1 = await api
-        .get(`v1/clinic-invitation/${clinicSpecialtyId}${queryParams ? `?${queryParams}` : ""}`)
+        .get(`v2/clinic-invitation/${clinicSpecialtyId}${queryParams ? `?${queryParams}` : ""}`)
 
     const invitations = res1?.data?.data?.content;
     const totalPages = res1?.data?.data?.totalPages;
     const currentPage = res1?.data?.data?.pageable?.pageNumber;
+
     console.log(invitations)
+
     return (
         <main>
             <section className='relative top-5 mx-auto w-[90%] max-w-[900px]'>
-                <h1 className='text-blue-400 text-2xl text-center font-bold mb-7'>Lời Mời Đã Gửi: {invitations[0].specialtyName}</h1>
+                <h1 className='text-blue-400 text-2xl text-center font-bold mb-7'>Lời Mời Đã Gửi: {invitations[0]?.specialtyName}</h1>
 
                 <div className="flex flex-wrap flex-col w-full items-center">
                     {invitations?.length ? (
