@@ -39,7 +39,7 @@ const ModalConfirmAppointment = ({
                 setIsLoading(true);
                 setError(null);
 
-                const response = await api.post('/v1/appointments/appointment-data', {
+                const response = await api.post('/v3/appointments/appointment-data', {
                     "userId": userId,
                     "doctorId": doctorId,
                     "clinicSpecialtyId": clinicSpecialtyId
@@ -74,7 +74,7 @@ const ModalConfirmAppointment = ({
                 appointmentType: appointmentType,
             };
 
-            const response = await api.post('/v1/appointments', bookingData);
+            const response = await api.post('/v3/appointments', bookingData);
 
             if (response.data.success) {
                 toast.success('Đặt khám thành công!');

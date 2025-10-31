@@ -29,13 +29,13 @@ public class DoctorScheduleTemplateService {
 
     @Transactional
     public void createDoctorScheduleTemplate(
-            UUID userRoleId, DoctorScheduleTemplateDTO doctorScheduleTemplateDTO
+            UUID doctorId, DoctorScheduleTemplateDTO doctorScheduleTemplateDTO
     ) {
-        doctorScheduleTemplateRepository.deleteByDoctorId(userRoleId);
+        doctorScheduleTemplateRepository.deleteByDoctorId(doctorId);
 
         for (int i = 0; i < doctorScheduleTemplateDTO.getDayOfWeek().length; i++) {
             DoctorScheduleTemplate doctorScheduleTemplate = new DoctorScheduleTemplate();
-            doctorScheduleTemplate.setDoctorId(userRoleId);
+            doctorScheduleTemplate.setDoctorId(doctorId);
             doctorScheduleTemplate.setDayOfWeek(doctorScheduleTemplateDTO.getDayOfWeek()[i]);
             doctorScheduleTemplate.setFromTime(doctorScheduleTemplateDTO.getFromTime());
             doctorScheduleTemplate.setToTime(doctorScheduleTemplateDTO.getToTime());

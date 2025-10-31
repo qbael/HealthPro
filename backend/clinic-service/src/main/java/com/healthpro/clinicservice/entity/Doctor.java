@@ -24,7 +24,7 @@ public class Doctor {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @NotNull(message = "Id người dùng không được ")
+    @NotNull(message = "Id người dùng không được để trống ")
     @Column(name = "user_id", unique = true, nullable = false)
     private UUID userId;
 
@@ -53,4 +53,7 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private Set<ClinicInvitation> invitations;
+
+    @Column(name = "is_in_clinic_specialty")
+    private boolean isInClinicSpecialty = false;
 }

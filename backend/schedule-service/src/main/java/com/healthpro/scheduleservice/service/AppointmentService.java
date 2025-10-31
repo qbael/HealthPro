@@ -25,7 +25,7 @@ public class AppointmentService {
     public AppointmentService(AppointmentRepository appointmentRepository,
                               DoctorAvailableSlotRepository doctorAvailableSlotRepository,
                               WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:4004/api/v1").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:4004/api").build();
         this.doctorAvailableSlotRepository = doctorAvailableSlotRepository;
         this.appointmentRepository = appointmentRepository;
     }
@@ -55,7 +55,7 @@ public class AppointmentService {
     private ClinicSpecialtyInfoResponseDto getClinicSpecialtyInfo(UUID clinicSpecialtyId) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/appointments/clinic-specialty-info")
+                        .path("/v2/appointments/clinic-specialty-info")
                         .queryParam("clinicSpecialtyId", clinicSpecialtyId)
                         .build())
                 .header("X-Internal-Service", "schedule-service")
@@ -67,7 +67,7 @@ public class AppointmentService {
     private AppointmentInfoResponseDto getAppointmentInfo(UUID userId, UUID doctorId, UUID clinicId) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/appointments/appointment-info")
+                        .path("/v1/appointments/appointment-info")
                         .queryParam("userId", userId)
                         .queryParam("doctorId", doctorId)
                         .queryParam("clinicId", clinicId)

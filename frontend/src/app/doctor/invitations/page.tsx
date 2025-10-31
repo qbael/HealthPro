@@ -1,5 +1,4 @@
 import {createServerApi} from "@/lib/axiosServer";
-import DoctorSpecialtyCard from "@/components/clinics/DoctorSpecialtyCard";
 import {Pagination} from "@/components/ui/Pagination";
 import React from "react";
 import ClinicInvitation from "@/components/doctor/ClinicInvitation";
@@ -22,12 +21,11 @@ const Page = async ({ searchParams }: PageProps) => {
     }).toString();
 
     const res = await api
-        .get(`v1/clinic-invitation${queryParams ? `?${queryParams}` : ""}`)
+        .get(`v2/clinic-invitation${queryParams ? `?${queryParams}` : ""}`)
 
     const invitations = res?.data?.data?.content;
     const totalPages = res?.data?.data?.totalPages;
     const currentPage = res?.data?.data?.pageable?.pageNumber;
-    console.log(invitations)
 
     return (
         <main>

@@ -1,4 +1,4 @@
-POST http://localhost:4004/api/v1/appointments/appointment-data
+POST http://localhost:4004/api/v3/appointments/appointment-data
 Content-Type: application/json
 
 {

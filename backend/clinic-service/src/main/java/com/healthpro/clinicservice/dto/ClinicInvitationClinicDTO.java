@@ -1,16 +1,19 @@
 package com.healthpro.clinicservice.dto;
 
 import com.healthpro.clinicservice.entity.enums.InvitationStatus;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class ClinicInvitationResponseDTO {
+@Getter
+@Setter
+public class ClinicInvitationClinicDTO {
     private UUID id;
     private InvitationStatus status;
     private LocalDateTime invitedAt;
     private LocalDateTime respondedAt;
-    private String title;
 
     private UUID clinicSpecialtyId;
     private UUID specialtyId;

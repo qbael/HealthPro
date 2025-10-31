@@ -5,10 +5,11 @@ import api from "@/lib/axios";
 const InviteButton = ({ specialtyId, doctorId }: { specialtyId: string; doctorId: string }) => {
     const handleInvite = async () => {
         try {
-            await api.post("v1/clinic-invitation", { specialtyId, doctorId });
+            await api.post("v3/clinic-invitation", { specialtyId, doctorId });
             toast.success("Đã gửi lời mời");
-        } catch (error: any) {
-            toast.error("Không thể gửi lời mời");
+        } catch (err: any) {
+            const msg = err.response?.data?.message || 'Không thể gửi lời mời.'
+            toast.error(msg)
         }
     };
 

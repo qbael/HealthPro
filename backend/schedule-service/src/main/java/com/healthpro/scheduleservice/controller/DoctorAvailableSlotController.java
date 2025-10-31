@@ -16,8 +16,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/schedule/doctor")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/v3/schedule/doctor")
 public class DoctorAvailableSlotController {
     private final DoctorAvailableSlotService doctorAvailableSlotService;
 

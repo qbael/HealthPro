@@ -5,7 +5,7 @@ import {createServerApi} from "@/lib/axiosServer";
 
 const SchedulePage = async ({ initialTemplate, clinicSpecialtyId } : any) => {
     const api = await createServerApi()
-    const res = await api.get(`v1/specialties/${clinicSpecialtyId}`)
+    const res = await api.get(`v2/specialties/${clinicSpecialtyId}`)
     const specialtyName = res.data.name
 
     const days = [

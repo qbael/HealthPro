@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/doctors")
+@RequestMapping("/api/v2/doctors")
 public class DoctorController {
 
     private final DoctorService doctorService;

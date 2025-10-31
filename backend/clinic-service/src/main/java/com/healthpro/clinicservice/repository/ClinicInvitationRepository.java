@@ -11,4 +11,10 @@ import java.util.UUID;
 @Repository
 public interface ClinicInvitationRepository extends JpaRepository<ClinicInvitation, UUID> {
     Page<ClinicInvitation> findAllByDoctor_Id(UUID doctorId, Pageable pageable);
+
+    Page<ClinicInvitation> findAllByClinicSpecialty_Id(UUID clinicSpecialtyId, Pageable pageable);
+
+    ClinicInvitation findAllByDoctor_IdAndClinicSpecialty_Id(UUID doctorId, UUID clinicSpecialtyId);
+
+    void deleteClinicInvitationById(UUID id);
 }

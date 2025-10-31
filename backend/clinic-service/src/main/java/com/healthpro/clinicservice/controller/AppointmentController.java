@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/appointments")
+@RequestMapping("/api/v2/appointments")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;

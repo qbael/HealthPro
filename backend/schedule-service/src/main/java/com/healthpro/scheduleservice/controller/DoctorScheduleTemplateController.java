@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/doctor-schedule-template")
+@RequestMapping("/api/v3/doctor-schedule-template")
 public class DoctorScheduleTemplateController {
     private final DoctorScheduleTemplateService doctorScheduleTemplateService;
 
@@ -23,13 +23,13 @@ public class DoctorScheduleTemplateController {
         return ResponseEntity.ok().body(template);
     }
 
-    @PostMapping()
+    @PostMapping("/{doctorId}")
     public ResponseEntity<?> createDoctorScheduleTemplate(
-            @RequestHeader("X-UserRole-Id") UUID userRoleId,
+            @PathVariable UUID doctorId,
             @RequestBody DoctorScheduleTemplateDTO doctorScheduleTemplateDTO
     ) {
         doctorScheduleTemplateService.createDoctorScheduleTemplate(
-                userRoleId, doctorScheduleTemplateDTO);
+                doctorId, doctorScheduleTemplateDTO);
         return ResponseEntity.noContent().build();
     }
 

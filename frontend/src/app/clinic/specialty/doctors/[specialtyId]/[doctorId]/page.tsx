@@ -1,11 +1,9 @@
 import React from 'react';
 import Image from "next/image";
-import {ChevronLeft, ChevronRight, Clock, Phone} from "lucide-react";
 import {createServerApi} from "@/lib/axiosServer";
-import InviteButton from "@/components/clinics/InviteButton";
 
-const Page = async ({ params }: { params: Promise<{ doctorId: string }> }) => {
-    const { specialtyId, doctorId } = await params
+const Page = async ({ params } : any) => {
+    const { doctorId } = await params
     const api = await createServerApi()
     const res = await api.get(`v1/doctors/${doctorId}`)
     const doctor = res.data.data
@@ -30,7 +28,7 @@ const Page = async ({ params }: { params: Promise<{ doctorId: string }> }) => {
                             <div>
                                 <span className="text-gray-600">Chuyên khoa:</span>
                                 <span className="text-blue-600 ml-1">
-                                    {doctor.doctorSpecialties.map(specialty => specialty.specialty.name).join(' • ')}
+                                    {doctor.doctorSpecialties.map((specialty: any) => specialty.specialty.name).join(' • ')}
                                 </span>
                             </div>
                         </div>
@@ -47,7 +45,7 @@ const Page = async ({ params }: { params: Promise<{ doctorId: string }> }) => {
             <div className="bg-white rounded-lg shadow-sm p-6 mb-4">
                 <h2 className="text-lg font-bold text-gray-900 mb-3">Chuyên khám</h2>
                 <div className="grid grid-cols-2 gap-3">
-                    {doctor.doctorSpecialties.map((specialty, idx) => (
+                    {doctor.doctorSpecialties.map((specialty: any, idx: any) => (
                         <div key={idx} className="flex items-center gap-2 text-sm text-gray-700">
                             <h3 _ngcontent-serverapp-c40="" className="text-base">
                                 <span _ngcontent-serverapp-c40=""
@@ -109,8 +107,6 @@ const Page = async ({ params }: { params: Promise<{ doctorId: string }> }) => {
                     </div>
                 </a>
             </div>
-
-            <InviteButton specialtyId={specialtyId} doctorId={doctor.id} />
         </main>
     );
 };

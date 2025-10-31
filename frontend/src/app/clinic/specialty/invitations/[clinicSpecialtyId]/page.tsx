@@ -1,14 +1,11 @@
 import {createServerApi} from "@/lib/axiosServer";
-import DoctorSpecialtyCard from "@/components/clinics/DoctorSpecialtyCard";
+import DoctorInvitationCard from "@/components/clinics/DoctorInvitationCard"
 import {Pagination} from "@/components/ui/Pagination";
 import React from "react";
 
-const Page = async ({ params, searchParams }: any) => {
+const Page = async ({ params, searchParams } : any) => {
+    const { clinicSpecialtyId } = await params
     const api = await createServerApi()
-    const { specialtyId } = params;
-
-    const res = await api.get(`/v2/specialties/${specialtyId}`)
-    const specialtyName = res.data.name
 
     const { page, limit, sortBy, sortDir } = searchParams || {};
 
@@ -20,24 +17,26 @@ const Page = async ({ params, searchParams }: any) => {
     }).toString();
 
     const res1 = await api
-        .get(`v2/doctor-specialty/${specialtyId}${queryParams ? `?${queryParams}` : ""}`)
+        .get(`v2/clinic-invitation/${clinicSpecialtyId}${queryParams ? `?${queryParams}` : ""}`)
 
-    const doctors = res1?.data?.data?.content;
+    const invitations = res1?.data?.data?.content;
     const totalPages = res1?.data?.data?.totalPages;
     const currentPage = res1?.data?.data?.pageable?.pageNumber;
+
+    console.log(invitations)
 
     return (
         <main>
             <section className='relative top-5 mx-auto w-[90%] max-w-[900px]'>
-                <h1 className='text-blue-400 text-2xl text-center font-bold mb-7'>Bác Sĩ Theo Chuyên Khoa: {specialtyName}</h1>
+                <h1 className='text-blue-400 text-2xl text-center font-bold mb-7'>Lời Mời Đã Gửi: {invitations[0]?.specialtyName}</h1>
 
                 <div className="flex flex-wrap flex-col w-full items-center">
-                    {doctors?.length ? (
-                        doctors.map((doctor: any) => (
-                            <DoctorSpecialtyCard key={doctor.id} doctor={doctor} specialtyId={specialtyId}/>
+                    {invitations?.length ? (
+                        invitations.map((invitation: any) => (
+                            <DoctorInvitationCard key={invitation.id} invitation={invitation} />
                         ))
                     ) : (
-                        <p className="text-gray-500">Không có bác sĩ nào trong chuyên khoa này.</p>
+                        <p className="text-gray-500">Không có lời mời nào.</p>
                     )}
                 </div>
                 <div className={'w-full justify-items-center'}>

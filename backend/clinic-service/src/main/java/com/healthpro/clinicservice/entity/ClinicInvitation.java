@@ -43,7 +43,4 @@ public class ClinicInvitation {
 
     @Column(name = "responded_at")
     private LocalDateTime respondedAt;
-
-    @Column(name = "title", columnDefinition = "TEXT")
-    private String title;
 }

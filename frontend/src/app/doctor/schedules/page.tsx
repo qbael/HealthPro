@@ -4,14 +4,11 @@ import SchedulePage from "@/components/doctor/SchedulePage";
 const Page = async () => {
     const api = await createServerApi()
     try {
-        const res = await api.get('/v1/doctor-available-slots?appointmentType=DOCTOR')
-        const schedules = res.data
-
-        const res1 = await api.get('v1/doctor-schedule-template')
+        const res1 = await api.get('v3/doctor-schedule-template')
         const template = res1.data
 
         return (
-            <SchedulePage initialTemplate={template} initialSchedules={schedules} />
+            <SchedulePage initialTemplate={template} />
         )
     }
     catch (error) {

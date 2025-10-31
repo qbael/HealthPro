@@ -10,9 +10,10 @@ import {Label} from "@/components/ui/label"
 import {toast} from 'sonner'
 import api from '@/lib/axios'
 import * as React from "react"
-import {useEffect} from "react"
+import {useEffect, useState} from "react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {useRouter} from 'next/navigation'
+import {useAuth} from "@/contexts/AuthContext";
 
 const baseSchema = z.object({
     dayOfWeek: z
@@ -67,26 +68,8 @@ const baseSchema = z.object({
         }
     })
 
-// type DayType =
-//     | "MONDAY"
-//     | "TUESDAY"
-//     | "WEDNESDAY"
-//     | "THURSDAY"
-//     | "FRIDAY"
-//     | "SATURDAY"
-//     | "SUNDAY"
-//
-// type ScheduleFormProps = {
-//     template?: {
-//         dayOfWeek: DayType[]
-//         fromTime: string
-//         toTime: string
-//         slotDuration: number
-//         doctor_id?: string
-//     }
-// }
-
 const ScheduleForm = ({ template, clinicSpecialtyId } : any) => {
+    const { user } = useAuth()
     const router = useRouter()
 
     const days = [
@@ -98,10 +81,6 @@ const ScheduleForm = ({ template, clinicSpecialtyId } : any) => {
         { value: "FRIDAY", label: "Thứ Sáu" },
         { value: "SATURDAY", label: "Thứ Bảy" },
     ] as const;
-    const hours = Array.from({ length: 10 }, (_, i) => {
-        const h = i + 8;
-        return h.toString().padStart(2, "0") + ":00";
-    })
 
     const slotDurations = Array.from({ length: 12 }, (_, i) => {
         const value = (i + 1) * 5;
@@ -137,10 +116,31 @@ const ScheduleForm = ({ template, clinicSpecialtyId } : any) => {
             })
     }, [form, template])
 
+    const [hours, setHours] = useState<string[]>([]);
+
+    const getClinicTime = async () => {
+        const res = await api.get(`v1/clinics/time/${user?.userRoleId}`)
+        const clinic = res.data
+
+        const open = parseInt(clinic.fromTime.split(":")[0], 10)
+        const close = parseInt(clinic.toTime.split(":")[0], 10)
+
+        const generatedHours = Array.from({ length: close - open + 1 }, (_, i) => {
+            const h = i + open;
+            return h.toString().padStart(2, "0") + ":00";
+        })
+
+        setHours(generatedHours)
+    }
+
+    useEffect(() => {
+        if (user?.userRoleId)
+            getClinicTime();
+    }, [user])
+
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
-        console.log(values)
         try {
-            await api.post(`v1/clinic-specialty-schedule-template/${clinicSpecialtyId}`, values)
+            await api.post(`v3/clinic-specialty-schedule-template/${clinicSpecialtyId}`, values)
 
             toast.success(
                 Object.values(template ?? {}).every(v => v === null)
@@ -213,7 +213,7 @@ const ScheduleForm = ({ template, clinicSpecialtyId } : any) => {
                                             <SelectValue placeholder="Giờ Bắt Đầu" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {hours.map(hour => (
+                                            {hours?.map(hour => (
                                                 <SelectItem key={hour} value={hour}>
                                                     {hour}
                                                 </SelectItem>
@@ -241,7 +241,7 @@ const ScheduleForm = ({ template, clinicSpecialtyId } : any) => {
                                             <SelectValue placeholder="Giờ Kết Thúc" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {hours.map(hour => (
+                                            {hours?.map(hour => (
                                                 <SelectItem key={hour} value={hour}>
                                                     {hour}
                                                 </SelectItem>
