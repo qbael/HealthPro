@@ -1,7 +1,6 @@
 package com.healthpro.authservice.controller;
 
 import com.healthpro.authservice.dto.ApiResponseDTO;
-import com.healthpro.authservice.dto.ClinicResponseWebClientDTO;
 import com.healthpro.authservice.dto.DoctorResponseDTO;
 import com.healthpro.authservice.dto.DoctorResponseWebClientDTO;
 import com.healthpro.authservice.service.DoctorService;
@@ -60,7 +59,6 @@ public class DoctorController {
 //        DoctorResponseDTO doctorResponseDTO = doctorService.createDoctor(doctorRequestDTO);
 //        return ResponseEntity.ok().body(doctorResponseDTO);
 //    }
-
 
 //    @PutMapping("/{id}")
 //    @Operation(summary = "Update a Doctor")

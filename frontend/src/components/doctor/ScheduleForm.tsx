@@ -13,6 +13,7 @@ import * as React from "react"
 import {useEffect} from "react"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import { useRouter } from 'next/navigation'
+import {useAuth} from "@/contexts/AuthContext";
 
 const baseSchema = z.object({
     dayOfWeek: z
@@ -87,6 +88,7 @@ type ScheduleFormProps = {
 }
 
 const ScheduleForm = ({ template } : ScheduleFormProps) => {
+    const { user } = useAuth()
     const router = useRouter()
 
     const days = [
@@ -140,7 +142,7 @@ const ScheduleForm = ({ template } : ScheduleFormProps) => {
     const onSubmit = async (values: z.infer<typeof baseSchema>) => {
         console.log(values)
         try {
-            await api.post(`v3/doctor-schedule-template`, values)
+            await api.post(`v3/doctor-schedule-template/${user.userRoleId}`, values)
 
             toast.success(
                 Object.values(template ?? {}).every(v => v === null)

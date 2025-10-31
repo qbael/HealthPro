@@ -112,6 +112,14 @@
 #              - Path=/api/v3/clinic-specialty-schedule-template/**
 #            filters:
 #              - JwtValidation
+#
+#            # Route for /api/v3/schedule-doctor/** to schedule-doctor
+#          - id: schedule-doctor-service-route
+#            uri: http://schedule-service:8082
+#            predicates:
+#              - Path=/api/v3/schedule/doctor/**
+#            filters:
+#              - JwtValidation
 
 server:
   port: 4004 # Gateway listens on port 4004
@@ -225,5 +233,13 @@ spring:
             uri: http://localhost:8082
             predicates:
               - Path=/api/v3/clinic-specialty-schedule-template/**
+            filters:
+              - JwtValidation
+
+            # Route for /api/v3/schedule-doctor/** to schedule-doctor
+          - id: schedule-doctor-service-route
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v3/schedule/doctor/**
             filters:
               - JwtValidation
