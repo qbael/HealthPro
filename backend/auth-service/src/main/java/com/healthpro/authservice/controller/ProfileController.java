@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -62,5 +63,13 @@ public class ProfileController {
     ) {
         clinicService.updateClinic(userId, clinicRequestDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/is-fully-registered")
+    public ResponseEntity<Map<String, Boolean>> isFullyRegistered(
+            @RequestHeader("X-User-Id") UUID userId
+    ) {
+        Boolean isFullyRegistered = patientService.isFullyRegistered(userId);
+        return new ResponseEntity<>(Map.of("isFullyRegistered", isFullyRegistered), HttpStatus.OK);
     }
 }

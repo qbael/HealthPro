@@ -119,7 +119,7 @@ export default async function ClinicDetailPage({params}: {params: Promise<{ id: 
                     <div className="space-y-6">
                         <div className="bg-white rounded-2xl shadow-md p-6">
                             <Link href={`/clinics/${clinic.id}/specialties`}>
-                                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl transition-colors mb-3 shadow-lg shadow-blue-600/30">
+                                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl transition-colors mb-3 shadow-lg shadow-blue-600/30 hover:cursor-pointer">
                                     Đặt Lịch Khám
                                 </button>
                             </Link>

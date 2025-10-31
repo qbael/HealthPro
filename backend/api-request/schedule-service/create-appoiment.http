@@ -1,0 +1,21 @@
+### GET request to example server
+POST http://localhost:4004/api/v1/appointments
+Content-Type: application/json
+
+{
+  "patientId": "750e8400-e29b-41d4-a716-446655440028",
+  "patientName": "Trần Minh Đăng 1",
+  "patientEmail": "mindang1@gmail.com",
+  "patientPhone": "0901234567",
+  "doctorId": null,
+  "doctorName": null,
+  "clinicId": "750e8400-e29b-41d4-a716-446655440031",
+  "clinicName": "Bệnh viện Chợ Rẫy",
+  "address": "201B Nguyễn Chí Thanh, Quận 5, TP.HCM",
+  "phone": "0934567890",
+  "clinicSpecialtyId": "a50e8400-e29b-41d4-a716-446655440001",
+  "specialtyName": "Nội tổng quát",
+  "slotId": "f856ff79-0bb7-4bad-aaf7-82a8a6654044",
+  "notes": "",
+  "appointmentType": "CLINIC"
+}

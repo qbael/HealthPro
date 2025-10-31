@@ -68,8 +68,6 @@ public class ClinicSpecialtyService {
                     return clinicRepository.save(newClinic);
                 });
 
-        System.out.println(clinic);
-
         for (UUID specialtyId : clinicSpecialtyRequestDTO.getSpecialty()) {
             Specialty specialty = specialtyRepository.findById(specialtyId)
                     .orElseThrow(() -> new ResourceNotFoundException("specialty not found"));

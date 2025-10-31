@@ -1,0 +1,8 @@
+POST http://localhost:4004/api/v1/appointments/appointment-data
+Content-Type: application/json
+
+{
+  "userId": "650e8400-e29b-41d4-a716-446655440028",
+  "doctorId": "",
+  "clinicSpecialtyId": "a50e8400-e29b-41d4-a716-446655440001"
+}

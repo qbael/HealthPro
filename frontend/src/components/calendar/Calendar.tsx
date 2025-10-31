@@ -1,8 +1,13 @@
 "use client";
 import React, {useEffect, useRef, useState} from "react";
-import {AvailableSlotType, TimeSlotType} from "@/types/calendar-types";
+import {TimeSlotType} from "@/types/calendar-types";
 import {SCHEDULE_API_URL} from "@/lib/utils";
 import {ChevronLeft, ChevronRight} from "lucide-react";
+import {useAuth} from "@/contexts/AuthContext";
+import {useRouter} from "next/navigation";
+import api from "@/lib/axios";
+import {SlotButton} from "@/components/calendar/SlotButton";
+import ModalConfirmAppointment from "@/components/calendar/ModalConfirmAppointment";
 
 interface CalendarProps {
     id: string;
@@ -13,11 +18,14 @@ interface CalendarProps {
 export const Calendar = ({id, type, availableDates}: CalendarProps) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [availableSlots, setAvailableSlots] = useState<AvailableSlotType[]>([]);
+    const [availableSlots, setAvailableSlots] = useState<TimeSlotType[]>([]);
     const [dates, setDates] = useState<string[]>(availableDates);
-    const pageType = useRef<string>(type);
+    const pageType = useRef<'DOCTOR' | 'CLINIC'>(type);
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const [loading, setLoading] = useState(false);
+    const [selectedSlot, setSelectedSlot] = useState<TimeSlotType | null>(null);
+    const {user} = useAuth();
+    const router = useRouter();
 
     const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
     const monthNames = [
@@ -122,16 +130,14 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
         setSelectedDate(date);
     };
 
-    const getTimeSlots = (): TimeSlotType[] => {
+    const getTimeSlots = () => {
         if (!selectedDate) return [];
 
-        const dateStr = new Intl.DateTimeFormat("en-CA").format(selectedDate);
-        const slots = availableSlots.filter(slot => slot.appointmentDate === dateStr);
-
-        return slots.map(slot => ({
+        return availableSlots.map(slot => ({
+            id: slot.id,
+            appointmentDate: slot.appointmentDate,
             startTime: slot.startTime.substring(0, 5),
             endTime: slot.endTime.substring(0, 5),
-            available: true,
         }));
     };
 
@@ -155,14 +161,27 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
         return {morning, afternoon, evening};
     };
 
-    // const handleSlotClick = (slot: TimeSlot) => {
-    //     if (!selectedDate || !onSlotSelect || loading) return;
-    //     const dateStr = selectedDate.toISOString().split('T')[0];
-    //     onSlotSelect(dateStr, slot.startTime, slot.endTime);
-    // };
-
     const days = getDaysInMonth();
     const {morning, afternoon, evening} = groupSlotsByPeriod();
+
+    const handleSlotClick = async (slot: TimeSlotType) => {
+        if (!user){
+            router.push("/login");
+            return
+        }
+        try {
+            const res = await api.get('v1/profile/is-fully-registered')
+            const body = res.data
+            if (!body.isFullyRegistered){
+                router.push("/profile");
+            } else {
+                setSelectedSlot(slot)
+            }
+        }
+        catch (error) {
+            console.error('Failed to fetch profile:', error)
+        }
+    }
     return (
         <div className="relative max-w-3xl mx-auto p-4 bg-white">
             {loading && (
@@ -234,7 +253,7 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
                                           ${isSelected ? 'bg-cyan-400 text-white scale-105' : ''}
                                           ${!isSelected && hasSlots && !isPast ? 'hover:bg-cyan-50 text-gray-700' : ''}
                                           ${isPast || !hasSlots ? 'text-gray-300 cursor-not-allowed' : 'cursor-pointer'}
-                                          ${isTodayDate && !isSelected ? 'border-2 border-cyan-400' : ''}
+                                          ${isTodayDate && !isSelected ? 'border-2 border-cyan-400 text-red-500' : ''}
                                           ${isSundayDate && !isPast && hasSlots ? 'text-red-500' : ''}
                                           ${loading ? 'opacity-60 pointer-events-none' : ''}`}
                             >
@@ -259,16 +278,8 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
                         <div className="mb-6">
                             <h3 className="text-3xl font-bold mb-4 text-gray-800">Buổi sáng</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                                {morning.map((slot, index) => (
-                                    <button
-                                        key={`morning-${index}`}
-                                        // onClick={() => handleSlotClick(slot)}
-                                        disabled={loading}
-                                        className="border-2 border-cyan-400 text-gray-700 py-3 px-4 rounded-lg
-                                 hover:bg-cyan-400 hover:text-white transition-all font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        {slot.startTime} - {slot.endTime}
-                                    </button>
+                                {morning.map((slot) => (
+                                    <SlotButton slot={slot} handleSlotClick={handleSlotClick} loading={loading} key={slot.id}/>
                                 ))}
                             </div>
                         </div>
@@ -278,16 +289,8 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
                         <div className="mb-6">
                             <h3 className="text-3xl font-bold mb-4 text-gray-800">Buổi chiều</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                                {afternoon.map((slot, index) => (
-                                    <button
-                                        key={`afternoon-${index}`}
-                                        // onClick={() => handleSlotClick(slot)}
-                                        disabled={loading}
-                                        className="border-2 border-cyan-400 text-gray-700 py-3 px-4 rounded-lg
-                                 hover:bg-cyan-400 hover:text-white transition-all font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        {slot.startTime} - {slot.endTime}
-                                    </button>
+                                {afternoon.map((slot) => (
+                                    <SlotButton slot={slot} handleSlotClick={handleSlotClick} loading={loading} key={slot.id}/>
                                 ))}
                             </div>
                         </div>
@@ -297,16 +300,8 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
                         <div className="mb-6">
                             <h3 className="text-3xl font-bold mb-4 text-gray-800">Buổi tối</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                                {evening.map((slot, index) => (
-                                    <button
-                                        key={`evening-${index}`}
-                                        // onClick={() => handleSlotClick(slot)}
-                                        disabled={loading}
-                                        className="border-2 border-cyan-400 text-gray-700 py-3 px-4 rounded-lg
-                                 hover:bg-cyan-400 hover:text-white transition-all font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        {slot.startTime} - {slot.endTime}
-                                    </button>
+                                {evening.map((slot) => (
+                                    <SlotButton slot={slot} handleSlotClick={handleSlotClick} loading={loading} key={slot.id}/>
                                 ))}
                             </div>
                         </div>
@@ -316,6 +311,16 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
                         Tất cả thời gian theo múi giờ Việt Nam GMT +7
                     </p>
                 </div>
+            )}
+            {selectedSlot && (
+                <ModalConfirmAppointment
+                    onClose={() => setSelectedSlot(null)}
+                    slot={selectedSlot}
+                    userId={user.id}
+                    appointmentType={pageType.current}
+                    doctorId={ pageType.current === 'DOCTOR' ? id : null }
+                    clinicSpecialtyId={ pageType.current === 'CLINIC' ? id : null }
+                />
             )}
         </div>
     );

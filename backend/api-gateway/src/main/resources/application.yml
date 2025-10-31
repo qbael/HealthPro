@@ -140,6 +140,20 @@ spring:
             filters:
               - JwtValidation
 
+          - id: appointment-info-service-route
+            uri: http://localhost:8080
+            predicates:
+              - Path=/api/v1/appointments/appointment-info/**
+            filters:
+              - JwtValidation
+
+          - id: clinic-specialty-info-service-route
+            uri: http://localhost:8081
+            predicates:
+              - Path=/api/v1/appointments/clinic-specialty-info/**
+            filters:
+              - JwtValidation
+
             # Route for /api/v1/doctor-available-slots/** to doctor-available-slots
           - id: doctor-available-slots-service-route
             uri: http://localhost:8082
@@ -209,5 +223,12 @@ spring:
             uri: http://localhost:8081
             predicates:
               - Path=/api/v1/clinic-invitation/**
+            filters:
+              - JwtValidation
+
+          - id: appointment-data-service-route
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v1/appointments/**
             filters:
               - JwtValidation

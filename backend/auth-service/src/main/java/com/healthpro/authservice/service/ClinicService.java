@@ -98,4 +98,8 @@ public class ClinicService {
 
         return dto;
     }
+
+    public Optional<Clinic> getClinicByIdForAppointment(UUID id) {
+        return clinicRepository.findById(id);
+    }
 }
