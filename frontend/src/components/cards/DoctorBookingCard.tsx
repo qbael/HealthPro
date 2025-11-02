@@ -47,7 +47,7 @@ export const DoctorBookingCard = ({ doctor }: DoctorBookingCardProps) => {
                     </button>
                 </Link>
 
-                <Link href={`/booking/doctors/${doctor.id}`}>
+                <Link href={`/calendar/doctor/${doctor.id}`}>
                     <button className="w-full bg-cyan-400 hover:bg-cyan-500 hover: cursor-pointer text-white px-5 py-2 rounded-lg font-medium text-sm">
                         Đặt khám ngay
                     </button>

@@ -3,16 +3,11 @@ import DoctorSpecialtyCard from "@/components/clinics/DoctorSpecialtyCard";
 import {Pagination} from "@/components/ui/Pagination";
 import React from "react";
 
-interface PageProps {
-    params: { id: string };
-    searchParams: Record<string, string>;
-}
-
-const Page = async ({ params, searchParams }: PageProps) => {
+const Page = async ({ params, searchParams }: any) => {
     const api = await createServerApi()
     const { specialtyId } = params;
 
-    const res = await api.get(`/v1/specialties/${specialtyId}`)
+    const res = await api.get(`/v2/specialties/${specialtyId}`)
     const specialtyName = res.data.name
 
     const { page, limit, sortBy, sortDir } = searchParams || {};
@@ -25,7 +20,7 @@ const Page = async ({ params, searchParams }: PageProps) => {
     }).toString();
 
     const res1 = await api
-        .get(`v1/doctor-specialty/${specialtyId}${queryParams ? `?${queryParams}` : ""}`)
+        .get(`v2/doctor-specialty/${specialtyId}${queryParams ? `?${queryParams}` : ""}`)
 
     const doctors = res1?.data?.data?.content;
     const totalPages = res1?.data?.data?.totalPages;

@@ -144,7 +144,7 @@ VALUES
 -- Insert Appointments (Các cuộc hẹn đã được tạo)
 -- Cuộc hẹn đã hoàn thành
 INSERT INTO appointments (id, patient_id, patient_name, patient_email, patient_phone, doctor_id, doctor_name, clinic_id,
-                          clinic_name, address, clinic_phone, clinic_specialty_id, specialty_name, appointment_type,
+                          clinic_name, address, phone, clinic_specialty_id, specialty_name, appointment_type,
                           appointment_date, start_time, end_time, status, notes, created_at, updated_at)
 VALUES ('0c4b682a-db02-4bc5-817e-eaee5cdcc8e8', '750e8400-e29b-41d4-a716-446655440021', 'Nguyễn Văn An',
         'nguyen.vanan@gmail.com', '0923456789', '750e8400-e29b-41d4-a716-446655440011', 'BS. Trần Văn Nguyên',
@@ -160,7 +160,7 @@ VALUES ('0c4b682a-db02-4bc5-817e-eaee5cdcc8e8', '750e8400-e29b-41d4-a716-4466554
 
 -- Cuộc hẹn đã xác nhận (sắp tới)
 INSERT INTO appointments (id, patient_id, patient_name, patient_email, patient_phone, doctor_id, doctor_name, clinic_id,
-                          clinic_name, address, clinic_phone, clinic_specialty_id, specialty_name, appointment_type,
+                          clinic_name, address, phone, clinic_specialty_id, specialty_name, appointment_type,
                           appointment_date, start_time, end_time, status, notes, created_at, updated_at)
 VALUES ('6354270b-0590-456c-ad65-6aeafa682a50', '750e8400-e29b-41d4-a716-446655440023', 'Lê Văn Bình',
         'le.vanbinh@gmail.com', '0923456791', '750e8400-e29b-41d4-a716-446655440011', 'BS. Trần Văn Nguyên',
@@ -181,7 +181,7 @@ VALUES ('6354270b-0590-456c-ad65-6aeafa682a50', '750e8400-e29b-41d4-a716-4466554
 
 -- Cuộc hẹn đang chờ xác nhận
 INSERT INTO appointments (id, patient_id, patient_name, patient_email, patient_phone, doctor_id, doctor_name, clinic_id,
-                          clinic_name, address, clinic_phone, clinic_specialty_id, specialty_name, appointment_type,
+                          clinic_name, address, phone, clinic_specialty_id, specialty_name, appointment_type,
                           appointment_date, start_time, end_time, status, notes, created_at, updated_at)
 VALUES ('ba8b85ca-a2fd-45b7-a193-cee1187f1fd6', '750e8400-e29b-41d4-a716-446655440026', 'Đỗ Thị Phượng',
         'do.thiphuong@gmail.com', '0923456794', '750e8400-e29b-41d4-a716-446655440012', 'BS. Lê Thị Mai',
@@ -192,7 +192,7 @@ VALUES ('ba8b85ca-a2fd-45b7-a193-cee1187f1fd6', '750e8400-e29b-41d4-a716-4466554
 
 -- Cuộc hẹn đã hủy
 INSERT INTO appointments (id, patient_id, patient_name, patient_email, patient_phone, doctor_id, doctor_name, clinic_id,
-                          clinic_name, address, clinic_phone, clinic_specialty_id, specialty_name, appointment_type,
+                          clinic_name, address, phone, clinic_specialty_id, specialty_name, appointment_type,
                           appointment_date, start_time, end_time, status, notes, created_at, updated_at)
 VALUES ('a549d2b8-2634-41b9-b0cb-e63b8fe4a3a6', '750e8400-e29b-41d4-a716-446655440027', 'Vũ Văn Hùng',
         'vu.vanhung@gmail.com', '0923456795', '750e8400-e29b-41d4-a716-446655440013', 'BS. Phạm Văn Minh',
@@ -203,7 +203,7 @@ VALUES ('a549d2b8-2634-41b9-b0cb-e63b8fe4a3a6', '750e8400-e29b-41d4-a716-4466554
 
 -- Cuộc hẹn online (DOCTOR)
 INSERT INTO appointments (id, patient_id, patient_name, patient_email, patient_phone, doctor_id, doctor_name, clinic_id,
-                          clinic_name, address, clinic_phone, clinic_specialty_id, specialty_name, appointment_type,
+                          clinic_name, address, phone, clinic_specialty_id, specialty_name, appointment_type,
                           appointment_date, start_time, end_time, status, notes, created_at, updated_at)
 VALUES ('a2530d5b-0502-452c-88a8-fd02d2116868', '750e8400-e29b-41d4-a716-446655440021', 'Nguyễn Văn An',
         'nguyen.vanan@gmail.com', '0923456789', '750e8400-e29b-41d4-a716-446655440011', 'BS. Trần Văn Nguyên', NULL,

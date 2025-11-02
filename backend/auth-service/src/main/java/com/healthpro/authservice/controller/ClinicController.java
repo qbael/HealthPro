@@ -3,10 +3,8 @@ package com.healthpro.authservice.controller;
 import com.healthpro.authservice.dto.ApiResponseDTO;
 import com.healthpro.authservice.dto.ClinicResponseDTO;
 import com.healthpro.authservice.dto.ClinicResponseWebClientDTO;
-import com.healthpro.authservice.dto.DoctorResponseDTO;
-import com.healthpro.authservice.entity.Clinic;
+import com.healthpro.authservice.dto.ClinicTimeDTO;
 import com.healthpro.authservice.service.ClinicService;
-import com.healthpro.authservice.service.DoctorService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -52,5 +50,12 @@ public class ClinicController {
     @GetMapping("/{id}")
     public ClinicResponseWebClientDTO getClinicById(@PathVariable UUID id) {
         return clinicService.getClinicById(id);
+    }
+
+    @GetMapping("/time/{id}")
+    public ResponseEntity<ClinicTimeDTO> getTimeClinic(@PathVariable UUID id) {
+        ClinicTimeDTO clinicTimeDTO = clinicService.getTimeClinic(id);
+
+        return ResponseEntity.ok(clinicTimeDTO);
     }
 }

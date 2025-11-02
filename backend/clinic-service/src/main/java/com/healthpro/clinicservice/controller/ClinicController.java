@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/clinics")
+@RequestMapping("/api/v2/clinics")
 public class ClinicController {
     public final ClinicService clinicService;
 

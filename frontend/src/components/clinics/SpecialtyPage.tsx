@@ -1,4 +1,3 @@
-import React from 'react';
 import SpecialtyCard from "@/components/clinics/SpecialtyCard";
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";

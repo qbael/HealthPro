@@ -1,7 +1,5 @@
-### GET request to example server
-POST http://localhost:4004/api/v1/schedule-template
+POST http://localhost:4004/api/v3/doctor-schedule-template
 Content-Type: application/json
-X-UserRole-Id:ef10ef08-af93-4f1d-a8ba-fc84fdbd56ee
 
 {
   "dayOfWeek": [

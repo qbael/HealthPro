@@ -1,27 +1,13 @@
 import React from 'react';
 import Image from "next/image";
 import {Award, Calendar, Clock, MapPin, Star} from "lucide-react";
-import Link from "next/link";
-import {CLINICS_API_URL} from "@/lib/utils";
-import {ClinicsType} from "@/types/clinic-types";
 import {createServerApi} from "@/lib/axiosServer";
 
 const Page = async ({ params } : any) => {
-
-    const { specialtyId } = await params;
-    const api = createServerApi()
-    const res = await fetch(`${CLINICS_API_URL}/${specialtyId}`,{
-        method: 'GET',
-        cache: 'no-cache',
-    })
-
-    // const res = api.get(``)
-    // const invitation = res.data
-
-    const body = await res.json();
-
-    const clinic: ClinicsType = body.data;
-
+    const { clinicId } = await params;
+    const api = await createServerApi()
+    const res = await api.get(`v1/clinics/${clinicId}`)
+    const clinic = res.data
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-blue-50 mt-16 to-indigo-50">
@@ -81,7 +67,7 @@ const Page = async ({ params } : any) => {
                                     Chuyên Khoa
                                 </h2>
                                 <div className="flex flex-wrap gap-3">
-                                    {clinic.clinicSpecialties.map((specialty) => (
+                                    {clinic.clinicSpecialties.map((specialty : any) => (
                                         <span
                                             key={specialty.id}
                                             className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors cursor-pointer"
@@ -122,14 +108,6 @@ const Page = async ({ params } : any) => {
                     </div>
 
                     <div className="space-y-6">
-                        <div className="bg-white rounded-2xl shadow-md p-6">
-                            <Link href={`/clinics/${clinic.id}/specialties`}>
-                                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl transition-colors mb-3 shadow-lg shadow-blue-600/30">
-                                    Đặt Lịch Khám
-                                </button>
-                            </Link>
-                        </div>
-
                         <div className="bg-white rounded-2xl shadow-md p-6">
                             <h3 className="text-xl font-bold text-gray-800 mb-4">
                                 Thông Tin Liên Hệ

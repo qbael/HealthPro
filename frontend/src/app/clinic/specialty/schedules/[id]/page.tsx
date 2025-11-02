@@ -5,7 +5,7 @@ const Page = async ({ params } : any) => {
     const { id } = await params
     const api = await createServerApi()
     try {
-        const res = await api.get(`v1/clinic-specialty-schedule-template/${id}`)
+        const res = await api.get(`v3/clinic-specialty-schedule-template/${id}`)
         const template = res.data
 
         return (

@@ -1,15 +1,21 @@
-export interface AvailableSlotType {
+export interface TimeSlotType {
     id: string;
-    doctorId: string;
-    clinicSpecialtyId?: string;
     appointmentDate: string;
     startTime: string;
     endTime: string;
-    appointmentType: 'DOCTOR' | 'CLINIC';
 }
 
-export interface TimeSlotType {
-    startTime: string;
-    endTime: string;
-    available: boolean;
+export interface AppointmentData {
+    patientId: string;
+    patientName: string;
+    patientEmail: string | null;
+    patientPhone: string | null;
+    doctorId?: string | null;
+    doctorName?: string | null;
+    clinicId?: string | null;
+    clinicName?: string | null;
+    address: string;
+    phone: string;
+    clinicSpecialtyId?: string | null;
+    specialtyName?: string | null;
 }

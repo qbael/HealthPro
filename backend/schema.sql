@@ -109,7 +109,6 @@ CREATE TABLE clinic_invitations
     status              invitation_status DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'rejected', 'cancelled')),
     invited_at          TIMESTAMP         DEFAULT CURRENT_TIMESTAMP,
     responded_at        TIMESTAMP,
-    title               TEXT,
     UNIQUE (clinic_specialty_id, doctor_id)
 );
 

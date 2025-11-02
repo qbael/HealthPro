@@ -1,2 +1,1 @@
-GET http://localhost:4004/api/v1/schedule-template
-#X-UserRole-Id:ef10ef08-af93-4f1d-a8ba-fc84fdbd56ee
+GET http://localhost:4004/api/v3/doctor-schedule-template

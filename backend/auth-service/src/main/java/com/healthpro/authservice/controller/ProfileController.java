@@ -6,12 +6,12 @@ import com.healthpro.authservice.dto.PatientRequestDTO;
 import com.healthpro.authservice.service.ClinicService;
 import com.healthpro.authservice.service.DoctorService;
 import com.healthpro.authservice.service.PatientService;
-import com.healthpro.authservice.utils.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -21,7 +21,6 @@ public class ProfileController {
     private final PatientService patientService;
     private final DoctorService doctorService;
     private final ClinicService clinicService;
-    private final JwtUtil jwtUtil;
 
     @GetMapping
     public ResponseEntity<?> getProfile(
@@ -62,5 +61,13 @@ public class ProfileController {
     ) {
         clinicService.updateClinic(userId, clinicRequestDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/is-fully-registered")
+    public ResponseEntity<Map<String, Boolean>> isFullyRegistered(
+            @RequestHeader("X-User-Id") UUID userId
+    ) {
+        Boolean isFullyRegistered = patientService.isFullyRegistered(userId);
+        return new ResponseEntity<>(Map.of("isFullyRegistered", isFullyRegistered), HttpStatus.OK);
     }
 }

@@ -140,14 +140,6 @@ spring:
             filters:
               - JwtValidation
 
-            # NEW: Route for /api/v1/admins/** to auth-service
-          - id: admin-service-route
-            uri: http://localhost:8080
-            predicates:
-              - Path=/api/v1/admins/**
-            filters:
-#            - JwtValidation
-
             # Route for /api/v1/doctor-available-slots/** to doctor-available-slots
           - id: doctor-available-slots-service-route
             uri: http://localhost:8082

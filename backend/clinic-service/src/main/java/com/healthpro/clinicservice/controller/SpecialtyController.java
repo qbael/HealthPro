@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/specialties")
+@RequestMapping("/api/v2/specialties")
 public class SpecialtyController {
     private final SpecialtyService specialtyService;
 

@@ -3,6 +3,7 @@ import {SpecialtyType} from "@/types/doctor-types";
 import {ResponseType} from "@/types/response";
 import {renderSpecialtyIcon} from "@/lib/icon-provider";
 import {CLINICS_API_URL} from "@/lib/utils";
+import Link from "next/link";
 
 export default async function ClinicSpecialtiesPage({params}: { params: Promise<{ id: string }> }) {
 
@@ -35,25 +36,27 @@ export default async function ClinicSpecialtiesPage({params}: { params: Promise<
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     {specialties.map((specialty) => (
-                        <button
-                            key={specialty.id}
-                            className="group bg-white rounded-2xl shadow-md hover:shadow-xl
-                       transition-all duration-300 p-6 md:p-8
-                       border border-gray-100 hover:border-cyan-300
-                       transform hover:-translate-y-1
-                       disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            <div className="flex items-center gap-4 md:gap-6">
-                                <div className={`flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                                    {renderSpecialtyIcon(specialty.specialty.name)}
-                                </div>
+                        <Link href={`/calendar/clinic/${specialty.id}`} key={specialty.id}>
+                            <button
+                                key={specialty.id}
+                                className="group bg-white w-full rounded-2xl shadow-md hover:shadow-xl
+                                   transition-all duration-300 p-6 md:p-8
+                                   border border-gray-100 hover:border-cyan-300
+                                   transform hover:-translate-y-1
+                                   disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+                            >
+                                <div className="flex items-center gap-4 md:gap-6">
+                                    <div className={`flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                                        {renderSpecialtyIcon(specialty.specialty.name)}
+                                    </div>
 
-                                <h3 className="text-left text-lg md:text-xl font-semibold text-gray-800
-                             group-hover:text-cyan-600 transition-colors">
-                                    {specialty.specialty.name}
-                                </h3>
-                            </div>
-                        </button>
+                                    <h3 className="text-left text-lg md:text-xl font-semibold text-gray-800
+                                        group-hover:text-cyan-600 transition-colors">
+                                        {specialty.specialty.name}
+                                    </h3>
+                                </div>
+                            </button>
+                        </Link>
                     ))}
                 </div>
 

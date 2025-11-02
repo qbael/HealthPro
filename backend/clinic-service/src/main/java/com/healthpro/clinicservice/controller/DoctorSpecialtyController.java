@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/doctor-specialty")
+@RequestMapping("/api/v2/doctor-specialty")
 public class DoctorSpecialtyController {
     private DoctorSpecialtyService doctorSpecialtyService;
 

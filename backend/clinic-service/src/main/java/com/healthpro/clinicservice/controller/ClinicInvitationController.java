@@ -1,9 +1,9 @@
 package com.healthpro.clinicservice.controller;
 
 import com.healthpro.clinicservice.dto.ApiResponseDTO;
+import com.healthpro.clinicservice.dto.ClinicInvitationDoctorDTO;
 import com.healthpro.clinicservice.dto.ClinicInvitationRequestDTO;
-import com.healthpro.clinicservice.entity.ClinicInvitation;
-import com.healthpro.clinicservice.entity.Doctor;
+import com.healthpro.clinicservice.dto.ClinicInvitationClinicDTO;
 import com.healthpro.clinicservice.entity.enums.InvitationStatus;
 import com.healthpro.clinicservice.service.ClinicInvitationService;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +18,14 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/clinic-invitation")
+@RequestMapping("/api/v2/clinic-invitation")
 public class ClinicInvitationController {
     private final ClinicInvitationService  clinicInvitationService;
 
     @GetMapping
-    public ResponseEntity<ApiResponseDTO<Page<ClinicInvitation>>> getClinicInvitations(
-            @RequestHeader("X-UserRole-Id") UUID doctorId,
+    public ResponseEntity<ApiResponseDTO<Page<ClinicInvitationClinicDTO>>>
+        getClinicInvitationsForDoctor(
+            @RequestHeader("X-UserRole-Id") UUID userRoleId,
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer limit,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
@@ -35,8 +35,35 @@ public class ClinicInvitationController {
                 sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy
         ));
 
-        Page<ClinicInvitation> clinicInvitations = clinicInvitationService
-                .getClinicInvitations(doctorId, pageable);
+        Page<ClinicInvitationClinicDTO> clinicInvitations = clinicInvitationService
+                .getClinicInvitationsForDoctor(userRoleId, pageable);
+
+        if (clinicInvitations.isEmpty()) {
+            return ResponseEntity.ok(
+                    ApiResponseDTO.success(clinicInvitations, "Không có lời mời nào")
+            );
+        }
+
+        return ResponseEntity.ok(
+                ApiResponseDTO.success(clinicInvitations, "Lấy danh sách lời mời thành công")
+        );
+    }
+
+    @GetMapping("/{clinicSpecialtyId}")
+    public ResponseEntity<ApiResponseDTO<Page<ClinicInvitationDoctorDTO>>>
+        getClinicInvitationsForClinicSpecialty(
+            @PathVariable UUID clinicSpecialtyId,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer limit,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sortDir
+    ) {
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(
+                sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy
+        ));
+
+        Page<ClinicInvitationDoctorDTO> clinicInvitations = clinicInvitationService
+                .getClinicInvitationsForClinicSpecialty(clinicSpecialtyId, pageable);
 
         if (clinicInvitations.isEmpty()) {
             return ResponseEntity.ok(
@@ -62,13 +89,13 @@ public class ClinicInvitationController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{invitationId}")
     public ResponseEntity<?> approveClinicInvitation(
-            @PathVariable UUID id,
-            @RequestBody InvitationStatus status
+            @PathVariable UUID invitationId,
+            @RequestBody String status
     ) {
         clinicInvitationService
-                .approveClinicInvitation(id, status);
+                .approveClinicInvitation(invitationId, status);
         return ResponseEntity.ok().build();
     }
 }

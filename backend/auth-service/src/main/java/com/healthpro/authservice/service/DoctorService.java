@@ -1,10 +1,8 @@
 package com.healthpro.authservice.service;
 
-import com.healthpro.authservice.dto.ClinicResponseWebClientDTO;
 import com.healthpro.authservice.dto.DoctorRequestDTO;
 import com.healthpro.authservice.dto.DoctorResponseDTO;
 import com.healthpro.authservice.dto.DoctorResponseWebClientDTO;
-import com.healthpro.authservice.entity.Clinic;
 import com.healthpro.authservice.entity.Doctor;
 import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
@@ -18,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -88,5 +87,9 @@ public class DoctorService {
         dto.setAvatarUrl(doctor.getAvatarUrl());
 
         return dto;
+    }
+
+    public Optional<Doctor> getDoctorByIdForAppointment(UUID id) {
+        return doctorRepository.findById(id);
     }
 }

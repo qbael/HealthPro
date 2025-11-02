@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -122,6 +123,18 @@ public class DoctorAvailableSlotService {
     public Optional<List<AvailableTimeSlot>> getDoctorTypeAvailableSlotsByDoctorId(UUID doctorId, LocalDate appointmentDate) {
         return Optional.of(doctorAvailableSlotRepository
                 .findAllByDoctorIdAndAppointmentTypeAndAppointmentDate(doctorId, AppointmentType.DOCTOR, appointmentDate)
-                .stream().sorted(Comparator.comparing(AvailableTimeSlot::startTime)).toList());
+                .stream().sorted(Comparator.comparing(AvailableTimeSlot::getStartTime)).toList());
+    }
+
+    public Optional<Map<LocalDate, Long>> getFastAvailableDatesByDoctorId(UUID doctorId) {
+        List<Object[]> results = doctorAvailableSlotRepository.findFastAvailableDatesByDoctorId(doctorId);
+
+        Map<LocalDate, Long> map = new LinkedHashMap<>();
+        for (Object[] row : results) {
+            LocalDate date = (LocalDate) row[0];
+            Long count = (Long) row[1];
+            map.put(date, count);
+        }
+        return Optional.of(map);
     }
 }

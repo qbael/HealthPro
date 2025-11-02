@@ -38,7 +38,7 @@ public class DoctorSpecialtyService {
     @Transactional
     public Page<Doctor> getAllDoctorSpecialtiesBySpecialty(UUID specialtyId, Pageable pageable) {
         return doctorRepository
-                .findAllBySpecialtyId(specialtyId, pageable);
+                .findDistinctByDoctorSpecialties_Specialty_IdAndIsInClinicSpecialtyFalse(specialtyId, pageable);
     }
 
     @Transactional

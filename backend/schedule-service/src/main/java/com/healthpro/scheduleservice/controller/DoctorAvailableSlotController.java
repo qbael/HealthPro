@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/schedule/doctor")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/v3/schedule/doctor")
 public class DoctorAvailableSlotController {
     private final DoctorAvailableSlotService doctorAvailableSlotService;
 
@@ -39,6 +39,16 @@ public class DoctorAvailableSlotController {
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body(ApiResponseDto.error(404,  "Lấy danh sách giờ  của bác sĩ thất bại")));
+    }
+
+    @GetMapping("/fast-available-dates/{doctorId}")
+    public ResponseEntity<ApiResponseDto<Map<LocalDate, Long>>> getFastAvailableDatesByDoctorId(@PathVariable UUID doctorId) {
+        Optional<Map<LocalDate, Long>> dates = doctorAvailableSlotService.getFastAvailableDatesByDoctorId(doctorId);
+        return dates.map(value -> ResponseEntity.ok().body(
+                        ApiResponseDto.success(value, "Lấy danh sách ngày hẹn nhanh của bác sĩ thành công")))
+                .orElseGet(() -> ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(ApiResponseDto.error(404,  "Lấy danh sách ngày hẹn nhanh của bác sĩ thất bại")));
     }
 
 }
