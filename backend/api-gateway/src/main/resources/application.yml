@@ -236,3 +236,10 @@ spring:
             uri: http://localhost:8082
             predicates:
               - Path=/api/v3/schedule/clinic-specialty/**
+
+          - id: clinics-service-route
+            uri: http://localhost:8080
+            predicates:
+              - Path=/api/v1/clinics/**
+            filters:
+              - JwtValidation

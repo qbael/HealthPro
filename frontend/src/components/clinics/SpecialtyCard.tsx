@@ -11,11 +11,12 @@ import {useRouter} from "next/navigation";
 const SpecialtyCard = ({ specialty } : any) => {
     const { user } = useAuth()
     const router = useRouter()
+    console.log(specialty)
 
     const checkClinicHasRegisteredTime = async () => {
         try {
-            const res = await api.get(`/v1/clinics/${user?.userRoleId}`);
-            const clinic = res.data;
+            const res = await api.get(`/v2/clinics/${user?.userRoleId}`);
+            const clinic = res.data.data;
 
             if (
                 !clinic.weekdayOpenHour ||
@@ -27,7 +28,7 @@ const SpecialtyCard = ({ specialty } : any) => {
                 return;
             }
 
-            router.push(`/clinic/specialty/schedules/${specialty.specialtyId}`);
+            router.push(`/clinic/specialty/schedules/${specialty.id}`);
         }
         catch (err) {
             toast.error("Không thể kiểm tra thời gian làm của phòng khám.");

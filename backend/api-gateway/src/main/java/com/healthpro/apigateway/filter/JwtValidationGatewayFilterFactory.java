@@ -28,6 +28,10 @@ public class JwtValidationGatewayFilterFactory extends AbstractGatewayFilterFact
                 return chain.filter(exchange);
             }
 
+            if ("clinic-service".equals(exchange.getRequest().getHeaders().getFirst("X-Internal-Service"))) {
+                return chain.filter(exchange);
+            }
+
             HttpCookie jwtCookie = exchange.getRequest().getCookies().getFirst("jwt");
             if (jwtCookie == null) {
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);

@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 public class AppointmentDataRequestDto {
     @NotNull(message = "ID bệnh nhân không được để trống")
-    UUID userId;
+    UUID patientId;
     UUID doctorId;
     UUID clinicSpecialtyId;
 }

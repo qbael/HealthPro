@@ -4,14 +4,20 @@ import com.healthpro.scheduleservice.dto.AppointmentDataRequestDto;
 import com.healthpro.scheduleservice.dto.AppointmentDataResponseDto;
 import com.healthpro.scheduleservice.dto.AppointmentRequestDto;
 import com.healthpro.scheduleservice.entity.Appointment;
+import com.healthpro.scheduleservice.entity.ClinicSpecialtyDoctor;
 import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
+import com.healthpro.scheduleservice.entity.enums.AppointmentType;
 import com.healthpro.scheduleservice.repository.AppointmentRepository;
+import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
 import com.healthpro.scheduleservice.repository.DoctorAvailableSlotRepository;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,15 +25,18 @@ import java.util.UUID;
 @Service
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
+    private final ClinicSpecialtyDoctorRepository clinicSpecialtyDoctorRepository;
     private final DoctorAvailableSlotRepository doctorAvailableSlotRepository;
     private final WebClient webClient;
 
     public AppointmentService(AppointmentRepository appointmentRepository,
                               DoctorAvailableSlotRepository doctorAvailableSlotRepository,
+                              ClinicSpecialtyDoctorRepository clinicSpecialtyDoctorRepository,
                               WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("http://localhost:4004/api").build();
         this.doctorAvailableSlotRepository = doctorAvailableSlotRepository;
         this.appointmentRepository = appointmentRepository;
+        this.clinicSpecialtyDoctorRepository = clinicSpecialtyDoctorRepository;
     }
 
     private record AppointmentInfoResponseDto(
@@ -64,11 +73,11 @@ public class AppointmentService {
                 .block();
     }
 
-    private AppointmentInfoResponseDto getAppointmentInfo(UUID userId, UUID doctorId, UUID clinicId) {
+    private AppointmentInfoResponseDto getAppointmentInfo(UUID patientId, UUID doctorId, UUID clinicId) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/v1/appointments/appointment-info")
-                        .queryParam("userId", userId)
+                        .queryParam("patientId", patientId)
                         .queryParam("doctorId", doctorId)
                         .queryParam("clinicId", clinicId)
                         .build())
@@ -83,9 +92,9 @@ public class AppointmentService {
         AppointmentInfoResponseDto appointmentInfo;
         if (dto.getClinicSpecialtyId() != null) {
             clinicSpecialtyInfo = getClinicSpecialtyInfo(dto.getClinicSpecialtyId());
-            appointmentInfo = getAppointmentInfo(dto.getUserId(), null, clinicSpecialtyInfo.clinicId);
+            appointmentInfo = getAppointmentInfo(dto.getPatientId(), null, clinicSpecialtyInfo.clinicId);
         } else {
-            appointmentInfo = getAppointmentInfo(dto.getUserId(), dto.getDoctorId(), null);
+            appointmentInfo = getAppointmentInfo(dto.getPatientId(), dto.getDoctorId(), null);
         }
 
         return new AppointmentDataResponseDto(
@@ -108,6 +117,26 @@ public class AppointmentService {
         Optional<DoctorAvailableSlot> slotOpt = doctorAvailableSlotRepository.findById(dto.getSlotId());
         if (slotOpt.isEmpty()) {
             return false;
+        }
+        if (dto.getAppointmentType() == AppointmentType.CLINIC) {
+            List<ClinicSpecialtyDoctor> csdList = clinicSpecialtyDoctorRepository.findByClinicSpecialtyId(dto.getClinicSpecialtyId());
+            List<DoctorAvailableSlot> slots = doctorAvailableSlotRepository.findByClinicSpecialtyIdAndAppointmentDateAndStartTimeAndEndTime(
+                    dto.getClinicSpecialtyId(),
+                    slotOpt.get().getAppointmentDate(),
+                    slotOpt.get().getStartTime(),
+                    slotOpt.get().getEndTime()
+            );
+            csdList.sort(Comparator.comparing(ClinicSpecialtyDoctor::getAssignmentCount));
+            for (ClinicSpecialtyDoctor csd : csdList) {
+                for (DoctorAvailableSlot slot : slots) {
+                    if (slot.getDoctorId().equals(csd.getDoctorId())) {
+                        slotOpt = Optional.of(slot);
+                        csd.setAssignmentCount(csd.getAssignmentCount() + 1);
+                        clinicSpecialtyDoctorRepository.save(csd);
+                        break;
+                    }
+                }
+            }
         }
         Appointment appointment = Appointment.builder()
                 .patientId(dto.getPatientId())

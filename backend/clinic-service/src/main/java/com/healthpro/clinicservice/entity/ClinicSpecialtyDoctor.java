@@ -31,8 +31,4 @@ public class ClinicSpecialtyDoctor {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
-
-    @Min(value = 0, message = "Số lượng được phân công không thể âm")
-    @Column(name = "assignment_count")
-    private Integer assignmentCount = 0;
 }

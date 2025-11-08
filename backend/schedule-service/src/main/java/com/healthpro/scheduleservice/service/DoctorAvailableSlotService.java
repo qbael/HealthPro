@@ -1,13 +1,11 @@
 package com.healthpro.scheduleservice.service;
 
 import com.healthpro.scheduleservice.dto.AvailableTimeSlot;
-import com.healthpro.scheduleservice.dto.DoctorAvailableSlotDTO;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyDoctor;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyScheduleTemplate;
 import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
 import com.healthpro.scheduleservice.entity.enums.AppointmentType;
-import com.healthpro.scheduleservice.mapper.DoctorAvailableSlotDTOMapper;
 import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
 import com.healthpro.scheduleservice.repository.DoctorAvailableSlotRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class DoctorAvailableSlotService {
-    public static final int DEFAULT_DAYS_AHEAD = 14;
 
     private final DoctorAvailableSlotRepository doctorAvailableSlotRepository;
     private final ClinicSpecialtyDoctorRepository clinicSpecialtyDoctorRepository;
@@ -33,53 +29,90 @@ public class DoctorAvailableSlotService {
         this.clinicSpecialtyDoctorRepository = clinicSpecialtyDoctorRepository;
     }
 
+    @Transactional
+    public void deleteAvailableSlotsByTemplateIdIn(List<UUID> templateIds) {
+        try {
+            doctorAvailableSlotRepository.deleteAllByTemplateIdIn(templateIds);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Lỗi khi xóa các khung giờ hẹn liên quan đến templateIds: " + e.getMessage());
+        }
+    }
+
     @Transactional(rollbackFor = RuntimeException.class)
     public void deleteSlotBeforeToday() {
         try {
-            doctorAvailableSlotRepository.deleteByAppointmentDateBefore(LocalDate.now());
+            doctorAvailableSlotRepository.deleteByAppointmentDateLessThanEqual(LocalDate.now());
         } catch (RuntimeException e) {
             throw new RuntimeException("Lỗi khi xóa các khung giờ hẹn trước ngày hôm nay: " + e.getMessage());
         }
     }
 
     @Transactional
+    public void generateSlots(DoctorScheduleTemplate template, LocalDate date) {
+        if (date.getDayOfWeek() != template.getDayOfWeek()) {
+            return;
+        }
+
+        generateFromTemplateAndDate(template, date);
+    }
+
+    @Transactional
     public void generateSlots(DoctorScheduleTemplate template) {
         LocalDate startDate = LocalDate.now().plusDays(1);
-        LocalDate endDate = startDate.plusDays(DEFAULT_DAYS_AHEAD);
+        LocalDate endDate = startDate.plusDays(ScheduleGenerationService.DEFAULT_DAYS_AHEAD);
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             if (date.getDayOfWeek() == template.getDayOfWeek()) {
-                LocalTime from = template.getFromTime();
-                LocalTime to = template.getToTime();
-                int duration = template.getSlotDuration();
-
-                LocalTime slotStart = from;
-                while (slotStart.plusMinutes(duration).isBefore(to) || slotStart.plusMinutes(duration).equals(to)) {
-                    LocalTime slotEnd = slotStart.plusMinutes(duration);
-
-                    DoctorAvailableSlot slot = DoctorAvailableSlot.builder()
-                            .doctorId(template.getDoctorId())
-                            .appointmentDate(date)
-                            .startTime(slotStart)
-                            .endTime(slotEnd)
-                            .appointmentType(AppointmentType.DOCTOR)
-                            .build();
-                    try {
-                        doctorAvailableSlotRepository.save(slot);
-                    } catch (RuntimeException e) {
-                        throw new RuntimeException(e.getMessage());
-                    }
-
-                    slotStart = slotEnd;
-                }
+                generateFromTemplateAndDate(template, date);
             }
         }
+    }
+
+    private void generateFromTemplateAndDate(DoctorScheduleTemplate template, LocalDate date) {
+        LocalTime from = template.getFromTime();
+        LocalTime to = template.getToTime();
+        int duration = template.getSlotDuration();
+
+        LocalTime slotStart = from;
+        while (slotStart.plusMinutes(duration).isBefore(to) || slotStart.plusMinutes(duration).equals(to)) {
+            LocalTime slotEnd = slotStart.plusMinutes(duration);
+
+            DoctorAvailableSlot slot = DoctorAvailableSlot.builder()
+                    .doctorId(template.getDoctorId())
+                    .appointmentDate(date)
+                    .startTime(slotStart)
+                    .endTime(slotEnd)
+                    .appointmentType(AppointmentType.DOCTOR)
+                    .templateId(template.getId())
+                    .build();
+            try {
+                doctorAvailableSlotRepository.save(slot);
+            } catch (RuntimeException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+
+            slotStart = slotEnd;
+        }
+    }
+
+    @Transactional
+    public void generateSlots(ClinicSpecialtyScheduleTemplate template, LocalDate date) {
+        if (date.getDayOfWeek() != template.getDayOfWeek()) {
+            return;
+        }
+
+        List<ClinicSpecialtyDoctor> doctors = clinicSpecialtyDoctorRepository.findByClinicSpecialtyId(template.getClinicSpecialtyId());
+        if (doctors.isEmpty()) {
+            return;
+        }
+
+        generateFromTemplateAndDate(template, doctors, date);
     }
 
     @Transactional
     public void generateSlots(ClinicSpecialtyScheduleTemplate template) {
         LocalDate startDate = LocalDate.now().plusDays(1);
-        LocalDate endDate = startDate.plusDays(DEFAULT_DAYS_AHEAD);
+        LocalDate endDate = startDate.plusDays(ScheduleGenerationService.DEFAULT_DAYS_AHEAD);
         List<ClinicSpecialtyDoctor> doctors = clinicSpecialtyDoctorRepository.findByClinicSpecialtyId(template.getClinicSpecialtyId());
         if (doctors.isEmpty()) {
             return;
@@ -87,32 +120,37 @@ public class DoctorAvailableSlotService {
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             if (date.getDayOfWeek() == template.getDayOfWeek()) {
-                LocalTime from = template.getFromTime();
-                LocalTime to = template.getToTime();
-                int duration = template.getSlotDuration();
+                generateFromTemplateAndDate(template, doctors, date);
+            }
+        }
+    }
 
-                LocalTime slotStart = from;
-                while (slotStart.plusMinutes(duration).isBefore(to) || slotStart.plusMinutes(duration).equals(to)) {
-                    LocalTime slotEnd = slotStart.plusMinutes(duration);
+    private void generateFromTemplateAndDate(ClinicSpecialtyScheduleTemplate template, List<ClinicSpecialtyDoctor> doctors, LocalDate date) {
+        LocalTime from = template.getFromTime();
+        LocalTime to = template.getToTime();
+        int duration = template.getSlotDuration();
 
-                    for(ClinicSpecialtyDoctor doctor : doctors) {
-                        DoctorAvailableSlot slot = DoctorAvailableSlot.builder()
-                                .doctorId(doctor.getDoctorId())
-                                .clinicSpecialtyId(template.getClinicSpecialtyId())
-                                .appointmentDate(date)
-                                .startTime(slotStart)
-                                .endTime(slotEnd)
-                                .appointmentType(AppointmentType.CLINIC)
-                                .build();
-                        try {
-                            doctorAvailableSlotRepository.save(slot);
-                        } catch (RuntimeException e) {
-                            throw new RuntimeException(e.getMessage());
-                        }
-                    }
-                    slotStart = slotEnd;
+        LocalTime slotStart = from;
+        while (slotStart.plusMinutes(duration).isBefore(to) || slotStart.plusMinutes(duration).equals(to)) {
+            LocalTime slotEnd = slotStart.plusMinutes(duration);
+
+            for(ClinicSpecialtyDoctor doctor : doctors) {
+                DoctorAvailableSlot slot = DoctorAvailableSlot.builder()
+                        .doctorId(doctor.getDoctorId())
+                        .clinicSpecialtyId(template.getClinicSpecialtyId())
+                        .appointmentDate(date)
+                        .startTime(slotStart)
+                        .endTime(slotEnd)
+                        .appointmentType(AppointmentType.CLINIC)
+                        .templateId(template.getId())
+                        .build();
+                try {
+                    doctorAvailableSlotRepository.save(slot);
+                } catch (RuntimeException e) {
+                    throw new RuntimeException(e.getMessage());
                 }
             }
+            slotStart = slotEnd;
         }
     }
 
@@ -136,5 +174,32 @@ public class DoctorAvailableSlotService {
             map.put(date, count);
         }
         return Optional.of(map);
+    }
+
+    public long countSlots(){
+        return doctorAvailableSlotRepository.count();
+    }
+
+    public LocalDate getMaxDate(){
+        return doctorAvailableSlotRepository.findMaxAppointmentDate();
+    }
+
+    @Transactional
+    public boolean deleteAvailableSlot(UUID slotId) {
+        try {
+            doctorAvailableSlotRepository.deleteById(slotId);
+            return true;
+        } catch (RuntimeException e) {
+            log.error("Lỗi khi xóa khung giờ khả dụng với slotId {}: {}", slotId, e.getMessage());
+            return false;
+        }
+    }
+
+    public void deleteAvailableSlotsByTemplateId(UUID id) {
+        try {
+            doctorAvailableSlotRepository.deleteAllByTemplateId(id);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Lỗi khi xóa các khung giờ hẹn liên quan đến templateId " + id + ": " + e.getMessage());
+        }
     }
 }

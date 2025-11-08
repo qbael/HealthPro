@@ -1,0 +1,7 @@
+POST http://localhost:4004/api/v3/clinic-specialty-schedule-template/sync-templates
+Content-Type: application/json
+
+{
+  "clinicSpecialtyId": "a50e8400-e29b-41d4-a716-446655440024",
+  "doctorId": "750e8400-e29b-41d4-a716-446655440016"
+}

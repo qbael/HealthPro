@@ -7,7 +7,7 @@ import {toast} from "sonner";
 interface ModalConfirmAppointmentProps {
     onClose: () => void;
     slot: TimeSlotType;
-    userId: string;
+    patientId: string;
     appointmentType: 'DOCTOR' | 'CLINIC';
     doctorId: string | null;
     clinicSpecialtyId: string | null;
@@ -16,7 +16,7 @@ interface ModalConfirmAppointmentProps {
 const ModalConfirmAppointment = ({
                                      onClose,
                                      slot,
-                                     userId,
+                                     patientId,
                                      appointmentType,
                                      doctorId,
                                      clinicSpecialtyId,
@@ -40,7 +40,7 @@ const ModalConfirmAppointment = ({
                 setError(null);
 
                 const response = await api.post('/v3/appointments/appointment-data', {
-                    "userId": userId,
+                    "patientId": patientId,
                     "doctorId": doctorId,
                     "clinicSpecialtyId": clinicSpecialtyId
                 });
@@ -59,7 +59,7 @@ const ModalConfirmAppointment = ({
         };
 
         fetchData();
-    }, [userId, appointmentType, doctorId, clinicSpecialtyId]);
+    }, [patientId, appointmentType, doctorId, clinicSpecialtyId]);
 
     const handleConfirm = async () => {
         if (!appointmentData) return;
@@ -78,7 +78,6 @@ const ModalConfirmAppointment = ({
 
             if (response.data.success) {
                 toast.success('Đặt khám thành công!');
-                onClose();
             }
         } catch (error: any) {
             console.error('Error booking appointment:', error);
@@ -87,7 +86,7 @@ const ModalConfirmAppointment = ({
             setIsConfirming(false);
             setTimeout(() => {
                 window.location.reload();
-            }, 1500);
+            }, 1000);
             onClose()
         }
     };

@@ -8,14 +8,24 @@ import {useRouter} from "next/navigation";
 import api from "@/lib/axios";
 import {SlotButton} from "@/components/calendar/SlotButton";
 import ModalConfirmAppointment from "@/components/calendar/ModalConfirmAppointment";
+import ModalDeleteSlot from "@/components/calendar/ModalDeleteSlot";
 
 interface CalendarProps {
     id: string;
     type: 'DOCTOR' | 'CLINIC';
+    slotClickEventType:  'MAKE_APPOINTMENT' | 'DELETE_DOCTOR_SLOT' | 'DELETE_CLINIC_SLOT' | 'SHOW_DOCTOR_APPOINTMENT' | 'SHOW_CLINIC_APPOINTMENT';
     availableDates: string[];
 }
 
-export const Calendar = ({id, type, availableDates}: CalendarProps) => {
+export const Calendar = ({id, type, slotClickEventType, availableDates}: CalendarProps) => {
+    if (availableDates.length === 0) {
+        return (
+            <div
+                className="text-center py-12 w-full h-screen flex justify-center items-center text-gray-500">
+                Không có ngày khám khả dụng.
+            </div>
+        );
+    }
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [availableSlots, setAvailableSlots] = useState<TimeSlotType[]>([]);
@@ -26,7 +36,6 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
     const [selectedSlot, setSelectedSlot] = useState<TimeSlotType | null>(null);
     const {user} = useAuth();
     const router = useRouter();
-
     const daysOfWeek = ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'];
     const monthNames = [
         'THÁNG 1', 'THÁNG 2', 'THÁNG 3', 'THÁNG 4', 'THÁNG 5', 'THÁNG 6',
@@ -34,7 +43,7 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
     ];
 
     useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        bottomRef.current?.scrollIntoView({behavior: "smooth"});
     }, [availableSlots]);
 
 
@@ -165,23 +174,43 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
     const {morning, afternoon, evening} = groupSlotsByPeriod();
 
     const handleSlotClick = async (slot: TimeSlotType) => {
-        if (!user){
+        if (!user) {
             router.push("/login");
             return
         }
+        switch (slotClickEventType) {
+            case 'MAKE_APPOINTMENT':
+                await handleMakeAppointment(slot);
+                break;
+            case 'DELETE_DOCTOR_SLOT':
+                handleSlotDelete(slot);
+                break;
+        }
+    }
+
+    const handleMakeAppointment = async (slot: TimeSlotType) => {
         try {
             const res = await api.get('v1/profile/is-fully-registered')
             const body = res.data
-            if (!body.isFullyRegistered){
+            if (!body.isFullyRegistered) {
                 router.push("/profile");
             } else {
                 setSelectedSlot(slot)
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.error('Failed to fetch profile:', error)
         }
     }
+
+    const handleSlotDelete = (slot: TimeSlotType) => {
+        setSelectedSlot(slot)
+    }
+
+    const onCloseModal = () => {
+        setSelectedSlot(null)
+        router.refresh()
+    }
+
     return (
         <div className="relative max-w-3xl mx-auto p-4 bg-white">
             {loading && (
@@ -279,7 +308,8 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
                             <h3 className="text-3xl font-bold mb-4 text-gray-800">Buổi sáng</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                                 {morning.map((slot) => (
-                                    <SlotButton slot={slot} handleSlotClick={handleSlotClick} loading={loading} key={slot.id}/>
+                                    <SlotButton slot={slot} handleSlotClick={handleSlotClick} loading={loading}
+                                                key={slot.id}/>
                                 ))}
                             </div>
                         </div>
@@ -290,7 +320,8 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
                             <h3 className="text-3xl font-bold mb-4 text-gray-800">Buổi chiều</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                                 {afternoon.map((slot) => (
-                                    <SlotButton slot={slot} handleSlotClick={handleSlotClick} loading={loading} key={slot.id}/>
+                                    <SlotButton slot={slot} handleSlotClick={handleSlotClick} loading={loading}
+                                                key={slot.id}/>
                                 ))}
                             </div>
                         </div>
@@ -301,7 +332,8 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
                             <h3 className="text-3xl font-bold mb-4 text-gray-800">Buổi tối</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                                 {evening.map((slot) => (
-                                    <SlotButton slot={slot} handleSlotClick={handleSlotClick} loading={loading} key={slot.id}/>
+                                    <SlotButton slot={slot} handleSlotClick={handleSlotClick} loading={loading}
+                                                key={slot.id}/>
                                 ))}
                             </div>
                         </div>
@@ -312,16 +344,25 @@ export const Calendar = ({id, type, availableDates}: CalendarProps) => {
                     </p>
                 </div>
             )}
-            {selectedSlot && (
+
+            {selectedSlot && slotClickEventType === 'MAKE_APPOINTMENT' && (
                 <ModalConfirmAppointment
-                    onClose={() => setSelectedSlot(null)}
+                    onClose={() => onCloseModal()}
                     slot={selectedSlot}
-                    userId={user.id}
+                    patientId={user.userRoleId}
                     appointmentType={pageType.current}
-                    doctorId={ pageType.current === 'DOCTOR' ? id : null }
-                    clinicSpecialtyId={ pageType.current === 'CLINIC' ? id : null }
+                    doctorId={pageType.current === 'DOCTOR' ? id : null}
+                    clinicSpecialtyId={pageType.current === 'CLINIC' ? id : null}
                 />
             )}
+
+            {selectedSlot && slotClickEventType === 'DELETE_DOCTOR_SLOT' && (
+                <ModalDeleteSlot
+                    slot={selectedSlot}
+                    onClose={() => onCloseModal()}
+                />
+            )}
+
         </div>
     );
 };
