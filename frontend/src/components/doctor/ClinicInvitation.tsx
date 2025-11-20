@@ -12,7 +12,9 @@ const ClinicInvitation = ({ invitation } : any) => {
 
     const handleInvitation = async (status: string) => {
         try {
-            await api.put(`v2/clinic-invitation/${invitation.id}`, JSON.stringify(status))
+            await api.put(`v2/clinic-invitation/${invitation.id}`, {
+                status: status
+            })
             {
                 status == 'ACCEPTED' ? toast.success('Đồng ý thành công')
                     : toast.error('Hủy thành công')

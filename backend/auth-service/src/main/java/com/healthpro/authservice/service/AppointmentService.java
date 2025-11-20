@@ -7,7 +7,6 @@ import com.healthpro.authservice.entity.Patient;
 import com.healthpro.authservice.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,10 +23,10 @@ public class AppointmentService {
         this.clinicService = clinicService;
     }
 
-    public AppointmentInfoResponseDto getAppointmentInfo(String userId, String doctorId, String clinicId) {
-        Optional<Patient> patientOpt = patientService.getPatientByUserId(UUID.fromString(userId));
+    public AppointmentInfoResponseDto getAppointmentInfo(String patientId, String doctorId, String clinicId) {
+        Optional<Patient> patientOpt = patientService.getPatientById(UUID.fromString(patientId));
         if (patientOpt.isEmpty()) {
-            throw new UserNotFoundException("Patient with user id " + userId + " not found");
+            throw new UserNotFoundException("Patient with user id " + patientId + " not found");
         }
         Patient patient = patientOpt.get();
         if (!doctorId.isEmpty()) {

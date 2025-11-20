@@ -51,4 +51,13 @@ public class DoctorAvailableSlotController {
                         .body(ApiResponseDto.error(404,  "Lấy danh sách ngày hẹn nhanh của bác sĩ thất bại")));
     }
 
+    @DeleteMapping("/{slotId}")
+    public ResponseEntity<ApiResponseDto<Void>> deleteAvailableSlot(@PathVariable UUID slotId) {
+        boolean status = doctorAvailableSlotService.deleteAvailableSlot(slotId);
+        if (status) {
+            return ResponseEntity.ok(ApiResponseDto.success(null, "Xóa khung giờ khả dụng thành công"));
+        } else {
+            return ResponseEntity.status(400).body(ApiResponseDto.error(400, "Xóa khung giờ khả dụng thất bại"));
+        }
+    }
 }

@@ -4,7 +4,6 @@ import com.healthpro.scheduleservice.dto.ApiResponseDto;
 import com.healthpro.scheduleservice.dto.AppointmentDataRequestDto;
 import com.healthpro.scheduleservice.dto.AppointmentDataResponseDto;
 import com.healthpro.scheduleservice.dto.AppointmentRequestDto;
-import com.healthpro.scheduleservice.entity.enums.AppointmentType;
 import com.healthpro.scheduleservice.service.AppointmentService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

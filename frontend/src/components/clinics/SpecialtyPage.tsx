@@ -3,16 +3,18 @@ import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@
 import {Button} from "@/components/ui/button";
 import SpecialtyForm from "@/components/clinics/SpecialtyForm";
 
-interface Specialty {
+interface ClinicSpecialties {
+    clinicId: string
     id: string
+    specialtyId: string
     name: string
 }
 
 interface SpecialtyPageProps {
-    specialties: Specialty[]
+    clinicSpecialties: ClinicSpecialties[]
 }
 
-const SpecialtyPage = ({ specialties } : SpecialtyPageProps) => {
+const SpecialtyPage = ({clinicSpecialties}: SpecialtyPageProps) => {
     return (
         <main className='relative top-10 w-[90%] max-w-400 m-auto'>
             <div className='flex items-center justify-center gap-3 mb-7'>
@@ -27,17 +29,19 @@ const SpecialtyPage = ({ specialties } : SpecialtyPageProps) => {
                         <DialogHeader>
                             <DialogTitle>Đăng Ký Chuyên Khoa</DialogTitle>
                         </DialogHeader>
-                        <SpecialtyForm
-                            specialties={specialties}
-                        />
+                        {clinicSpecialties &&
+                            <SpecialtyForm
+                                specialties={clinicSpecialties}
+                            />
+                        }
                     </DialogContent>
                 </Dialog>
             </div>
 
-            {specialties.length > 0 ? (
+            {clinicSpecialties.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                    {specialties.map((specialty) => (
-                        <SpecialtyCard key={specialty.id} specialty={specialty} />
+                    {clinicSpecialties.map((specialty) => (
+                        <SpecialtyCard key={specialty.id} specialty={specialty}/>
                     ))}
                 </div>
             ) : (

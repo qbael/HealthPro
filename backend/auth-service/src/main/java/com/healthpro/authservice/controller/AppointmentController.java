@@ -18,9 +18,9 @@ public class AppointmentController {
     }
 
     @GetMapping("/appointment-info")
-    public AppointmentInfoResponseDto getAppointmentInfo(@RequestParam(name = "userId") String userId,
+    public AppointmentInfoResponseDto getAppointmentInfo(@RequestParam(name = "patientId") String patientId,
                                                          @RequestParam(name = "doctorId", required = false) String doctorId,
                                                          @RequestParam(name = "clinicId", required = false) String clinicId) {
-        return appointmentService.getAppointmentInfo(userId, doctorId, clinicId);
+        return appointmentService.getAppointmentInfo(patientId, doctorId, clinicId);
     }
 }

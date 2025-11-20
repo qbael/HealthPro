@@ -85,7 +85,7 @@ public class PatientService {
                 patient.getGender() != null;
     }
 
-    public Optional<Patient> getPatientByUserId(UUID userId) {
-        return patientRepository.findByUser_Id(userId);
+    public Optional<Patient> getPatientById(UUID patientId) {
+        return patientRepository.findById(patientId);
     }
 }

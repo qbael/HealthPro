@@ -6,10 +6,10 @@ const Page = async ({ params } : any) => {
     const api = await createServerApi()
     try {
         const res = await api.get(`v3/clinic-specialty-schedule-template/${id}`)
-        const template = res.data
+        const templates = res.data
 
         return (
-            <SchedulePage initialTemplate={template} clinicSpecialtyId={id}/>
+            <SchedulePage initialTemplates={templates} clinicSpecialtyId={id}/>
         )
     }
     catch (error) {

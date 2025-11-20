@@ -1,56 +1,35 @@
-import {Button} from '@/components/ui/button'
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog"
-import ScheduleForm from "@/components/clinics/ScheduleForm"
-import {createServerApi} from "@/lib/axiosServer";
+import ScheduleDialog from "@/components/clinics/ScheduleDialog";
+import { createServerApi } from "@/lib/axiosServer";
+import { Calendar } from "@/components/calendar/Calendar";
 
-const SchedulePage = async ({ initialTemplate, clinicSpecialtyId } : any) => {
-    const api = await createServerApi()
-    const res = await api.get(`v2/specialties/${clinicSpecialtyId}`)
-    const specialtyName = res.data.name
+const SchedulePage = async ({ initialTemplates, clinicSpecialtyId }: any) => {
+    const api = await createServerApi();
 
-    const days = [
-        { label: "CN", color: "text-red-500" },
-        { label: "Hai" },
-        { label: "Ba" },
-        { label: "Tư" },
-        { label: "Năm" },
-        { label: "Sáu" },
-        { label: "Bảy", color: "text-orange-500" },
-    ]
+    const res1 = await api.get(`v2/clinic-specialty/${clinicSpecialtyId}`);
+    const res2 = await api.get(`v3/schedule/clinic-specialty/available-dates/${clinicSpecialtyId}`);
+    const specialtyName = res1.data.specialty.name;
+    const initialDates: string[] = res2.data.data;
 
     return (
         <main>
             <section className='relative top-5 mx-auto w-[90%] max-w-[900px]'>
                 <div className='flex justify-center gap-3'>
-                    <h1 className='text-blue-400 text-2xl text-center font-bold mb-7'>Lịch Làm: {specialtyName}</h1>
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <Button className='bg-blue-500 hover:bg-blue-600 hover:cursor-pointer'>
-                                Đăng Ký Lịch Làm
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-md">
-                            <DialogHeader>
-                                <DialogTitle>Đăng Ký Lịch Làm</DialogTitle>
-                            </DialogHeader>
-                            <ScheduleForm
-                                template={initialTemplate}
-                                clinicSpecialtyId={clinicSpecialtyId}
-                            />
-                        </DialogContent>
-                    </Dialog>
+                    <h1 className='text-blue-400 text-2xl text-center font-bold mb-7'>
+                        Lịch Làm: {specialtyName}
+                    </h1>
+
+                    <ScheduleDialog
+                        templates={initialTemplates}
+                        clinicSpecialtyId={clinicSpecialtyId}
+                    />
                 </div>
 
-                <div className="grid grid-cols-7 text-center bg-white">
-                    {days.map((day, i) => (
-                        <div
-                            key={i}
-                            className={`py-4 font-semibold border border-gray-200 bg-gray-50 ${day.color || "text-gray-700"}`}
-                        >
-                            {day.label}
-                        </div>
-                    ))}
-                </div>
+                <Calendar
+                    id={clinicSpecialtyId}
+                    type="DOCTOR"
+                    slotClickEventType="DELETE_CLINIC_SLOT"
+                    availableDates={initialDates}
+                />
             </section>
         </main>
     );

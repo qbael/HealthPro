@@ -7,21 +7,16 @@ import java.time.DayOfWeek;
 import java.util.List;
 
 public class ClinicSpecialtyScheduleTemplateMapper {
-    public static ClinicSpecialtyScheduleTemplateDTO toClinicSpecialtyScheduleTemplateResponseDTO(
+    public static List<ClinicSpecialtyScheduleTemplateDTO> toClinicSpecialtyScheduleTemplateResponseDTO(
             List<ClinicSpecialtyScheduleTemplate> clinicSpecialtyScheduleTemplates
     ) {
-        ClinicSpecialtyScheduleTemplateDTO clinicSpecialtyScheduleTemplateDTO = new ClinicSpecialtyScheduleTemplateDTO();
-        DayOfWeek[] days = clinicSpecialtyScheduleTemplates.stream()
-                .map(ClinicSpecialtyScheduleTemplate::getDayOfWeek)
-                .toArray(DayOfWeek[]::new);
-
-        clinicSpecialtyScheduleTemplateDTO.setDayOfWeek(days);
-
-        ClinicSpecialtyScheduleTemplate first = clinicSpecialtyScheduleTemplates.stream().findFirst().orElse(null);
-        clinicSpecialtyScheduleTemplateDTO.setFromTime(first.getFromTime());
-        clinicSpecialtyScheduleTemplateDTO.setToTime(first.getToTime());
-        clinicSpecialtyScheduleTemplateDTO.setSlotDuration(first.getSlotDuration());
-
-        return clinicSpecialtyScheduleTemplateDTO;
+        return clinicSpecialtyScheduleTemplates.stream().map(template -> {
+            ClinicSpecialtyScheduleTemplateDTO dto = new ClinicSpecialtyScheduleTemplateDTO();
+            dto.setDayOfWeek(template.getDayOfWeek());
+            dto.setFromTime(template.getFromTime());
+            dto.setToTime(template.getToTime());
+            dto.setSlotDuration(template.getSlotDuration());
+            return dto;
+        }).toList();
     }
 }

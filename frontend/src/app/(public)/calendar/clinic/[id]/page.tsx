@@ -12,9 +12,10 @@ export default async function DoctorAppointmentCalendar({params}: {params: Promi
     const data = await res.json();
     const availableDates: string[] = data.data
 
+
     return (
         <>
-            <Calendar id={id} type={"CLINIC"} availableDates={availableDates} />
+            <Calendar id={id} type={"CLINIC"} slotClickEventType={'MAKE_APPOINTMENT'} availableDates={availableDates} />
         </>
     );
 }

@@ -31,79 +31,85 @@
 #            predicates:
 #              - Path=/api/v1/profile/**
 #            filters:
-#              - JwtValidation
-#
-#            # Route for /api/v1/doctor-available-slots/** to doctor-available-slots
-#          - id: doctor-available-slots-service-route
-#            uri: http://schedule-service:8082
+#              - JwtValidation#
+
+#            # Route for /api/v1/clinics/** to users-service
+#          - id: clinics-service-route
+#            uri: http://auth-service:8080
 #            predicates:
-#              - Path=/api/v1/doctor-available-slots/**
+#              - Path=/api/v1/clinics/**
 #            filters:
 #              - JwtValidation
 #
-#            # Route for /api/v1/doctor-template/** to doctor-available-slots
-#          - id: doctor-schedule-template-service-route
-#            uri: http://schedule-service:8082
-#            predicates:
-#              - Path=/api/v1/doctor-schedule-template/**
-#            filters:
-#              - JwtValidation
-#
-#            # Route for /api/v1/clinic-specialty/** to doctor-available-slots
-#          - id: clinic-specialty-schedule-template-service-route
-#            uri: http://schedule-service:8082
-#            predicates:
-#              - Path=/api/v1/clinic-specialty-schedule-template/**
-#            filters:
-#              - JwtValidation
-#
-#            # Route for /api/v1/clinics/**
+#            # Route for /api/v2/clinics/**
 #          - id: clinic-service-route
 #            uri: http://clinic-service:8081
 #            predicates:
-#            - Path=/api/v1/clinics/**
-#            filters:
-#            - JwtValidation
+#            - Path=/api/v2/clinics/**
 #
-#            # Route for /api/v1/specialties/**
+#            # Route for /api/v2/specialties/**
 #          - id: specialties-service-route
 #            uri: http://clinic-service:8081
 #            predicates:
-#              - Path=/api/v1/specialties/**
+#              - Path=/api/v2/specialties/**
 #            filters:
 #              - JwtValidation
 #
-#            # Route for /api/v1/clinic-specialty/**
+#            # Route for /api/v2/clinic-specialty/**
 #          - id: clinic-specialty-service-route
 #            uri: http://clinic-service:8081
 #            predicates:
-#              - Path=/api/v1/clinic-specialty/**
+#              - Path=/api/v2/clinic-specialty/**
 #            filters:
 #              - JwtValidation
 
-#            # Route for /api/v1/doctor-specialty/**
+#            # Route for /api/v2/doctor-specialty/**
 #          - id: doctor-specialty-service-route
 #            uri: clinic-service:8081
 #            predicates:
-#              - Path=/api/v1/doctor-specialty/**
+#              - Path=/api/v2/doctor-specialty/**
 #            filters:
 #              - JwtValidation
 
-#            # Route for /api/v1/doctors/**
+#            # Route for /api/v2/doctors/**
 #          - id: doctors-service-route
 #            uri: clinic-service:8081
 #            predicates:
-#              - Path=/api/v1/doctors/**
-#            filters:
-#              - JwtValidation
+#              - Path=/api/v2/doctors/**
 
-#            # Route for /api/v1/clinic-invitation/**
+#            # Route for /api/v2/clinic-invitation/**
 #          - id: clinic-invitation-service-route
 #            uri: clinic-invitation-service:8081
 #            predicates:
-#              - Path=/api/v1/clinic-invitation/**
+#              - Path=/api/v2/clinic-invitation/**
 #            filters:
 #              - JwtValidation
+#
+#            # Route for /api/v3/doctor-template/** to doctor-available-slots
+#          - id: doctor-schedule-template-service-route
+#            uri: http://schedule-service:8082
+#            predicates:
+#              - Path=/api/v3/doctor-schedule-template/**
+#            filters:
+#              - JwtValidation
+#
+#            # Route for /api/v3/clinic-specialty/** to doctor-available-slots
+#          - id: clinic-specialty-schedule-template-service-route
+#            uri: http://schedule-service:8082
+#            predicates:
+#              - Path=/api/v3/clinic-specialty-schedule-template/**
+#            filters:
+#              - JwtValidation
+#
+#          - id: schedule-doctor-service-route
+#            uri: http://schedule-service:8082
+#            predicates:
+#              - Path=/api/v3/schedule/doctor/**
+
+#          - id: schedule-clinic-specialty-service-route
+#            uri: http://schedule-service:8082
+#            predicates:
+#              - Path=/api/v3/schedule/clinic-specialty/**
 
 server:
   port: 4004 # Gateway listens on port 4004
@@ -140,74 +146,93 @@ spring:
             filters:
               - JwtValidation
 
-            # Route for /api/v1/doctor-available-slots/** to doctor-available-slots
-          - id: doctor-available-slots-service-route
-            uri: http://localhost:8082
+          - id: appointment-info-service-route
+            uri: http://localhost:8080
             predicates:
-              - Path=/api/v1/doctor-available-slots/**
+              - Path=/api/v1/appointments/appointment-info/**
             filters:
               - JwtValidation
 
-            # Route for /api/v1/doctor-schedule-template/** to doctor-available-slots
-          - id: schedule-template-service-route
-            uri: http://localhost:8082
+          - id: clinic-specialty-info-service-route
+            uri: http://localhost:8081
             predicates:
-              - Path=/api/v1/doctor-schedule-template/**
+              - Path=/api/v2/appointments/clinic-specialty-info/**
             filters:
               - JwtValidation
 
-            # Route for /api/v1/clinic-specialty-schedule-template/** to doctor-available-slots
-          - id: clinic-specialty-template-service-route
-            uri: http://localhost:8082
-            predicates:
-              - Path=/api/v1/clinic-specialty-schedule-template/**
-            filters:
-              - JwtValidation
-
-            # Route for /api/v1/clinics/**
+            # Route for /api/v2/clinics/**
           - id: clinic-service-route
             uri: http://localhost:8081
             predicates:
-            - Path=/api/v1/clinics/**
-            filters:
-            - JwtValidation
+            - Path=/api/v2/clinics/**
 
-            # Route for /api/v1/specialties/**
+            # Route for /api/v2/specialties/**
           - id: specialties-service-route
             uri: http://localhost:8081
             predicates:
-              - Path=/api/v1/specialties/**
+              - Path=/api/v2/specialties/**
             filters:
               - JwtValidation
 
-            # Route for /api/v1/clinic-specialty/**
+            # Route for /api/v2/clinic-specialty/**
           - id: clinic-specialty-service-route
             uri: http://localhost:8081
             predicates:
-              - Path=/api/v1/clinic-specialty/**
+              - Path=/api/v2/clinic-specialty/**
             filters:
               - JwtValidation
 
-            # Route for /api/v1/doctor-specialty/**
+            # Route for /api/v2/doctor-specialty/**
           - id: doctor-specialty-service-route
             uri: http://localhost:8081
             predicates:
-              - Path=/api/v1/doctor-specialty/**
+              - Path=/api/v2/doctor-specialty/**
             filters:
               - JwtValidation
 
-            # Route for /api/v1/doctors/**
+            # Route for /api/v2/doctors/**
           - id: doctors-service-route
             uri: http://localhost:8081
             predicates:
-              - Path=/api/v1/doctors/**
-            filters:
-              - JwtValidation
+              - Path=/api/v2/doctors/**
 
-            # Route for /api/v1/clinic-invitation/**
+            # Route for /api/v2/clinic-invitation/**
           - id: clinic-invitation-service-route
             uri: http://localhost:8081
             predicates:
-              - Path=/api/v1/clinic-invitation/**
+              - Path=/api/v2/clinic-invitation/**
             filters:
               - JwtValidation
+
+            # Route for /api/v3/doctor-schedule-template/** to doctor-available-slots
+          - id: schedule-template-service-route
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v3/doctor-schedule-template/**
+            filters:
+              - JwtValidation
+
+            # Route for /api/v3/clinic-specialty-schedule-template/** to doctor-available-slots
+          - id: clinic-specialty-template-service-route
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v3/clinic-specialty-schedule-template/**
+            filters:
+              - JwtValidation
+
+          - id: schedule-doctor-service-route
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v3/schedule/doctor/**
+
+          - id: appointment-data-service-route
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v3/appointments/**
+            filters:
+              - JwtValidation
+
+          - id: schedule-clinic-specialty-service-route
+            uri: http://localhost:8082
+            predicates:
+              - Path=/api/v3/schedule/clinic-specialty/**

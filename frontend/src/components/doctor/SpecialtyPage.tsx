@@ -4,16 +4,18 @@ import {Button} from "@/components/ui/button";
 import SpecialtyForm from "@/components/doctor/SpecialtyForm";
 import {renderSpecialtyIcon} from "@/lib/icon-provider";
 
-interface Specialty {
-    specialtyName: string;
+interface ClinicSpecialties {
+    clinicId: string
     id: string
+    specialtyId: string
+    specialtyName: string
 }
 
 interface SpecialtyPageProps {
-    specialties: Specialty[]
+    clinicSpecialties: ClinicSpecialties[]
 }
 
-const SpecialtyPage = ({ specialties } : SpecialtyPageProps) => {
+const SpecialtyPage = ({ clinicSpecialties } : SpecialtyPageProps) => {
     return (
         <main className='relative top-10 w-[90%] max-w-400 m-auto'>
             <div className='flex items-center justify-center gap-3 mb-5'>
@@ -29,15 +31,15 @@ const SpecialtyPage = ({ specialties } : SpecialtyPageProps) => {
                             <DialogTitle>Đăng Ký Chuyên Khoa</DialogTitle>
                         </DialogHeader>
                         <SpecialtyForm
-                            specialties={specialties}
+                            specialties={clinicSpecialties}
                         />
                     </DialogContent>
                 </Dialog>
             </div>
 
-            {specialties.length > 0 ? (
+            {clinicSpecialties.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                    {specialties.map((specialty) => (
+                    {clinicSpecialties.map((specialty) => (
                         <div
                             key={specialty.id}
                             className="group bg-white rounded-2xl shadow-md hover:shadow-xl

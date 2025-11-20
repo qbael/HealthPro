@@ -5,10 +5,10 @@ const Page = async () => {
     const api = await createServerApi()
     try {
         const res = await api.get('/v2/doctor-specialty')
-        const specialties = res.data
+        const clinicSpecialties = res.data
 
         return (
-            <SpecialtyPage specialties={specialties} />
+            <SpecialtyPage clinicSpecialties={clinicSpecialties} />
         )
     }
     catch (error) {

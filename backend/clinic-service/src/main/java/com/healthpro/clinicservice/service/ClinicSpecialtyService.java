@@ -50,4 +50,10 @@ public class ClinicSpecialtyService {
             clinicSpecialtyRepository.save(clinicSpecialty);
         }
     }
+
+    public ClinicSpecialty getClinicSpecialtyById(UUID clinicSpecialtyId) {
+
+        return clinicSpecialtyRepository.findById(clinicSpecialtyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Clinic Specialty not found"));
+    }
 }

@@ -1,11 +1,10 @@
 package com.healthpro.scheduleservice.repository;
 
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +12,11 @@ import java.util.UUID;
 public interface DoctorScheduleTemplateRepository extends JpaRepository<DoctorScheduleTemplate, UUID> {
     List<DoctorScheduleTemplate> findByDoctorId(UUID id);
 
-    Page<DoctorScheduleTemplate> findByIsActiveTrue(Pageable pageable);
-//    void deleteByDoctorIdAndIsActiveTrue(UUID id);
-    void deleteByDoctorId(UUID id);
+    List<DoctorScheduleTemplate> findByDayOfWeek(DayOfWeek dayOfWeek);
+
+    List<DoctorScheduleTemplate> findByDoctorIdIn(List<UUID> list);
+
+    List<DoctorScheduleTemplate> findByDoctorIdInAndDayOfWeekIn(List<UUID> doctorIds, List<DayOfWeek> daysOfWeek);
+
+    List<DoctorScheduleTemplate> findByDoctorIdAndDayOfWeekIn(UUID doctorId, List<DayOfWeek> daysOfWeek1);
 }
