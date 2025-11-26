@@ -11,9 +11,10 @@ import java.util.UUID;
 @Repository
 public interface ClinicSpecialtyScheduleTemplateRepository extends JpaRepository<ClinicSpecialtyScheduleTemplate, UUID> {
 
-    List<ClinicSpecialtyScheduleTemplate> findByClinicSpecialtyId(UUID clinicSpecialtyId);
+    List<ClinicSpecialtyScheduleTemplate> findAllByClinicSpecialtyId(UUID clinicSpecialtyId);
 
     boolean existsByClinicSpecialtyId(UUID clinicSpecialtyId);
 
-    List<ClinicSpecialtyScheduleTemplate> findByDayOfWeek(DayOfWeek dayOfWeek);
+    List<ClinicSpecialtyScheduleTemplate> findAllByDayOfWeek(DayOfWeek dayOfWeek);
+
 }

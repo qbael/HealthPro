@@ -19,7 +19,6 @@ import java.util.UUID;
 public class ClinicSpecialtyDoctor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotNull

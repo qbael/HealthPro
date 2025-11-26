@@ -48,22 +48,4 @@ public class ClinicSpecialtyScheduleTemplateController {
                 id, request.templates);
         return ResponseEntity.noContent().build();
     }
-
-    public record SyncTemplatesRequestDTO(
-            @NotNull @Valid UUID clinicSpecialtyId,
-            @NotNull @Valid UUID doctorId
-    ){}
-
-    @PostMapping("/sync-templates")
-    public ResponseEntity<Boolean> syncClinicSpecialtyScheduleTemplates(
-            @RequestBody @Valid SyncTemplatesRequestDTO request
-    ) {
-        try {
-            clinicSpecialtyScheduleTemplateService.refixDoctorScheduleTemplatesInClinicSpecialty(
-                    request.clinicSpecialtyId, request.doctorId);
-            return ResponseEntity.ok(true);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
 }
