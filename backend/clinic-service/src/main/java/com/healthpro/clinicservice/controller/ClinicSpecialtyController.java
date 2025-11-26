@@ -34,4 +34,13 @@ public class ClinicSpecialtyController {
                 clinicId, clinicSpecialtyRequestDTO);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{clinicSpecialtyId}")
+    public ResponseEntity<?> getClinicSpecialtyById(
+            @PathVariable UUID clinicSpecialtyId
+    ) {
+        return ResponseEntity.ok(
+                clinicSpecialtyService.getClinicSpecialtyById(clinicSpecialtyId)
+        );
+    }
 }

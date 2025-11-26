@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.extern.apachecommons.CommonsLog;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -47,4 +48,8 @@ public class DoctorAvailableSlot {
     @Enumerated(EnumType.STRING)
     @Column(name = "appointment_type", nullable = false)
     private AppointmentType appointmentType;
+
+    @NotNull(message = "ID mẫu lịch không được để trống")
+    @Column(name = "template_id")
+    private UUID templateId;
 }

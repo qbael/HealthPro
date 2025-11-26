@@ -1,1 +1,1 @@
-GET http://localhost:4004/api/v3/schedule/doctor/available-dates/750e8400-e29b-41d4-a716-446655440016
+GET http://localhost:4004/api/v3/schedule/doctor/available-dates/750e8400-e29b-41d4-a716-446655440011

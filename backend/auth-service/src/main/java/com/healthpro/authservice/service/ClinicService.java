@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -100,5 +101,9 @@ public class ClinicService {
         Clinic clinic = clinicRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found clinic"));
         return new ClinicTimeDTO(clinic.getWeekdayOpenHour(), clinic.getWeekdayCloseHour());
+    }
+
+    public Optional<Clinic> getClinicByIdForAppointment(UUID id) {
+        return clinicRepository.findById(id);
     }
 }

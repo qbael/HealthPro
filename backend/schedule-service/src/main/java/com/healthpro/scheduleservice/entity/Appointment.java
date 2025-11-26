@@ -8,6 +8,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -46,7 +48,6 @@ public class Appointment {
     @Column(name = "doctor_id", nullable = false)
     private UUID doctorId;
 
-    @NotBlank(message = "Tên bác sĩ không được để trống")
     @Size(max = 255, message = "Tên bác sĩ không được vượt quá 255 ký tự")
     @Column(name = "doctor_name", nullable = false)
     private String doctorName;
@@ -64,8 +65,8 @@ public class Appointment {
 
     @NotNull(message = "Số điện thoại phòng khám không được để trống")
     @Pattern(regexp = "^0[0-9]{9}$", message = "Số điện thoại phòng khám không hợp lệ")
-    @Column(name = "clinic_phone", nullable = false)
-    private String  clinic_phone;
+    @Column(name = "phone", nullable = false)
+    private String phone;
 
     @Column(name = "clinic_specialty_id")
     private UUID clinicSpecialtyId;
@@ -91,10 +92,10 @@ public class Appointment {
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
-    @NotNull(message = "Trạng thái không được để trống")
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private AppointmentStatus status;
+    private AppointmentStatus status = AppointmentStatus.SCHEDULED;
 
     @Size(max = 1000, message = "Ghi chú không được vượt quá 1000 ký tự")
     @Column(name = "notes", columnDefinition = "TEXT")
@@ -114,5 +115,11 @@ public class Appointment {
             return true;
         }
         return endTime.isAfter(startTime);
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (status == null)
+            status = AppointmentStatus.SCHEDULED;
     }
 }

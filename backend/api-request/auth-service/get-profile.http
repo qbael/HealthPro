@@ -1,4 +1,5 @@
 ### PUT request do update Profile
 GET http://localhost:4004/api/v1/profile
+#GET http://localhost:4004/api/v1/profile/is-fully-registered
 
 ###

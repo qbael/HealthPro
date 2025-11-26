@@ -1,11 +1,13 @@
 package com.healthpro.clinicservice.controller;
 
 import com.healthpro.clinicservice.dto.ApiResponseDTO;
+import com.healthpro.clinicservice.dto.ClinicInvitationClinicDTO;
 import com.healthpro.clinicservice.dto.ClinicInvitationDoctorDTO;
 import com.healthpro.clinicservice.dto.ClinicInvitationRequestDTO;
-import com.healthpro.clinicservice.dto.ClinicInvitationClinicDTO;
 import com.healthpro.clinicservice.entity.enums.InvitationStatus;
 import com.healthpro.clinicservice.service.ClinicInvitationService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -89,13 +91,17 @@ public class ClinicInvitationController {
         return ResponseEntity.ok().build();
     }
 
+    public record UpdateInvitationRequestDTO(
+            @NotNull InvitationStatus status
+    ) {}
+
     @PutMapping("/{invitationId}")
     public ResponseEntity<?> approveClinicInvitation(
             @PathVariable UUID invitationId,
-            @RequestBody String status
+            @RequestBody @Valid UpdateInvitationRequestDTO request
     ) {
         clinicInvitationService
-                .approveClinicInvitation(invitationId, status);
+                .approveClinicInvitation(invitationId, request.status);
         return ResponseEntity.ok().build();
     }
 }

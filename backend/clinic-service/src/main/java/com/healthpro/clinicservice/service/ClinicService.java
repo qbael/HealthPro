@@ -1,5 +1,6 @@
 package com.healthpro.clinicservice.service;
 
+import com.healthpro.clinicservice.dto.ClinicSpecialtyInfoResponseDto;
 import com.healthpro.clinicservice.entity.Clinic;
 import com.healthpro.clinicservice.entity.ClinicSpecialty;
 import com.healthpro.clinicservice.repository.ClinicRepository;
@@ -33,5 +34,9 @@ public class ClinicService {
 
     public Optional<List<ClinicSpecialty>> getSpecialtiesByClinicId(String id) {
         return Optional.ofNullable(clinicSpecialtyRepository.findAllByClinic_Id(UUID.fromString(id)));
+    }
+
+    public Optional<ClinicSpecialty> getClinicSpecialtyById(String clinicSpecialtyId) {
+        return clinicSpecialtyRepository.findById(UUID.fromString(clinicSpecialtyId));
     }
 }

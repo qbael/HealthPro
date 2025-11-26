@@ -1,52 +1,91 @@
 package com.healthpro.scheduleservice.service;
 
 import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateDTO;
+import com.healthpro.scheduleservice.entity.ClinicSpecialtyDoctor;
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
 import com.healthpro.scheduleservice.mapper.DoctorScheduleTemplateMapper;
+import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
 import com.healthpro.scheduleservice.repository.DoctorScheduleTemplateRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.time.DayOfWeek;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class DoctorScheduleTemplateService {
     private final DoctorScheduleTemplateRepository doctorScheduleTemplateRepository;
-    private final ScheduleGenerationService scheduleGenerationService;
+    private final DoctorAvailableSlotService doctorAvailableSlotService;
+    private final ClinicSpecialtyDoctorRepository clinicSpecialtyDoctorRepository;
+    private final ClinicSpecialtyScheduleTemplateService clinicSpecialtyScheduleTemplateService;
 
-    public DoctorScheduleTemplateDTO getAllDoctorScheduleTemplates(UUID doctorId) {
+    public List<DoctorScheduleTemplateDTO> getAllDoctorScheduleTemplates(UUID doctorId) {
         List<DoctorScheduleTemplate> doctorScheduleTemplates = doctorScheduleTemplateRepository.findByDoctorId(doctorId);
 
         if (doctorScheduleTemplates.isEmpty()) {
-            return new DoctorScheduleTemplateDTO();
+            return List.of();
         }
 
         return DoctorScheduleTemplateMapper.toDoctorScheduleTemplateResponseDTO(doctorScheduleTemplates);
     }
 
     @Transactional
-    public void createDoctorScheduleTemplate(
-            UUID doctorId, DoctorScheduleTemplateDTO doctorScheduleTemplateDTO
-    ) {
-        doctorScheduleTemplateRepository.deleteByDoctorId(doctorId);
+    public void createDoctorScheduleTemplate(UUID doctorId, List<DoctorScheduleTemplateDTO> newTemplates) {
+        List<DoctorScheduleTemplate> existingTemplates = doctorScheduleTemplateRepository.findByDoctorId(doctorId);
 
-        for (int i = 0; i < doctorScheduleTemplateDTO.getDayOfWeek().length; i++) {
-            DoctorScheduleTemplate doctorScheduleTemplate = new DoctorScheduleTemplate();
-            doctorScheduleTemplate.setDoctorId(doctorId);
-            doctorScheduleTemplate.setDayOfWeek(doctorScheduleTemplateDTO.getDayOfWeek()[i]);
-            doctorScheduleTemplate.setFromTime(doctorScheduleTemplateDTO.getFromTime());
-            doctorScheduleTemplate.setToTime(doctorScheduleTemplateDTO.getToTime());
-            doctorScheduleTemplate.setSlotDuration(doctorScheduleTemplateDTO.getSlotDuration());
-            doctorScheduleTemplateRepository.save(doctorScheduleTemplate);
+        Map<DayOfWeek, DoctorScheduleTemplate> existingMap = existingTemplates.stream()
+                .collect(Collectors.toMap(DoctorScheduleTemplate::getDayOfWeek, t -> t));
+
+        List<DoctorScheduleTemplate> toKeep = new ArrayList<>();
+        List<DoctorScheduleTemplateDTO> toCreate = new ArrayList<>();
+
+        for (DoctorScheduleTemplateDTO dto : newTemplates) {
+            DoctorScheduleTemplate existing = existingMap.get(dto.getDayOfWeek());
+            if (existing != null &&
+                    existing.getFromTime().equals(dto.getFromTime()) &&
+                    existing.getToTime().equals(dto.getToTime()) &&
+                    existing.getSlotDuration().equals(dto.getSlotDuration())) {
+                toKeep.add(existing);
+            } else {
+                toCreate.add(dto);
+            }
         }
 
-        scheduleGenerationService.generateSlotFromDoctorTemplate();
+        List<DoctorScheduleTemplate> toDelete = existingTemplates.stream()
+                .filter(t -> toKeep.stream().noneMatch(k -> k.getDayOfWeek() == t.getDayOfWeek()))
+                .toList();
+
+        if (!toDelete.isEmpty()) {
+            List<UUID> templateIds = toDelete.stream().map(DoctorScheduleTemplate::getId).toList();
+            doctorAvailableSlotService.deleteAvailableSlotsByTemplateIdIn(templateIds);
+            doctorScheduleTemplateRepository.deleteAll(toDelete);
+        }
+
+        for (DoctorScheduleTemplateDTO dto : toCreate) {
+            DoctorScheduleTemplate entity = new DoctorScheduleTemplate();
+            entity.setDoctorId(doctorId);
+            entity.setDayOfWeek(dto.getDayOfWeek());
+            entity.setFromTime(dto.getFromTime());
+            entity.setToTime(dto.getToTime());
+            entity.setSlotDuration(dto.getSlotDuration());
+            doctorScheduleTemplateRepository.save(entity);
+            doctorAvailableSlotService.generateSlots(entity);
+        }
+
+        Optional<ClinicSpecialtyDoctor> clinicSpecialtyDoctorOpt =
+                clinicSpecialtyDoctorRepository.findByDoctorId(doctorId);
+        clinicSpecialtyDoctorOpt.ifPresent(clinicSpecialtyDoctor ->
+                clinicSpecialtyScheduleTemplateService.refixDoctorScheduleTemplatesInClinicSpecialty(
+                        clinicSpecialtyDoctor.getClinicSpecialtyId(),
+                        doctorId
+                )
+        );
     }
 
-    public void deleteAll () {
+    public void deleteAll() {
         doctorScheduleTemplateRepository.deleteAll();
     }
 }

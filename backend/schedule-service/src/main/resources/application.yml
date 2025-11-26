@@ -10,15 +10,36 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    defer-datasource-initialization: true
 
   sql:
     init:
       mode: always
+      data-locations: ""
+
+  kafka:
+    bootstrap-servers: localhost:9094
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.healthpro.scheduleservice.dto.ClinicSpecialtyDoctorEvent
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      group-id: schedule-service-group
+    listener:
+      ack-mode: manual_immediate
 
 server:
   port: 8082
+
+logging:
+  level:
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: DEBUG
+    com.healthpro.scheduleservice.kafka.ClinicSpecialtyDoctorEventConsumer: DEBUG

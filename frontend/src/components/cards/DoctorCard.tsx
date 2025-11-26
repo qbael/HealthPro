@@ -25,12 +25,14 @@ const DoctorCard = (doctor: DoctorType) => {
                     <p className="text-sm text-gray-500">{doctor.address}</p>
                 </div>
             </div>
-            <button
-                className="w-full bg-white border font-medium border-gray-400 text-gray-700 py-2 rounded-lg
-                hover:bg-gray-50 hover:text-blue-500 flex items-center justify-between px-4 mt-5 transition-colors">
-                <span>Đặt lịch khám</span>
-                <ChevronRight size={18}/>
-            </button>
+            <Link href={`/calendar/doctor/${doctor.id}`}>
+                <button
+                    className="w-full bg-white border font-medium border-gray-400 text-gray-700 py-2 rounded-lg
+                hover:bg-gray-50 hover:text-blue-500 hover:cursor-pointer flex items-center justify-between px-4 mt-5 transition-colors">
+                    <span>Đặt lịch khám</span>
+                    <ChevronRight size={18}/>
+                </button>
+            </Link>
         </div>
     )
 }

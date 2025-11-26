@@ -14,7 +14,7 @@ export default async function DoctorAppointmentCalendar({params}: {params: Promi
 
     return (
         <>
-            <Calendar id={id} type={"DOCTOR"} availableDates={availableDates} />
+            <Calendar id={id} type={"DOCTOR"} slotClickEventType={'MAKE_APPOINTMENT'} availableDates={availableDates} />
         </>
     );
 }

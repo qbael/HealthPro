@@ -1,14 +1,11 @@
 package com.healthpro.authservice.service;
 
-import com.healthpro.authservice.dto.DoctorResponseDTO;
 import com.healthpro.authservice.dto.PatientRequestDTO;
 import com.healthpro.authservice.dto.PatientResponseDTO;
-import com.healthpro.authservice.entity.Doctor;
 import com.healthpro.authservice.entity.Patient;
 import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.UserNotFoundException;
-import com.healthpro.authservice.mapper.DoctorMapper;
 import com.healthpro.authservice.mapper.PatientMapper;
 import com.healthpro.authservice.repository.PatientRepository;
 import com.healthpro.authservice.repository.UserRepository;
@@ -17,7 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -72,5 +69,23 @@ public class PatientService {
 
         userRepository.save(user);
         patientRepository.save(patient);
+    }
+
+    public Boolean isFullyRegistered(UUID userId) {
+        Patient patient = patientRepository.findByUser_Id(userId)
+                .orElseThrow(() -> new UserNotFoundException(
+                        "User with id " + userId + " not found"
+                ));
+        User user = patient.getUser();
+
+        return user.getEmail() != null &&
+                user.getPhoneNumber() != null &&
+                patient.getFullName() != null &&
+                patient.getDateOfBirth() != null &&
+                patient.getGender() != null;
+    }
+
+    public Optional<Patient> getPatientById(UUID patientId) {
+        return patientRepository.findById(patientId);
     }
 }

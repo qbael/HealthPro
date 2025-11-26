@@ -2,10 +2,13 @@ package com.healthpro.scheduleservice.controller;
 
 import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateDTO;
 import com.healthpro.scheduleservice.service.DoctorScheduleTemplateService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -15,21 +18,25 @@ public class DoctorScheduleTemplateController {
     private final DoctorScheduleTemplateService doctorScheduleTemplateService;
 
     @GetMapping
-    public ResponseEntity<DoctorScheduleTemplateDTO> getAllDoctorScheduleTemplates(
+    public ResponseEntity<List<DoctorScheduleTemplateDTO>> getAllDoctorScheduleTemplates(
             @RequestHeader("X-UserRole-Id") UUID userRoleId
     ) {
-        DoctorScheduleTemplateDTO template = doctorScheduleTemplateService
-                .getAllDoctorScheduleTemplates(userRoleId);
-        return ResponseEntity.ok().body(template);
+        List<DoctorScheduleTemplateDTO> templates =
+                doctorScheduleTemplateService.getAllDoctorScheduleTemplates(userRoleId);
+        return ResponseEntity.ok().body(templates);
     }
+
+    public record CreateDoctorScheduleTemplateRequest(
+           @Valid List<DoctorScheduleTemplateDTO> templates
+    ) {}
 
     @PostMapping("/{doctorId}")
     public ResponseEntity<?> createDoctorScheduleTemplate(
-            @PathVariable UUID doctorId,
-            @RequestBody DoctorScheduleTemplateDTO doctorScheduleTemplateDTO
+            @PathVariable("doctorId") @NotNull UUID doctorId,
+            @RequestBody @Valid CreateDoctorScheduleTemplateRequest request
     ) {
         doctorScheduleTemplateService.createDoctorScheduleTemplate(
-                doctorId, doctorScheduleTemplateDTO);
+                doctorId, request.templates);
         return ResponseEntity.noContent().build();
     }
 

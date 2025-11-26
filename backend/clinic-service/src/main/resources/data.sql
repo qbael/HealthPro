@@ -119,7 +119,7 @@ VALUES
 -- BS. Hoàng Văn Tuấn - Ngoại tổng hợp
 ('950e8400-e29b-41d4-a716-446655440007', '750e8400-e29b-41d4-a716-446655440015',
  '850e8400-e29b-41d4-a716-446655440005'),
-    -- BS. Trần Minh Đăng 2 - Ngoại tổng hợp
+-- BS. Trần Minh Đăng 2 - Ngoại tổng hợp
 ('950e8400-e29b-41d4-a716-446655440008', '750e8400-e29b-41d4-a716-446655440016',
  '850e8400-e29b-41d4-a716-446655440005'),
 ('950e8400-e29b-41d4-a716-446655440009', '750e8400-e29b-41d4-a716-446655440016',
@@ -179,51 +179,51 @@ VALUES
 ('a50e8400-e29b-41d4-a716-446655440033', '750e8400-e29b-41d4-a716-446655440034',
  '850e8400-e29b-41d4-a716-446655440010');
 
--- Insert Clinic Invitations (Lời mời từ phòng khám đến bác sĩ)
-INSERT INTO clinic_invitations (id, clinic_specialty_id, doctor_id, status, invited_at, responded_at)
-VALUES
--- Bệnh viện Chợ Rẫy mời BS. Trần Văn Nguyên - Nội tổng quát (đã chấp nhận)
-('b50e8400-e29b-41d4-a716-446655440001', 'a50e8400-e29b-41d4-a716-446655440001',
- '750e8400-e29b-41d4-a716-446655440011', 'ACCEPTED', '2024-03-01 09:00:00', '2024-03-02 10:30:00'),
--- Bệnh viện Chợ Rẫy mời BS. Trần Văn Nguyên - Tim mạch (đã chấp nhận)
-('b50e8400-e29b-41d4-a716-446655440002', 'a50e8400-e29b-41d4-a716-446655440006',
- '750e8400-e29b-41d4-a716-446655440011', 'ACCEPTED', '2024-03-01 09:15:00', '2024-03-02 10:30:00'),
--- Bệnh viện Chợ Rẫy mời BS. Lê Thị Mai - Sản Phụ khoa (đã chấp nhận)
-('b50e8400-e29b-41d4-a716-446655440003', 'a50e8400-e29b-41d4-a716-446655440002',
- '750e8400-e29b-41d4-a716-446655440012', 'ACCEPTED', '2024-03-03 08:00:00', '2024-03-03 14:00:00'),
--- Phòng khám Hoàng Hoa mời BS. Phạm Văn Minh - Nhi khoa (đã chấp nhận)
-('b50e8400-e29b-41d4-a716-446655440004', 'a50e8400-e29b-41d4-a716-446655440013',
- '750e8400-e29b-41d4-a716-446655440013', 'ACCEPTED', '2024-03-05 10:00:00', '2024-03-06 09:00:00'),
--- Phòng khám Hoàng Hoa mời BS. Nguyễn Thị Hạnh - Da liễu (đang chờ)
-('b50e8400-e29b-41d4-a716-446655440005', 'a50e8400-e29b-41d4-a716-446655440014',
- '750e8400-e29b-41d4-a716-446655440014', 'PENDING', '2024-03-28 11:00:00', NULL),
--- Medical Center mời BS. Trần Văn Nguyên - Tim mạch (đang chờ)
-('b50e8400-e29b-41d4-a716-446655440006', 'a50e8400-e29b-41d4-a716-446655440021',
- '750e8400-e29b-41d4-a716-446655440011', 'PENDING', '2024-03-27 15:00:00', NULL),
--- Bệnh viện Chợ Rẫy mời BS. Hoàng Văn Tuấn - Ngoại tổng hợp (bị từ chối)
-('b50e8400-e29b-41d4-a716-446655440007', 'a50e8400-e29b-41d4-a716-446655440005',
- '750e8400-e29b-41d4-a716-446655440015', 'REJECTED', '2024-03-10 08:00:00', '2024-03-12 10:00:00'),
-('b50e8400-e29b-41d4-a716-446655440008', 'a50e8400-e29b-41d4-a716-446655440028',
- '750e8400-e29b-41d4-a716-446655440016', 'PENDING', '2024-10-27 08:00:00', '2024-03-12 10:00:00');
+-- -- Insert Clinic Invitations (Lời mời từ phòng khám đến bác sĩ)
+-- INSERT INTO clinic_invitations (id, clinic_specialty_id, doctor_id, status, invited_at, responded_at)
+-- VALUES
+-- -- Bệnh viện Chợ Rẫy mời BS. Trần Văn Nguyên - Nội tổng quát (đã chấp nhận)
+-- ('b50e8400-e29b-41d4-a716-446655440001', 'a50e8400-e29b-41d4-a716-446655440001',
+--  '750e8400-e29b-41d4-a716-446655440011', 'ACCEPTED', '2024-03-01 09:00:00', '2024-03-02 10:30:00'),
+-- -- Bệnh viện Chợ Rẫy mời BS. Trần Văn Nguyên - Tim mạch (đã chấp nhận)
+-- ('b50e8400-e29b-41d4-a716-446655440002', 'a50e8400-e29b-41d4-a716-446655440006',
+--  '750e8400-e29b-41d4-a716-446655440011', 'ACCEPTED', '2024-03-01 09:15:00', '2024-03-02 10:30:00'),
+-- -- Bệnh viện Chợ Rẫy mời BS. Lê Thị Mai - Sản Phụ khoa (đã chấp nhận)
+-- ('b50e8400-e29b-41d4-a716-446655440003', 'a50e8400-e29b-41d4-a716-446655440002',
+--  '750e8400-e29b-41d4-a716-446655440012', 'ACCEPTED', '2024-03-03 08:00:00', '2024-03-03 14:00:00'),
+-- -- Phòng khám Hoàng Hoa mời BS. Phạm Văn Minh - Nhi khoa (đã chấp nhận)
+-- ('b50e8400-e29b-41d4-a716-446655440004', 'a50e8400-e29b-41d4-a716-446655440013',
+--  '750e8400-e29b-41d4-a716-446655440013', 'ACCEPTED', '2024-03-05 10:00:00', '2024-03-06 09:00:00'),
+-- -- Phòng khám Hoàng Hoa mời BS. Nguyễn Thị Hạnh - Da liễu (đang chờ)
+-- ('b50e8400-e29b-41d4-a716-446655440005', 'a50e8400-e29b-41d4-a716-446655440014',
+--  '750e8400-e29b-41d4-a716-446655440014', 'PENDING', '2024-03-28 11:00:00', NULL),
+-- -- Medical Center mời BS. Trần Văn Nguyên - Tim mạch (đang chờ)
+-- ('b50e8400-e29b-41d4-a716-446655440006', 'a50e8400-e29b-41d4-a716-446655440021',
+--  '750e8400-e29b-41d4-a716-446655440011', 'PENDING', '2024-03-27 15:00:00', NULL),
+-- -- Bệnh viện Chợ Rẫy mời BS. Hoàng Văn Tuấn - Ngoại tổng hợp (bị từ chối)
+-- ('b50e8400-e29b-41d4-a716-446655440007', 'a50e8400-e29b-41d4-a716-446655440005',
+--  '750e8400-e29b-41d4-a716-446655440015', 'REJECTED', '2024-03-10 08:00:00', '2024-03-12 10:00:00'),
+-- ('b50e8400-e29b-41d4-a716-446655440008', 'a50e8400-e29b-41d4-a716-446655440028',
+--  '750e8400-e29b-41d4-a716-446655440016', 'PENDING', '2024-10-27 08:00:00', '2024-03-12 10:00:00');
 
 -- Insert Clinic Specialty Doctors (Bác sĩ đã được phân công vào chuyên khoa của phòng khám)
-INSERT INTO clinic_specialty_doctors (id, clinic_specialty_id, doctor_id, assignment_count)
+INSERT INTO clinic_specialty_doctors (id, clinic_specialty_id, doctor_id)
 VALUES
 -- BS. Trần Văn Nguyên tại Bệnh viện Chợ Rẫy - Nội tổng quát
 ('c50e8400-e29b-41d4-a716-446655440001', 'a50e8400-e29b-41d4-a716-446655440001',
- '750e8400-e29b-41d4-a716-446655440011', 15),
+ '750e8400-e29b-41d4-a716-446655440011'),
 -- BS. Trần Văn Nguyên tại Bệnh viện Chợ Rẫy - Tim mạch
 ('c50e8400-e29b-41d4-a716-446655440002', 'a50e8400-e29b-41d4-a716-446655440006',
- '750e8400-e29b-41d4-a716-446655440011', 8),
+ '750e8400-e29b-41d4-a716-446655440011'),
 -- BS. Lê Thị Mai tại Bệnh viện Chợ Rẫy - Sản Phụ khoa
 ('c50e8400-e29b-41d4-a716-446655440003', 'a50e8400-e29b-41d4-a716-446655440002',
- '750e8400-e29b-41d4-a716-446655440012', 12),
+ '750e8400-e29b-41d4-a716-446655440012'),
 -- BS. Lê Thị Mai tại Phòng khám Hoàng Hoa - Sản Phụ khoa
 ('c50e8400-e29b-41d4-a716-446655440004', 'a50e8400-e29b-41d4-a716-446655440012',
- '750e8400-e29b-41d4-a716-446655440012', 5),
+ '750e8400-e29b-41d4-a716-446655440012'),
 -- BS. Phạm Văn Minh tại Phòng khám Hoàng Hoa - Nhi khoa
 ('c50e8400-e29b-41d4-a716-446655440005', 'a50e8400-e29b-41d4-a716-446655440013',
- '750e8400-e29b-41d4-a716-446655440013', 10);
+ '750e8400-e29b-41d4-a716-446655440013');
 
 -- Note:
 -- - Doctor user_ids match the ones from auth-service

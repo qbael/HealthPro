@@ -16,7 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v3/schedule/clinic-specialty")
-@CrossOrigin(origins = "*")
 public class ClinicAvailableSlotController {
     private final ClinicAvailableSlotService clinicAvailableSlotService;
 
@@ -31,9 +30,9 @@ public class ClinicAvailableSlotController {
     }
 
     @GetMapping("/available-slots/{clinicSpecialtyId}")
-    public ResponseEntity<ApiResponseDto<LinkedHashSet<AvailableTimeSlot>>> getClinicTypeAvailableSlotsByClinicSpecialtyId(@PathVariable UUID clinicSpecialtyId,
-                                                                                                                           @RequestParam(required = true) LocalDate date) {
-        Optional<LinkedHashSet<AvailableTimeSlot>> slots = clinicAvailableSlotService.getClinicTypeAvailableSlotsByClinicSpecialtyId(clinicSpecialtyId, date);
+    public ResponseEntity<ApiResponseDto<List<AvailableTimeSlot>>> getClinicTypeAvailableSlotsByClinicSpecialtyId(@PathVariable UUID clinicSpecialtyId,
+                                                                                                                  @RequestParam(required = true) LocalDate date) {
+        Optional<List<AvailableTimeSlot>> slots = clinicAvailableSlotService.getClinicTypeAvailableSlotsByClinicSpecialtyId(clinicSpecialtyId, date);
         return slots.map(value -> ResponseEntity.ok().body(
                         ApiResponseDto.success(value, "Lấy danh sách giờ hẹn của chuyên khoa tại phòng khám thành công")))
                 .orElseGet(() -> ResponseEntity

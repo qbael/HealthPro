@@ -11,21 +11,28 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.UUID;
 
 @Component
-public class JwtValidationGatewayFilterFactory extends
-        AbstractGatewayFilterFactory<Object> {
+public class JwtValidationGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
 
     private final WebClient webClient;
 
-    public JwtValidationGatewayFilterFactory(WebClient.Builder webClientBuilder
-        , @Value("${auth.service.url}") String authServiceUrl) {
+    public JwtValidationGatewayFilterFactory(WebClient.Builder webClientBuilder,
+                                             @Value("${auth.service.url}") String authServiceUrl) {
         this.webClient = webClientBuilder.baseUrl(authServiceUrl).build();
     }
 
     @Override
     public GatewayFilter apply(Object config) {
         return (exchange, chain) -> {
-            HttpCookie jwtCookie = exchange.getRequest().getCookies().getFirst("jwt");
 
+            if ("schedule-service".equals(exchange.getRequest().getHeaders().getFirst("X-Internal-Service"))) {
+                return chain.filter(exchange);
+            }
+
+            if ("clinic-service".equals(exchange.getRequest().getHeaders().getFirst("X-Internal-Service"))) {
+                return chain.filter(exchange);
+            }
+
+            HttpCookie jwtCookie = exchange.getRequest().getCookies().getFirst("jwt");
             if (jwtCookie == null) {
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
@@ -65,6 +72,7 @@ public class JwtValidationGatewayFilterFactory extends
         public UUID getId() {
             return id;
         }
+
         public void setId(UUID id) {
             this.id = id;
         }
@@ -72,6 +80,7 @@ public class JwtValidationGatewayFilterFactory extends
         public UUID getUserRoleId() {
             return userRoleId;
         }
+
         public void setUserRoleId(UUID userRoleId) {
             this.userRoleId = userRoleId;
         }
@@ -79,6 +88,7 @@ public class JwtValidationGatewayFilterFactory extends
         public String getEmail() {
             return email;
         }
+
         public void setEmail(String email) {
             this.email = email;
         }
@@ -86,6 +96,7 @@ public class JwtValidationGatewayFilterFactory extends
         public String getRole() {
             return role;
         }
+
         public void setRole(String role) {
             this.role = role;
         }

@@ -20,7 +20,7 @@ const Page = async ({ params, searchParams }: any) => {
     }).toString();
 
     const res1 = await api
-        .get(`v2/doctor-specialty/${specialtyId}${queryParams ? `?${queryParams}` : ""}`)
+        .get(`v2/doctor-specialty/${specialtyId}${queryParams ? `${queryParams}` : ""}`)
 
     const doctors = res1?.data?.data?.content;
     const totalPages = res1?.data?.data?.totalPages;

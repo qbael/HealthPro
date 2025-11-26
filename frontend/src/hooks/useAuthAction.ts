@@ -46,8 +46,11 @@ export const useAuthAction = () => {
 
             toast.success('Đăng nhập thành công.')
             dispatch({ type: 'LOGIN', payload: res.data })
-            router.replace('/')
-
+            if (res.data.role === 'PATIENT'){
+                router.push('/')
+            } else {
+                router.replace("/profile")
+            }
         }
         catch (err: any) {
             const msg = err.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.'

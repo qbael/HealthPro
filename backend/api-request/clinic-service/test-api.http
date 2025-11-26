@@ -1,0 +1,7 @@
+### GET request to example server
+PUT http://localhost:4004/api/v2/clinic-invitation/0ce0ccaf-a2d4-43d3-86f4-3c4acb990b96
+Content-Type: application/json
+
+{
+  "status": "ACCEPTED"
+}

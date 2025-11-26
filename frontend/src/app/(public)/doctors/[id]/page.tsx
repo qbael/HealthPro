@@ -1,19 +1,23 @@
 import {Clock, Phone, ChevronLeft, ChevronRight} from 'lucide-react';
-import {DOCTORS_API_URL} from "@/lib/utils";
+import {DOCTORS_API_URL, SCHEDULE_API_URL} from "@/lib/utils";
 import Image from "next/image";
 import {DoctorType} from "@/types/doctor-types";
+import Link from "next/link";
+import FastBooking from "@/components/doctor/FastBooking";
 
 export default async function DoctorProfile({params}: { params: Promise<{ id: string }> }) {
     const {id} = await params;
 
-    const res = await fetch(`${DOCTORS_API_URL}/${id}`, {
-        method: "GET",
-        cache: 'no-store'
-    });
+   const [res1, res2] = await Promise.all([
+       fetch(`${DOCTORS_API_URL}/${id}`, { method: "GET", cache: 'no-store' }),
+       fetch(`${SCHEDULE_API_URL}/doctor/fast-available-dates/${id}`, { method: "GET", cache: 'no-store' })
+   ]);
 
-    const body = await res.json();
+   const [body1, body2] = await Promise.all([res1.json(), res2.json()]);
 
-    const doctor: DoctorType = body.data;
+   const doctor: DoctorType = body1.data;
+   const dates: { [date: string]: number } = body2.data;
+
 
     return (
         <div className="max-w-4xl mx-auto p-5 mt-22 bg-gray-50 min-h-screen">
@@ -51,59 +55,8 @@ export default async function DoctorProfile({params}: { params: Promise<{ id: st
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 mb-4">
-                <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-bold text-gray-900">Đặt khám nhanh</h2>
-                    <div className="flex gap-2">
-                        <button className="p-1 hover:bg-gray-100 rounded">
-                            <ChevronLeft className="w-5 h-5"/>
-                        </button>
-                        <button className="p-1 hover:bg-gray-100 rounded">
-                            <ChevronRight className="w-5 h-5"/>
-                        </button>
-                    </div>
-                </div>
-
-                <div className="flex gap-2 overflow-x-auto pb-4 mb-4">
-                    {/*{availableDates.map((date, idx) => (*/}
-                    {/*    <button*/}
-                    {/*        key={idx}*/}
-                    {/*        onClick={() => setSelectedDate(idx)}*/}
-                    {/*        className={`flex-shrink-0 text-center p-3 rounded-lg border-2 transition-all ${*/}
-                    {/*            selectedDate === idx*/}
-                    {/*                ? 'border-blue-500 bg-blue-50'*/}
-                    {/*                : 'border-gray-200 hover:border-blue-300'*/}
-                    {/*        }`}*/}
-                    {/*    >*/}
-                    {/*        <div className="text-xs text-gray-600 mb-1">*/}
-                    {/*            Th {date.day < 10 ? `0${date.day}` : date.day}/{date.month < 10 ? `0${date.month}` : date.month}*/}
-                    {/*        </div>*/}
-                    {/*        <div className="text-xs text-blue-600 font-medium">*/}
-                    {/*            {date.slots} khung giờ*/}
-                    {/*        </div>*/}
-                    {/*    </button>*/}
-                    {/*))}*/}
-                </div>
-
-                <div className="mb-4">
-                    <div className="flex items-center gap-2 mb-3">
-                        <Clock className="w-4 h-4 text-gray-600"/>
-                        <span className="text-sm font-medium text-gray-700">Buổi chiều</span>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2">
-                        {/*{timeSlots.map((time, idx) => (*/}
-                        {/*    <button*/}
-                        {/*        key={idx}*/}
-                        {/*        onClick={() => setSelectedTime(idx)}*/}
-                        {/*        className={`p-3 text-sm rounded-lg border-2 transition-all ${*/}
-                        {/*            selectedTime === idx*/}
-                        {/*                ? 'border-blue-500 bg-blue-50 text-blue-700'*/}
-                        {/*                : 'border-gray-200 hover:border-blue-300 text-gray-700'*/}
-                        {/*        }`}*/}
-                        {/*    >*/}
-                        {/*        {time}*/}
-                        {/*    </button>*/}
-                        {/*))}*/}
-                    </div>
+                <div className="flex gap-2 pb-4 mb-4">
+                    <FastBooking id={id} dates={dates} />
                 </div>
             </div>
 
@@ -188,10 +141,12 @@ export default async function DoctorProfile({params}: { params: Promise<{ id: st
                             1800-2805
                         </div>
                     </div>
-                    <button
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                        ĐẶT KHÁM NGAY
-                    </button>
+                    <Link href={`/calendar/doctor/${doctor.id}`}>
+                        <button
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-8 hover:cursor-pointer py-3 rounded-lg font-medium transition-colors">
+                            ĐẶT KHÁM NGAY
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

@@ -47,9 +47,6 @@ public class DoctorScheduleTemplate {
     @Column(name = "slot_duration", nullable = false)
     private Integer slotDuration;
 
-    @Column(name = "is_active")
-    private Boolean isActive = true;
-
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

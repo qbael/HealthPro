@@ -35,10 +35,9 @@ public class DoctorSpecialtyService {
         return doctorSpecialty.stream().map(DoctorSpecialtyDTOMapper::toDTO).toList();
     }
 
-    @Transactional
     public Page<Doctor> getAllDoctorSpecialtiesBySpecialty(UUID specialtyId, Pageable pageable) {
         return doctorRepository
-                .findDistinctByDoctorSpecialties_Specialty_IdAndIsInClinicSpecialtyFalse(specialtyId, pageable);
+                .findEligibleDoctorsBySpecialtyWithoutInvitations(specialtyId, pageable);
     }
 
     @Transactional

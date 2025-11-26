@@ -2,18 +2,22 @@ package com.healthpro.clinicservice.service;
 
 import com.healthpro.clinicservice.dto.ClinicInvitationClinicDTO;
 import com.healthpro.clinicservice.dto.ClinicInvitationDoctorDTO;
+import com.healthpro.clinicservice.dto.ClinicSpecialtyDoctorEvent;
 import com.healthpro.clinicservice.entity.ClinicInvitation;
 import com.healthpro.clinicservice.entity.ClinicSpecialty;
+import com.healthpro.clinicservice.entity.ClinicSpecialtyDoctor;
 import com.healthpro.clinicservice.entity.Doctor;
 import com.healthpro.clinicservice.entity.enums.InvitationStatus;
 import com.healthpro.clinicservice.exception.ClinicSpecialtyHasNoScheduleException;
 import com.healthpro.clinicservice.exception.InvitationAlreadyAcceptedException;
+import com.healthpro.clinicservice.kafka.ClinicSpecialtyDoctorEventProducer;
 import com.healthpro.clinicservice.mapper.ClinicInvitationDTOMapper;
 import com.healthpro.clinicservice.repository.ClinicInvitationRepository;
 import com.healthpro.clinicservice.repository.ClinicSpecialtyRepository;
 import com.healthpro.clinicservice.repository.DoctorRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,12 +29,14 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Service
+@Slf4j
 public class ClinicInvitationService {
     private final ClinicInvitationRepository clinicInvitationRepository;
     private final ClinicSpecialtyRepository clinicSpecialtyRepository;
     private final ClinicSpecialtyDoctorService clinicSpecialtyDoctorService;
     private final DoctorRepository doctorRepository;
     private final WebClient webClient;
+    private final ClinicSpecialtyDoctorEventProducer clinicSpecialtyDoctorEventProducer;
 
     public Page<ClinicInvitationClinicDTO> getClinicInvitationsForDoctor(UUID doctorId, Pageable pageable) {
         Page<ClinicInvitation> clinicInvitations = clinicInvitationRepository.findAllByDoctor_Id(doctorId, pageable);
@@ -44,10 +50,14 @@ public class ClinicInvitationService {
 
     @Transactional
     public void createClinicInvitation(UUID clinicId, UUID specialtyId, UUID doctorId) {
+        ClinicSpecialty clinicSpecialty = clinicSpecialtyRepository
+                .findByClinic_IdAndSpecialty_Id(clinicId, specialtyId)
+                .orElseThrow(() -> new RuntimeException("clinicSpecialty not found"));
         Boolean scheduleExists = webClient
                 .get()
-                .uri("http://localhost:8082/api/v1/clinic-specialty-schedule-template/check/{id}",
-                        specialtyId)
+                .uri("http://localhost:4004/api/v3/clinic-specialty-schedule-template/check/{id}",
+                        clinicSpecialty.getId())
+                .header("X-Internal-Service", "clinic-service")
                 .retrieve()
                 .bodyToMono(Boolean.class)
                 .block();
@@ -56,11 +66,8 @@ public class ClinicInvitationService {
             throw new ClinicSpecialtyHasNoScheduleException("Chuyên khoa chưa đăng ký lịch làm");
         }
 
-        ClinicSpecialty clinicSpecialty = clinicSpecialtyRepository
-                .findByClinic_IdAndSpecialty_Id(clinicId, specialtyId)
-                .orElseThrow(() -> new RuntimeException("clinicSpecialty not found") );
         Doctor doctor = doctorRepository.findById(doctorId)
-                .orElseThrow(() -> new RuntimeException("doctor not found") );
+                .orElseThrow(() -> new RuntimeException("doctor not found"));
 
         ClinicInvitation existing = clinicInvitationRepository
                 .findAllByDoctor_IdAndClinicSpecialty_Id(doctorId, clinicSpecialty.getId());
@@ -69,14 +76,10 @@ public class ClinicInvitationService {
                 existing.getStatus() == InvitationStatus.REJECTED ||
                 existing.getStatus() == InvitationStatus.CANCELLED) {
             saveNewInvitation(clinicSpecialty, doctor);
-        }
-
-        else if (existing.getStatus() == InvitationStatus.PENDING) {
+        } else if (existing.getStatus() == InvitationStatus.PENDING) {
             clinicInvitationRepository.deleteClinicInvitationById(existing.getId());
             saveNewInvitation(clinicSpecialty, doctor);
-        }
-
-        else if (existing.getStatus() == InvitationStatus.ACCEPTED) {
+        } else if (existing.getStatus() == InvitationStatus.ACCEPTED) {
             throw new InvitationAlreadyAcceptedException("Bác sĩ đã trong chuyên khoa");
         }
     }
@@ -89,17 +92,16 @@ public class ClinicInvitationService {
     }
 
     @Transactional
-    public void approveClinicInvitation(UUID clinicInvitationId, String status) {
-        String cleanStatus = status.replace("\"", "").trim();
+    public void approveClinicInvitation(UUID clinicInvitationId, InvitationStatus status) {
 
         ClinicInvitation clinicInvitation = clinicInvitationRepository.findById(clinicInvitationId)
                 .orElseThrow(() -> new RuntimeException("clinicInvitation not found"));
 
-        if (Objects.equals(cleanStatus, "ACCEPTED")) {
+        if (Objects.equals(status, InvitationStatus.ACCEPTED)) {
             handleAcceptedInvitation(clinicInvitation);
         }
 
-        clinicInvitation.setStatus(InvitationStatus.valueOf(cleanStatus));
+        clinicInvitation.setStatus(status);
         clinicInvitation.setRespondedAt(LocalDateTime.now());
 
         clinicInvitationRepository.save(clinicInvitation);
@@ -112,6 +114,16 @@ public class ClinicInvitationService {
         doctor.setInClinicSpecialty(true);
         doctorRepository.save(doctor);
 
-        clinicSpecialtyDoctorService.createClinicSpecialtyDoctor(clinicInvitation);
+        ClinicSpecialtyDoctor clinicSpecialtyDoctor =
+                clinicSpecialtyDoctorService.createClinicSpecialtyDoctor(clinicInvitation);
+
+        ClinicSpecialtyDoctorEvent event = ClinicSpecialtyDoctorEvent.builder()
+                .id(clinicSpecialtyDoctor.getId())
+                .clinicSpecialtyId(clinicSpecialtyDoctor.getClinicSpecialty().getId())
+                .doctorId(clinicSpecialtyDoctor.getDoctor().getId())
+                .eventType(ClinicSpecialtyDoctorEvent.EventType.CREATED)
+                .build();
+        clinicSpecialtyDoctorEventProducer.sendClinicSpecialtyDoctorEvent(event);
+        log.info("Sent ClinicSpecialtyDoctor event to Kafka: {}", event);
     }
 }
