@@ -1,26 +1,20 @@
 package com.healthpro.scheduleservice.service;
 
 import com.healthpro.scheduleservice.dto.ClinicSpecialtyScheduleTemplateDTO;
-import com.healthpro.scheduleservice.dto.DoctorScheduleTemplateDTO;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyDoctor;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyScheduleTemplate;
-import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
 import com.healthpro.scheduleservice.entity.DoctorScheduleTemplate;
 import com.healthpro.scheduleservice.mapper.ClinicSpecialtyScheduleTemplateMapper;
 import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
 import com.healthpro.scheduleservice.repository.ClinicSpecialtyScheduleTemplateRepository;
 import com.healthpro.scheduleservice.repository.DoctorScheduleTemplateRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -32,7 +26,7 @@ public class ClinicSpecialtyScheduleTemplateService {
     private final DoctorScheduleTemplateRepository doctorScheduleTemplateRepository;
 
     public List<ClinicSpecialtyScheduleTemplateDTO> getAllClinicSpecialtyScheduleTemplates(UUID clinicSpecialtyId) {
-        List<ClinicSpecialtyScheduleTemplate> clinicSpecialtyScheduleTemplates = clinicSpecialtyScheduleTemplateRepository.findByClinicSpecialtyId(clinicSpecialtyId);
+        List<ClinicSpecialtyScheduleTemplate> clinicSpecialtyScheduleTemplates = clinicSpecialtyScheduleTemplateRepository.findAllByClinicSpecialtyId(clinicSpecialtyId);
 
         if (clinicSpecialtyScheduleTemplates.isEmpty()) {
             return List.of();
@@ -45,9 +39,26 @@ public class ClinicSpecialtyScheduleTemplateService {
         return clinicSpecialtyScheduleTemplateRepository.existsByClinicSpecialtyId(clinicSpecialtyId);
     }
 
+    @Transactional
+    public void addedDoctor(UUID clinicSpecialtyId, UUID doctorId) {
+        refixDoctorScheduleTemplatesInClinicSpecialty(clinicSpecialtyId, doctorId);
+        List<ClinicSpecialtyScheduleTemplate> clinicSpecialtyScheduleTemplate =
+                clinicSpecialtyScheduleTemplateRepository.findAllByClinicSpecialtyId(clinicSpecialtyId);
+        Optional<ClinicSpecialtyDoctor> clinicSpecialtyDoctorOpt =
+                clinicSpecialtyDoctorRepository.findByClinicSpecialtyIdAndDoctorId(clinicSpecialtyId, doctorId);
+
+        if (clinicSpecialtyDoctorOpt.isEmpty()) {
+            throw new RuntimeException("ClinicSpecialtyDoctor not found for clinicSpecialtyId: " + clinicSpecialtyId + " and doctorId: " + doctorId);
+        }
+
+        for (ClinicSpecialtyScheduleTemplate template : clinicSpecialtyScheduleTemplate) {
+            doctorAvailableSlotService.generateSlots(template, doctorId);
+        }
+    }
+
     public void refixDoctorScheduleTemplatesInClinicSpecialty(UUID clinicSpecialtyId, UUID doctorId) {
         List<ClinicSpecialtyScheduleTemplate> clinicTemplates =
-                clinicSpecialtyScheduleTemplateRepository.findByClinicSpecialtyId(clinicSpecialtyId);
+                clinicSpecialtyScheduleTemplateRepository.findAllByClinicSpecialtyId(clinicSpecialtyId);
 
         List<DayOfWeek> templateDays = clinicTemplates.stream()
                 .map(ClinicSpecialtyScheduleTemplate::getDayOfWeek)
@@ -55,20 +66,6 @@ public class ClinicSpecialtyScheduleTemplateService {
 
         List<DoctorScheduleTemplate> doctorTemplates =
                 doctorScheduleTemplateRepository.findByDoctorIdAndDayOfWeekIn(doctorId, templateDays);
-
-        clinicTemplates.forEach(template -> {
-            System.out.println("Clinic Template: "
-                    + template.getDayOfWeek()
-                    + " " + template.getFromTime()
-                    + " - " + template.getToTime());
-        });
-
-        doctorTemplates.forEach(doctorScheduleTemplate -> {
-            System.out.println("Doctor Template before adjustment: "
-                    + doctorScheduleTemplate.getDayOfWeek()
-                    + " " + doctorScheduleTemplate.getFromTime()
-                    + " - " + doctorScheduleTemplate.getToTime());
-        });
 
         adjustTime(clinicTemplates, doctorTemplates);
     }
@@ -114,11 +111,7 @@ public class ClinicSpecialtyScheduleTemplateService {
                     doctorTemplate.setFromTime(doctorStart);
                     doctorTemplate.setToTime(doctorEnd);
 
-                    System.out.println("Doctor Template after adjustment: "
-                            + doctorTemplate.getDayOfWeek()
-                            + " " + doctorTemplate.getFromTime()
-                            + " - " + doctorTemplate.getToTime());
-
+                    doctorAvailableSlotService.deleteAvailableSlotsByTemplateId(doctorTemplate.getId());
                     doctorScheduleTemplateRepository.save(doctorTemplate);
                     doctorAvailableSlotService.generateSlots(doctorTemplate);
                 }
@@ -128,7 +121,7 @@ public class ClinicSpecialtyScheduleTemplateService {
 
     public void refixDoctorScheduleTemplatesInClinicSpecialty(UUID clinicSpecialtyId) {
         List<ClinicSpecialtyScheduleTemplate> clinicTemplates =
-                clinicSpecialtyScheduleTemplateRepository.findByClinicSpecialtyId(clinicSpecialtyId);
+                clinicSpecialtyScheduleTemplateRepository.findAllByClinicSpecialtyId(clinicSpecialtyId);
 
         List<ClinicSpecialtyDoctor> doctors =
                 clinicSpecialtyDoctorRepository.findByClinicSpecialtyId(clinicSpecialtyId);
@@ -152,7 +145,7 @@ public class ClinicSpecialtyScheduleTemplateService {
     public void createClinicSpecialtyScheduleTemplate(
             UUID clinicSpecialtyId, List<ClinicSpecialtyScheduleTemplateDTO> newTemplates
     ) {
-        List<ClinicSpecialtyScheduleTemplate> existingTemplates = clinicSpecialtyScheduleTemplateRepository.findByClinicSpecialtyId(clinicSpecialtyId);
+        List<ClinicSpecialtyScheduleTemplate> existingTemplates = clinicSpecialtyScheduleTemplateRepository.findAllByClinicSpecialtyId(clinicSpecialtyId);
 
         Map<DayOfWeek, ClinicSpecialtyScheduleTemplate> existingMap = existingTemplates.stream()
                 .collect(Collectors.toMap(ClinicSpecialtyScheduleTemplate::getDayOfWeek, t -> t));
@@ -193,6 +186,4 @@ public class ClinicSpecialtyScheduleTemplateService {
 
         refixDoctorScheduleTemplatesInClinicSpecialty(clinicSpecialtyId);
     }
-
-
 }

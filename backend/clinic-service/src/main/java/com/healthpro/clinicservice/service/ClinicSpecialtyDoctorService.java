@@ -1,7 +1,9 @@
 package com.healthpro.clinicservice.service;
 
+import com.healthpro.clinicservice.dto.ClinicSpecialtyDoctorEvent;
 import com.healthpro.clinicservice.entity.ClinicInvitation;
 import com.healthpro.clinicservice.entity.ClinicSpecialtyDoctor;
+import com.healthpro.clinicservice.kafka.ClinicSpecialtyDoctorEventProducer;
 import com.healthpro.clinicservice.repository.ClinicSpecialtyDoctorRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,10 @@ import org.springframework.stereotype.Service;
 public class ClinicSpecialtyDoctorService {
     private final ClinicSpecialtyDoctorRepository clinicSpecialtyDoctorRepository;
 
-    public void createClinicSpecialtyDoctor(ClinicInvitation clinicInvitation) {
+    public ClinicSpecialtyDoctor createClinicSpecialtyDoctor(ClinicInvitation clinicInvitation) {
         ClinicSpecialtyDoctor clinicSpecialtyDoctor = new ClinicSpecialtyDoctor();
         clinicSpecialtyDoctor.setClinicSpecialty(clinicInvitation.getClinicSpecialty());
         clinicSpecialtyDoctor.setDoctor(clinicInvitation.getDoctor());
-        clinicSpecialtyDoctorRepository.save(clinicSpecialtyDoctor);
+        return clinicSpecialtyDoctorRepository.save(clinicSpecialtyDoctor);
     }
 }

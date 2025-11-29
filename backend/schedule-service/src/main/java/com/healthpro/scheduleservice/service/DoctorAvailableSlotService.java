@@ -195,11 +195,43 @@ public class DoctorAvailableSlotService {
         }
     }
 
+    @Transactional
     public void deleteAvailableSlotsByTemplateId(UUID id) {
-        try {
-            doctorAvailableSlotRepository.deleteAllByTemplateId(id);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Lỗi khi xóa các khung giờ hẹn liên quan đến templateId " + id + ": " + e.getMessage());
+        doctorAvailableSlotRepository.deleteAllByTemplateId(id);
+    }
+
+    @Transactional
+    public void generateSlots(ClinicSpecialtyScheduleTemplate template, UUID doctorId) {
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = startDate.plusDays(ScheduleGenerationService.DEFAULT_DAYS_AHEAD);
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            if (date.getDayOfWeek() == template.getDayOfWeek()) {
+                LocalTime from = template.getFromTime();
+                LocalTime to = template.getToTime();
+                int duration = template.getSlotDuration();
+
+                LocalTime slotStart = from;
+                while (slotStart.plusMinutes(duration).isBefore(to) || slotStart.plusMinutes(duration).equals(to)) {
+                    LocalTime slotEnd = slotStart.plusMinutes(duration);
+
+                    DoctorAvailableSlot slot = DoctorAvailableSlot.builder()
+                            .doctorId(doctorId)
+                            .clinicSpecialtyId(template.getClinicSpecialtyId())
+                            .appointmentDate(date)
+                            .startTime(slotStart)
+                            .endTime(slotEnd)
+                            .appointmentType(AppointmentType.CLINIC)
+                            .templateId(template.getId())
+                            .build();
+                    try {
+                        doctorAvailableSlotRepository.save(slot);
+                    } catch (RuntimeException e) {
+                        throw new RuntimeException(e.getMessage());
+                    }
+                    slotStart = slotEnd;
+                }
+            }
         }
     }
 }

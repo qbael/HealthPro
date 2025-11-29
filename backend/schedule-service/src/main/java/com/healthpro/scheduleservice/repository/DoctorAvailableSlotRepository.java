@@ -59,5 +59,7 @@ public interface DoctorAvailableSlotRepository extends JpaRepository<DoctorAvail
 
     void deleteAllByTemplateIdIn(Collection<UUID> templateIds);
 
-    void deleteAllByTemplateId(UUID id);
+    void deleteAllByTemplateId(UUID templateId);
+
+    long countByTemplateId(UUID templateId);
 }

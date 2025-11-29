@@ -113,7 +113,7 @@ public class ScheduleGenerationService {
             return;
         }
         DayOfWeek dayOfWeek = dateToGenerate.getDayOfWeek();
-        List<ClinicSpecialtyScheduleTemplate> clinicSpecialtyTemplates = clinicSpecialtyScheduleTemplateRepository.findByDayOfWeek(dayOfWeek);
+        List<ClinicSpecialtyScheduleTemplate> clinicSpecialtyTemplates = clinicSpecialtyScheduleTemplateRepository.findAllByDayOfWeek(dayOfWeek);
         for (ClinicSpecialtyScheduleTemplate template : clinicSpecialtyTemplates) {
             try {
                 doctorAvailableSlotService.generateSlots(template, dateToGenerate);
