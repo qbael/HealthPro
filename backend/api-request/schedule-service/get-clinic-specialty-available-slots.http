@@ -1,1 +1,1 @@
-GET http://localhost:4004/api/v3/schedule/clinic-specialty/available-slots/a50e8400-e29b-41d4-a716-446655440001?date=2025-11-04
+GET http://localhost:4004/api/v3/doctor-schedule-template
