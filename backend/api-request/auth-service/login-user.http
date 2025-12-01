@@ -6,4 +6,9 @@ Content-Type: application/json
   "email": "mindang2@gmail.com",
   "password": "mindang2"
 }
-###
+
+> {%
+    client.global.set("jwt", response.headers.valuesOf("Set-Cookie")[0]);
+
+    console.log("Cookie saved:", client.global.get("jwt"));
+%}

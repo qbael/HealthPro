@@ -1,1 +1,1 @@
-GET http://localhost:4004/api/v1/doctor-available-slots?appointmentType=DOCTOR
+GET http://localhost:4004/api/v3/doctor-available-slots?appointmentType=DOCTOR
