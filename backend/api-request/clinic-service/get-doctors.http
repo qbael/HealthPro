@@ -1,2 +1,1 @@
-# @no-cookie-jar
-GET http://localhost:8081/api/v1/doctors
+GET http://localhost:4004/api/v2/doctors

@@ -55,7 +55,7 @@ public class ClinicInvitationService {
                 .orElseThrow(() -> new RuntimeException("clinicSpecialty not found"));
         Boolean scheduleExists = webClient
                 .get()
-                .uri("http://localhost:4004/api/v3/clinic-specialty-schedule-template/check/{id}",
+                .uri("http://api-gateway:4004/api/v3/clinic-specialty-schedule-template/check/{id}",
                         clinicSpecialty.getId())
                 .header("X-Internal-Service", "clinic-service")
                 .retrieve()
