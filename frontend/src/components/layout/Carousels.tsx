@@ -14,20 +14,18 @@ export default async function CarouselPage() {
         })
     ])
     const [doctorsRes, clinicsRes] = await res;
+    let doctors = [];
+    let clinics = [];
 
-    if (!doctorsRes.ok) {
-        throw new Error('Failed to fetch doctors');
+    if (doctorsRes.ok) {
+        const doctorsData = await doctorsRes.json();
+        doctors = doctorsData.data.content;
     }
 
-    if (!clinicsRes.ok) {
-        throw new Error('Failed to fetch clinics');
+    if (clinicsRes.ok) {
+        const clinicsData = await clinicsRes.json();
+        clinics = clinicsData.data.content;
     }
-
-    const doctorsData = await doctorsRes.json();
-    const clinicsData = await clinicsRes.json();
-
-    const doctors = doctorsData.data.content;
-    const clinics = clinicsData.data.content;
 
 
     return (

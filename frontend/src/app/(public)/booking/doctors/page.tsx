@@ -12,13 +12,17 @@ export default async function DoctorListingPage({searchParams} : {searchParams: 
         cache: 'no-store'
     });
 
-    if (!res.ok) {
-        throw new Error('Failed to fetch doctors');
+    let doctors: DoctorType[] = [];
+    let totalPages = 0;
+    let currentPage = 0;
+    let body: ResponseWithPaginationType<DoctorType>;
+
+    if (res.ok) {
+        body = await res.json();
+        totalPages = body.data.totalPages;
+        currentPage = body.data.pageable.pageNumber;
+        doctors = body.data.content;
     }
-    const body: ResponseWithPaginationType<DoctorType> = await res.json();
-    const doctors = body.data.content;
-    const totalPages = body.data.totalPages;
-    const currentPage = body.data.pageable.pageNumber;
 
     return (
         <div className={'min-h-screen w-full bg-gray-50 py-6 px-100'}>

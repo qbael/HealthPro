@@ -11,14 +11,19 @@ export default async function ClinicListingPage({searchParams} : {searchParams: 
         cache: 'no-store'
     });
 
-    if (!res.ok) {
-        throw new Error('Failed to fetch doctors');
+    let clinics: ClinicsType[] = [];
+    let totalPages = 0;
+    let currentPage = 0;
+    let body: ResponseWithPaginationType<ClinicsType>;
+
+    if (res.ok) {
+        body = await res.json();
+        clinics = body.data.content;
+        totalPages = body.data.totalPages;
+        currentPage = body.data.pageable.pageNumber;
     }
 
-    const body: ResponseWithPaginationType<ClinicsType> = await res.json();
-    const clinics = body.data.content;
-    const totalPages = body.data.totalPages;
-    const currentPage = body.data.pageable.pageNumber;
+
 
     return (
         <div className={'min-h-screen bg-gray-50 py-6 px-40 items-center'}>
