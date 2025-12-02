@@ -18,11 +18,11 @@ public class ClinicSpecialtyDoctorEventConsumer {
 
     private final ClinicSpecialtyDoctorRepository clinicSpecialtyDoctorRepository;
 
-    @KafkaListener(
-            topics = "clinic-specialty-doctor-events",
-            groupId = "schedule-service-group",
-            containerFactory = "kafkaListenerContainerFactory"
-    )
+//    @KafkaListener(
+//            topics = "clinic-specialty-doctor-events",
+//            groupId = "schedule-service-group",
+//            containerFactory = "kafkaListenerContainerFactory"
+//    )
     public void consumeClinicSpecialtyDoctorEvent(
             @Payload ClinicSpecialtyDoctorEvent event,
             @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,

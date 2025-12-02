@@ -30,31 +30,31 @@ public class AdminController {
     }
 
     // ===== GET ALL USERS =====
-    @GetMapping("/users")
-    @Operation(summary = "Get all users with pagination and sorting")
-    public ResponseEntity<ApiResponseDTO<Page<User>>> getAllUsers(
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "ADMIN") String userRole,
-            @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer limit,
-            @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String sortDir,
-            @RequestParam(required = false) String role,
-            @RequestParam(required = false) String search
-    ) {
-        checkAdminRole(userRole);
-
-        Pageable pageable = PageRequest.of(page, limit, Sort.by(
-                sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy
-        ));
-        Page<User> users = adminService.getAllUsers(pageable, role, search);
-
-        if (users.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ApiResponseDTO.error(404, "No users found"));
-        }
-
-        return ResponseEntity.ok(ApiResponseDTO.success(users, "Users retrieved successfully"));
-    }
+//    @GetMapping("/users")
+//    @Operation(summary = "Get all users with pagination and sorting")
+//    public ResponseEntity<ApiResponseDTO<Page<User>>> getAllUsers(
+//            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "ADMIN") String userRole,
+//            @RequestParam(required = false, defaultValue = "0") Integer page,
+//            @RequestParam(required = false, defaultValue = "10") Integer limit,
+//            @RequestParam(required = false, defaultValue = "id") String sortBy,
+//            @RequestParam(required = false, defaultValue = "asc") String sortDir,
+//            @RequestParam(required = false) String role,
+//            @RequestParam(required = false) String search
+//    ) {
+//        checkAdminRole(userRole);
+//
+//        Pageable pageable = PageRequest.of(page, limit, Sort.by(
+//                sortDir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy
+//        ));
+//        Page<User> users = adminService.getAllUsers(pageable, role, search);
+//
+//        if (users.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body(ApiResponseDTO.error(404, "No users found"));
+//        }
+//
+//        return ResponseEntity.ok(ApiResponseDTO.success(users, "Users retrieved successfully"));
+//    }
 
     // ===== LOCK ACCOUNT =====
     @PostMapping("/users/{userId}/lock")

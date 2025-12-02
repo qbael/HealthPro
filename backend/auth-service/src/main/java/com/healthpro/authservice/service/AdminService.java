@@ -20,19 +20,19 @@ public class AdminService {
         this.userRepository = userRepository;
     }
 
-    public Page<User> getAllUsers(Pageable pageable, String role, String search) {
-        if (role != null && !"ALL".equals(role)) {
-            if (search != null && !search.trim().isEmpty()) {
-                return userRepository.findByRoleRoleNameAndEmailContainingIgnoreCaseAndRoleRoleNameNot(role, search, "ADMIN", pageable);
-            } else {
-                return userRepository.findByRoleRoleNameAndRoleRoleNameNot(role, "ADMIN", pageable);
-            }
-        } else if (search != null && !search.trim().isEmpty()) {
-            return userRepository.findByEmailContainingIgnoreCaseAndRoleRoleNameNot(search, "ADMIN", pageable);
-        } else {
-            return userRepository.findByRoleRoleNameNot("ADMIN", pageable);
-        }
-    }
+//    public Page<User> getAllUsers(Pageable pageable, String role, String search) {
+//        if (role != null && !"ALL".equals(role)) {
+//            if (search != null && !search.trim().isEmpty()) {
+//                return userRepository.findByRoleRoleNameAndEmailContainingIgnoreCaseAndRoleRoleNameNot(role, search, "ADMIN", pageable);
+//            } else {
+//                return userRepository.findByRoleRoleNameAndRoleRoleNameNot(role, "ADMIN", pageable);
+//            }
+//        } else if (search != null && !search.trim().isEmpty()) {
+//            return userRepository.findByEmailContainingIgnoreCaseAndRoleRoleNameNot(search, "ADMIN", pageable);
+//        } else {
+//            return userRepository.findByRoleRoleNameNot("ADMIN", pageable);
+//        }
+//    }
 
     public void lockAccount(UUID userId) {
         User user = userRepository.findById(userId)
