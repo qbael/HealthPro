@@ -60,20 +60,6 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
     }
 
-//    public void updateAppointmentByDoctorId(UUID doctorId, String status) {
-//        Appointment appointment = appointmentRepository.findByDoctorId(doctorId);
-//
-//        appointment.setStatus(AppointmentStatus.valueOf(status));
-//        appointmentRepository.save(appointment);
-//    }
-//
-//    public void updateAppointmentByClinicId(UUID clinicId, String status) {
-//        Appointment appointment = appointmentRepository.findByClinicId(clinicId);
-//
-//        appointment.setStatus(AppointmentStatus.valueOf(status));
-//        appointmentRepository.save(appointment);
-//    }
-
     private record AppointmentInfoResponseDto(
             @NotNull(message = "ID bệnh nhân không được để trống") UUID patientId,
             @Size(message = "Tên bệnh nhân không được vượt quá 255 ký tự", max = 255)

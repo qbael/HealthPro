@@ -57,25 +57,6 @@ public class AppointmentController {
         appointmentService.updateAppointmentById(id, status);
         return ResponseEntity.noContent().build();
     }
-//
-//    @PutMapping("/doctor")
-//    public ResponseEntity<List<Appointment>> updateAppointmentsByDoctorId(
-//            @RequestHeader("X-UserRole-Id") UUID doctorId,
-//            @RequestParam String status
-//    ) {
-//        System.out.println(status);
-//        appointmentService.updateAppointmentByDoctorId(doctorId, status);
-//        return ResponseEntity.noContent().build();
-//    }
-//
-//    @PutMapping("/clinic")
-//    public ResponseEntity<List<Appointment>> updateAppointmentsByClinicId(
-//            @RequestHeader("X-UserRole-Id") UUID clinicId,
-//            @RequestParam String status
-//    ) {
-//        appointmentService.updateAppointmentByClinicId(clinicId, status);
-//        return ResponseEntity.noContent().build();
-//    }
 
     @PostMapping("/appointment-data")
     public ResponseEntity<ApiResponseDto<AppointmentDataResponseDto>> getConfirmAppointmentData(@RequestBody @Valid AppointmentDataRequestDto dto) {

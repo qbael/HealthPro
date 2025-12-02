@@ -254,10 +254,10 @@ spring:
           - Path=/api/v1/clinics/**
         filters:
           - JwtValidation
-        # THÊM DÒNG NÀY VÀO CUỐI DANH SÁCH ROUTES (trước dấu --- nếu có)
-          - id: search-service-route
-            uri: http://localhost:8081
-            predicates:
-              - Path=/api/v2/search/**
-            filters:
-              - StripPrefix=0
+
+      - id: search-service-route
+        uri: http://localhost:8081
+        predicates:
+          - Path=/api/v2/search/**
+        filters:
+          - StripPrefix=0
