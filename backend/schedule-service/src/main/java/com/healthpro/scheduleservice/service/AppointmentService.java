@@ -6,12 +6,13 @@ import com.healthpro.scheduleservice.dto.AppointmentRequestDto;
 import com.healthpro.scheduleservice.entity.Appointment;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyDoctor;
 import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
+import com.healthpro.scheduleservice.entity.enums.AppointmentStatus;
 import com.healthpro.scheduleservice.entity.enums.AppointmentType;
+import com.healthpro.scheduleservice.exception.ResourceNotFoundException;
 import com.healthpro.scheduleservice.repository.AppointmentRepository;
 import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
 import com.healthpro.scheduleservice.repository.DoctorAvailableSlotRepository;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -38,6 +39,40 @@ public class AppointmentService {
         this.appointmentRepository = appointmentRepository;
         this.clinicSpecialtyDoctorRepository = clinicSpecialtyDoctorRepository;
     }
+
+    public List<Appointment> getAppointmentsByPatientId(UUID patientId) {
+        return appointmentRepository.findAllByPatientId(patientId);
+    }
+
+    public List<Appointment> getAppointmentsByDoctorId(UUID doctorId) {
+        return appointmentRepository.findAllByDoctorId(doctorId);
+    }
+
+    public List<Appointment> getAppointmentsByClinicId(UUID clinicId) {
+        return appointmentRepository.findAllByClinicId(clinicId);
+    }
+
+    public void updateAppointmentById(UUID id, String status) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy lịch hẹn"));
+
+        appointment.setStatus(AppointmentStatus.valueOf(status));
+        appointmentRepository.save(appointment);
+    }
+
+//    public void updateAppointmentByDoctorId(UUID doctorId, String status) {
+//        Appointment appointment = appointmentRepository.findByDoctorId(doctorId);
+//
+//        appointment.setStatus(AppointmentStatus.valueOf(status));
+//        appointmentRepository.save(appointment);
+//    }
+//
+//    public void updateAppointmentByClinicId(UUID clinicId, String status) {
+//        Appointment appointment = appointmentRepository.findByClinicId(clinicId);
+//
+//        appointment.setStatus(AppointmentStatus.valueOf(status));
+//        appointmentRepository.save(appointment);
+//    }
 
     private record AppointmentInfoResponseDto(
             @NotNull(message = "ID bệnh nhân không được để trống") UUID patientId,

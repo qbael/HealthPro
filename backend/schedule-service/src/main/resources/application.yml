@@ -8,13 +8,14 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+#      ddl-auto: update
+      ddl-auto: create
     defer-datasource-initialization: true
 
   sql:
     init:
       mode: always
-      data-locations: ""
+#      data-locations: ""
   kafka:
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer

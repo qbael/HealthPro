@@ -154,9 +154,15 @@ VALUES ('0c4b682a-db02-4bc5-817e-eaee5cdcc8e8', '750e8400-e29b-41d4-a716-4466554
        ('e8bc50dc-4509-4691-b8d3-4792f07d0133', '750e8400-e29b-41d4-a716-446655440022', 'Trần Thị Hồng',
         'tran.thihong@gmail.com', '0923456790', '750e8400-e29b-41d4-a716-446655440012', 'BS. Lê Thị Mai',
         '750e8400-e29b-41d4-a716-446655440031', 'Bệnh viện Chợ Rẫy', '201B Nguyễn Chí Thanh, Quận 5, TP.HCM',
-        '0934567890', 'a50e8400-e29b-41d4-a716-446655440002', 'Sản - Phụ khoa', 'CLINIC', '2024-09-20',
+        '0934567890', 'a50e8400-e29b-41d4-a716-446655440002', 'Sản - Phụ khoa', 'CLINIC', '2025-12-20',
+        '10:00:00', '10:45:00', 'COMPLETED', 'Khám thai định kỳ 3 tháng', '2024-09-12 10:00:00',
+        '2025-12-20 11:00:00'),
+        ('e8bc51dc-4509-4691-b8d3-4792f07d0133', '750e8400-e29b-41d4-a716-446655440028', 'Trần Minh Đăng',
+        'mindang1@gmail.com', '0923456790', '750e8400-e29b-41d4-a716-446655440016', 'BS. Trần Minh Đăng',
+        '750e8400-e29b-41d4-a716-446655440034', 'Trung tâm Y tế Trần Minh Đăng 3', '789 Nguyễn Thị Minh Khai, Quận 3, TP.HCM',
+        '0934567890', 'a50e8400-e29b-41d4-a716-446655440024', 'Sản - Phụ khoa', 'CLINIC', '2025-12-20',
         '10:00:00', '10:45:00', 'COMPLETED', 'Khám thai định kỳ 3 tháng', '2024-09-15 10:00:00',
-        '2024-09-20 11:00:00');
+        '2025-12-20 11:00:00');
 
 -- Cuộc hẹn đã xác nhận (sắp tới)
 INSERT INTO appointments (id, patient_id, patient_name, patient_email, patient_phone, doctor_id, doctor_name, clinic_id,
@@ -177,7 +183,13 @@ VALUES ('6354270b-0590-456c-ad65-6aeafa682a50', '750e8400-e29b-41d4-a716-4466554
         'hoang.vannam@gmail.com', '0923456793', '750e8400-e29b-41d4-a716-446655440011', 'BS. Trần Văn Nguyên',
         '750e8400-e29b-41d4-a716-446655440031', 'Bệnh viện Chợ Rẫy', '201B Nguyễn Chí Thanh, Quận 5, TP.HCM',
         '0934567890', 'a50e8400-e29b-41d4-a716-446655440001', 'Nội tổng quát', 'CLINIC', '2025-10-15', '10:00:00',
-        '10:30:00', 'SCHEDULED', 'Tái khám gan', '2025-10-06 14:00:00', '2025-10-06 14:00:00');
+        '10:30:00', 'SCHEDULED', 'Tái khám gan', '2025-10-06 14:00:00', '2025-10-06 14:00:00'),
+       ('e8bc52dc-4509-4691-b8d3-4792f07d0133', '750e8400-e29b-41d4-a716-446655440028', 'Trần Minh Đăng',
+        'mindang1@gmail.com', '0923456790', '750e8400-e29b-41d4-a716-446655440016', 'BS. Trần Minh Đăng',
+        '750e8400-e29b-41d4-a716-446655440034', 'Trung tâm Y tế Trần Minh Đăng 3', '789 Nguyễn Thị Minh Khai, Quận 3, TP.HCM',
+        '0934567890', 'a50e8400-e29b-41d4-a716-446655440024', 'Sản - Phụ khoa', 'CLINIC', '2025-12-20',
+        '10:00:00', '10:45:00', 'SCHEDULED', 'Khám thai định kỳ 3 tháng', '2024-09-15 10:00:00',
+        '2025-12-20 11:00:00');
 
 -- Cuộc hẹn đang chờ xác nhận
 INSERT INTO appointments (id, patient_id, patient_name, patient_email, patient_phone, doctor_id, doctor_name, clinic_id,
@@ -188,7 +200,13 @@ VALUES ('ba8b85ca-a2fd-45b7-a193-cee1187f1fd6', '750e8400-e29b-41d4-a716-4466554
         '750e8400-e29b-41d4-a716-446655440031', 'Bệnh viện Chợ Rẫy', '201B Nguyễn Chí Thanh, Quận 5, TP.HCM',
         '0934567890', 'a50e8400-e29b-41d4-a716-446655440002', 'Sản - Phụ khoa', 'CLINIC', '2025-10-14',
         '14:00:00', '14:45:00', 'SCHEDULED', 'Khám tư vấn trước khi mang thai', '2025-10-06 16:00:00',
-        '2025-10-06 16:00:00');
+        '2025-10-06 16:00:00'),
+       ('e8bc53dc-4509-4691-b8d3-4792f07d0133', '750e8400-e29b-41d4-a716-446655440028', 'Trần Minh Đăng',
+        'mindang1@gmail.com', '0923456790', '750e8400-e29b-41d4-a716-446655440016', 'BS. Trần Minh Đăng',
+        '750e8400-e29b-41d4-a716-446655440034', 'Trung tâm Y tế Trần Minh Đăng 3', '789 Nguyễn Thị Minh Khai, Quận 3, TP.HCM',
+        '0934567890', 'a50e8400-e29b-41d4-a716-446655440024', 'Sản - Phụ khoa', 'CLINIC', '2025-12-20',
+        '10:00:00', '10:45:00', 'SCHEDULED', 'Khám thai định kỳ 3 tháng', '2024-09-15 10:00:00',
+        '2025-12-20 11:00:00');
 
 -- Cuộc hẹn đã hủy
 INSERT INTO appointments (id, patient_id, patient_name, patient_email, patient_phone, doctor_id, doctor_name, clinic_id,
@@ -199,7 +217,13 @@ VALUES ('a549d2b8-2634-41b9-b0cb-e63b8fe4a3a6', '750e8400-e29b-41d4-a716-4466554
         '750e8400-e29b-41d4-a716-446655440032', 'Phòng khám Đa khoa Hoàng Hoa',
         '345 Hoàng Văn Thụ, Quận Tân Bình, TP.HCM', '0934567891', 'a50e8400-e29b-41d4-a716-446655440013', 'Nhi khoa',
         'CLINIC', '2025-10-17', '09:00:00', '09:20:00', 'CANCELLED', 'Bệnh nhân hủy do bận đột xuất',
-        '2025-10-05 11:00:00', '2025-10-06 08:00:00');
+        '2025-10-05 11:00:00', '2025-10-06 08:00:00'),
+       ('e8bc54dc-4509-4691-b8d3-4792f07d0133', '750e8400-e29b-41d4-a716-446655440028', 'Trần Minh Đăng',
+        'mindang1@gmail.com', '0923456790', '750e8400-e29b-41d4-a716-446655440016', 'BS. Trần Minh Đăng',
+        '750e8400-e29b-41d4-a716-446655440034', 'Trung tâm Y tế Trần Minh Đăng 3', '789 Nguyễn Thị Minh Khai, Quận 3, TP.HCM',
+        '0934567890', 'a50e8400-e29b-41d4-a716-446655440024', 'Sản - Phụ khoa', 'CLINIC', '2025-12-20',
+        '10:00:00', '10:45:00', 'CANCELLED', 'Khám thai định kỳ 3 tháng', '2024-09-15 10:00:00',
+        '2025-12-20 11:00:00');
 
 -- Cuộc hẹn online (DOCTOR)
 INSERT INTO appointments (id, patient_id, patient_name, patient_email, patient_phone, doctor_id, doctor_name, clinic_id,

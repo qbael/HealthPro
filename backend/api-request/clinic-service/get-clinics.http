@@ -1,1 +1,1 @@
-GET http://localhost:4004/api/v2/doctors
+GET http://localhost:4004/api/v3/appointments

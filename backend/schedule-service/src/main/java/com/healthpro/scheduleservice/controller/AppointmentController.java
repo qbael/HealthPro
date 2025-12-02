@@ -4,10 +4,14 @@ import com.healthpro.scheduleservice.dto.ApiResponseDto;
 import com.healthpro.scheduleservice.dto.AppointmentDataRequestDto;
 import com.healthpro.scheduleservice.dto.AppointmentDataResponseDto;
 import com.healthpro.scheduleservice.dto.AppointmentRequestDto;
+import com.healthpro.scheduleservice.entity.Appointment;
 import com.healthpro.scheduleservice.service.AppointmentService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v3/appointments")
@@ -17,6 +21,61 @@ public class AppointmentController {
     public AppointmentController(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
+
+    @GetMapping("/patient")
+    public ResponseEntity<List<Appointment>> getAppointmentsByPatientId(
+            @RequestHeader("X-UserRole-Id") UUID patientId
+    ) {
+        List<Appointment> appointments =
+                appointmentService.getAppointmentsByPatientId(patientId);
+        return ResponseEntity.ok().body(appointments);
+    }
+
+    @GetMapping("/doctor")
+    public ResponseEntity<List<Appointment>> getAppointmentsByDoctorId(
+            @RequestHeader("X-UserRole-Id") UUID doctorId
+    ) {
+        List<Appointment> appointments =
+                appointmentService.getAppointmentsByDoctorId(doctorId);
+        return ResponseEntity.ok().body(appointments);
+    }
+
+    @GetMapping("/clinic")
+    public ResponseEntity<List<Appointment>> getAppointmentsByClinicId(
+            @RequestHeader("X-UserRole-Id") UUID clinicId
+    ) {
+        List<Appointment> appointments =
+                appointmentService.getAppointmentsByClinicId(clinicId);
+        return ResponseEntity.ok().body(appointments);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateAppointmentsById(
+            @PathVariable UUID id,
+            @RequestParam String status
+    ) {
+        appointmentService.updateAppointmentById(id, status);
+        return ResponseEntity.noContent().build();
+    }
+//
+//    @PutMapping("/doctor")
+//    public ResponseEntity<List<Appointment>> updateAppointmentsByDoctorId(
+//            @RequestHeader("X-UserRole-Id") UUID doctorId,
+//            @RequestParam String status
+//    ) {
+//        System.out.println(status);
+//        appointmentService.updateAppointmentByDoctorId(doctorId, status);
+//        return ResponseEntity.noContent().build();
+//    }
+//
+//    @PutMapping("/clinic")
+//    public ResponseEntity<List<Appointment>> updateAppointmentsByClinicId(
+//            @RequestHeader("X-UserRole-Id") UUID clinicId,
+//            @RequestParam String status
+//    ) {
+//        appointmentService.updateAppointmentByClinicId(clinicId, status);
+//        return ResponseEntity.noContent().build();
+//    }
 
     @PostMapping("/appointment-data")
     public ResponseEntity<ApiResponseDto<AppointmentDataResponseDto>> getConfirmAppointmentData(@RequestBody @Valid AppointmentDataRequestDto dto) {
