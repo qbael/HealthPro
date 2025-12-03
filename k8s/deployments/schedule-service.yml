@@ -4,7 +4,7 @@ metadata:
   name: schedule-service
   namespace: healthpro
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: schedule-service

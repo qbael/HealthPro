@@ -3,15 +3,11 @@ package com.healthpro.scheduleservice.service;
 import com.healthpro.scheduleservice.dto.AppointmentDataRequestDto;
 import com.healthpro.scheduleservice.dto.AppointmentDataResponseDto;
 import com.healthpro.scheduleservice.dto.AppointmentRequestDto;
-import com.healthpro.scheduleservice.entity.Appointment;
-import com.healthpro.scheduleservice.entity.ClinicSpecialtyDoctor;
-import com.healthpro.scheduleservice.entity.DoctorAvailableSlot;
+import com.healthpro.scheduleservice.entity.*;
 import com.healthpro.scheduleservice.entity.enums.AppointmentStatus;
 import com.healthpro.scheduleservice.entity.enums.AppointmentType;
 import com.healthpro.scheduleservice.exception.ResourceNotFoundException;
-import com.healthpro.scheduleservice.repository.AppointmentRepository;
-import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
-import com.healthpro.scheduleservice.repository.DoctorAvailableSlotRepository;
+import com.healthpro.scheduleservice.repository.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +26,8 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final ClinicSpecialtyDoctorRepository clinicSpecialtyDoctorRepository;
     private final DoctorAvailableSlotRepository doctorAvailableSlotRepository;
+    private final DoctorScheduleTemplateRepository doctorScheduleTemplateRepository;
+    private final ClinicSpecialtyScheduleTemplateRepository clinicSpecialtyScheduleTemplateRepository;
     private final WebClient webClient;
 
     public List<Appointment> getAppointmentsByPatientId(UUID patientId) {
@@ -47,6 +45,37 @@ public class AppointmentService {
     public void updateAppointmentById(UUID id, String status) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy lịch hẹn"));
+
+        DoctorAvailableSlot.DoctorAvailableSlotBuilder builder = DoctorAvailableSlot.builder()
+                .appointmentDate(appointment.getAppointmentDate())
+                .appointmentType(appointment.getAppointmentType())
+                .clinicSpecialtyId(appointment.getClinicSpecialtyId())
+                .doctorId(appointment.getDoctorId())
+                .startTime(appointment.getStartTime())
+                .endTime(appointment.getEndTime());
+
+        if (appointment.getAppointmentType() == AppointmentType.DOCTOR) {
+            DoctorScheduleTemplate template = doctorScheduleTemplateRepository
+                    .findByDoctorIdAndDayOfWeek(
+                            appointment.getDoctorId(),
+                            appointment.getAppointmentDate().getDayOfWeek()
+                    );
+
+            builder.templateId(template.getId());
+        }
+
+        if (appointment.getAppointmentType() == AppointmentType.CLINIC) {
+            ClinicSpecialtyScheduleTemplate template = clinicSpecialtyScheduleTemplateRepository
+                    .findByClinicSpecialtyIdAndDayOfWeek(
+                            appointment.getClinicSpecialtyId(),
+                            appointment.getAppointmentDate().getDayOfWeek()
+                    );
+
+            builder.templateId(template.getId());
+        }
+
+        DoctorAvailableSlot slot = builder.build();
+        doctorAvailableSlotRepository.save(slot);
 
         appointment.setStatus(AppointmentStatus.valueOf(status));
         appointmentRepository.save(appointment);
