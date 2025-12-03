@@ -34,12 +34,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, UUID> {
             Pageable pageable
     );
 
-    /**
-     * Tìm kiếm bác sĩ theo keyword, specialty list và specialtyId
-     * - keyword: tìm theo tên, bio
-     * - specialtyList: danh sách chuyên khoa từ mapping bệnh (VD: "Thần kinh,Da liễu")
-     * - specialtyId: lọc thêm theo 1 chuyên khoa cụ thể (optional)
-     */
     @Query(value = """
         SELECT DISTINCT d.* FROM doctors d
         LEFT JOIN doctor_specialties ds ON ds.doctor_id = d.id
@@ -60,18 +54,12 @@ public interface DoctorRepository extends JpaRepository<Doctor, UUID> {
               )
             )
           )
-          AND (
-            :specialtyId = '' 
-            OR :specialtyId IS NULL
-            OR s.id = CAST(:specialtyId AS uuid)
-          )
         ORDER BY d.full_name
         LIMIT :limit OFFSET :offset
         """, nativeQuery = true)
     List<Doctor> searchDoctorsByKeywordAndSpecialty(
             @Param("keyword") String keyword,
             @Param("specialtyList") String specialtyList,
-            @Param("specialtyId") String specialtyId,
             @Param("limit") int limit,
             @Param("offset") int offset
     );

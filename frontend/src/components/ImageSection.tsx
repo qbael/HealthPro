@@ -1,19 +1,35 @@
 'use client'
 import Image from "next/image";
 import {Input} from "@/components/ui/input";
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { useState } from "react";
 
 const ImageSection = () => {
     const pathname = usePathname()
+    const router = useRouter()
+    const [searchQuery, setSearchQuery] = useState("")
 
     const placeholderMap: Record<string, string> = {
-    "/booking/doctor": "Tìm kiếm bác sĩ",
-    "/booking/clinics": "Tìm kiếm phòng khám",
-    "/booking/hospitals": "Tìm kiếm bệnh viện",
-    "/booking/services": "Tìm kiếm dịch vụ y tế",
+        "/booking/doctor": "Tìm kiếm bác sĩ",
+        "/booking/clinics": "Tìm kiếm phòng khám",
+        "/booking/hospitals": "Tìm kiếm bệnh viện",
+        "/booking/services": "Tìm kiếm dịch vụ y tế",
     }
 
     const placeholder = Object.entries(placeholderMap).find(([key]) => pathname.includes(key))?.[1] || "Triệu chứng, bác sĩ, bệnh viện..."
+
+    const handleSearch = () => {
+        if (searchQuery.trim()) {
+            // Chuyển hướng đến trang search với query string
+            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}&type=all`)
+        }
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleSearch()
+        }
+    }
 
     return (
         <section className='relative w-full h-[500px]'>
@@ -31,6 +47,9 @@ const ImageSection = () => {
                 <Input
                     className="bg-white"
                     placeholder={placeholder}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={handleKeyDown}
                 />
             </div>
         </section>

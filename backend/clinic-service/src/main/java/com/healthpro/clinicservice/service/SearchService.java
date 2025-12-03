@@ -17,7 +17,6 @@ public class SearchService {
     private final DoctorRepository doctorRepository;
     private final ClinicRepository clinicRepository;
 
-    // Hard-code mapping bệnh → chuyên khoa
     private static final Map<String, Set<String>> DISEASE_TO_SPECIALTY;
     static {
         var map = new HashMap<String, Set<String>>();
@@ -58,55 +57,63 @@ public class SearchService {
         DISEASE_TO_SPECIALTY = Map.copyOf(map);
     }
 
-    public SearchResponse globalSearch(String q, String type, String specialtyName, int page, int limit) {
-        String keyword = q != null ? q.trim() : "";
+    public SearchResponse globalSearch(String q, String type, String specialty, int page, int limit) {
+        String keyword = (q == null || q.trim().isEmpty()) ? "" : q.trim();
+        String lowerKeyword = keyword.toLowerCase();
         int offset = page * limit;
 
-        // 1. Mapping bệnh → chuyên khoa (tên)
-        Set<String> matchedSpecialties = findMatchedSpecialties(keyword.toLowerCase());
+        List<Doctor> doctors = new ArrayList<>();
+        List<Clinic> clinics = new ArrayList<>();
+
+        // 1. Xác định specialtyList để filter
+        Set<String> matchedSpecialties = findMatchedSpecialties(lowerKeyword);
         String specialtyListFromDisease = String.join(",", matchedSpecialties);
 
-        // 2. Ưu tiên: nếu người dùng chọn chuyên khoa từ dropdown → dùng tên đó
+        // Ưu tiên: specialty từ dropdown (nếu có) > mapping từ bệnh
         String finalSpecialtyList = "";
-        if (specialtyName != null && !specialtyName.trim().isEmpty() && !"all".equals(specialtyName)) {
-            finalSpecialtyList = specialtyName.trim();
+        if (specialty != null && !specialty.trim().isEmpty() && !"all".equalsIgnoreCase(specialty)) {
+            finalSpecialtyList = specialty.trim();
         } else if (!specialtyListFromDisease.isEmpty()) {
             finalSpecialtyList = specialtyListFromDisease;
         }
 
-        // 3. Luôn để specialtyId = "" để bỏ qua điều kiện UUID
-        String finalSpecialtyId = "";
+        System.out.println("=== SEARCH DEBUG ===");
+        System.out.println("Keyword: " + keyword);
+        System.out.println("Type: " + type);
+        System.out.println("Specialty param: " + specialty);
+        System.out.println("Final specialty list: " + finalSpecialtyList);
 
-        // 4. Case không có keyword → hiện cả bác sĩ + bệnh viện
-        if (keyword.isEmpty()) {
-            List<Doctor> doctors = List.of();
-            List<Clinic> clinics = clinicRepository.findAllClinics(limit, offset);
-
-            if ("all".equalsIgnoreCase(type) || "doctor".equalsIgnoreCase(type)) {
-                doctors = doctorRepository.searchDoctorsByKeywordAndSpecialty("", "", finalSpecialtyId, limit, offset);
-            }
-            return new SearchResponse(doctors, clinics);
-        }
-
-        // 5. Có keyword → tìm bình thường
-        List<Doctor> doctors = List.of();
-        List<Clinic> clinics = List.of();
-
+        // 2. Xử lý theo type
         if ("all".equalsIgnoreCase(type)) {
-            doctors = doctorRepository.searchDoctorsByKeywordAndSpecialty(keyword, finalSpecialtyList, finalSpecialtyId, limit, offset);
-            clinics = clinicRepository.searchClinicsByKeywordAndSpecialty(keyword, finalSpecialtyList, finalSpecialtyId, limit, offset);
-        } else if ("doctor".equalsIgnoreCase(type)) {
-            doctors = doctorRepository.searchDoctorsByKeywordAndSpecialty(keyword, finalSpecialtyList, finalSpecialtyId, limit, offset);
-        } else if ("clinic".equalsIgnoreCase(type)) {
-            clinics = clinicRepository.searchClinicsByKeywordAndSpecialty(keyword, finalSpecialtyList, finalSpecialtyId, limit, offset);
+            // CASE: type=all, không có q, không có specialty → Hiện tất cả clinics
+            if (keyword.isEmpty() && finalSpecialtyList.isEmpty()) {
+                clinics = clinicRepository.findAllClinics(limit, offset);
+                return new SearchResponse(doctors, clinics);
+            }
+            // CASE: type=all, có q hoặc có specialty → Tìm cả doctor + clinic
+            doctors = doctorRepository.searchDoctorsByKeywordAndSpecialty(
+                    keyword, finalSpecialtyList, limit, offset
+            );
+            clinics = clinicRepository.searchClinicsByKeywordAndSpecialty(
+                    keyword, finalSpecialtyList, limit, offset
+            );
+        }
+        else if ("doctor".equalsIgnoreCase(type)) {
+            // CASE: type=doctor → Chỉ tìm doctor
+            doctors = doctorRepository.searchDoctorsByKeywordAndSpecialty(
+                    keyword, finalSpecialtyList, limit, offset
+            );
+        }
+        else if ("clinic".equalsIgnoreCase(type)) {
+            // CASE: type=clinic → Chỉ tìm clinic
+            clinics = clinicRepository.searchClinicsByKeywordAndSpecialty(
+                    keyword, finalSpecialtyList, limit, offset
+            );
         }
 
         return new SearchResponse(doctors, clinics);
     }
 
-    /**
-     * Tìm chuyên khoa phù hợp từ keyword (mapping bệnh)
-     */
     private Set<String> findMatchedSpecialties(String lowerKeyword) {
         Set<String> matched = new HashSet<>();
         String[] words = lowerKeyword.split("\\s+");
