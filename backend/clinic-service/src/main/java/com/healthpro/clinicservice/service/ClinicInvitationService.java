@@ -55,7 +55,6 @@ public class ClinicInvitationService {
                 .get()
                 .uri("http://schedule-service:8082/api/v3/clinic-specialty-schedule-template/check/{id}",
                         clinicSpecialty.getId())
-                .header("X-Internal-Service", "clinic-service")
                 .retrieve()
                 .bodyToMono(Boolean.class)
                 .block();
@@ -125,7 +124,6 @@ public class ClinicInvitationService {
 
         webClient.post()
                 .uri("http://schedule-service:8082/api/v3/clinic-specialty-doctors")
-                .header("X-Internal-Service", "clinic-service")
                 .bodyValue(clinicSpecialtyDoctorDto)
                 .retrieve()
                 .bodyToMono(Void.class)

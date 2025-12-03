@@ -12,7 +12,6 @@ type AuthState = {
     };
     loading: boolean;
 }
-
 type AuthAction =
     | { type: 'LOGIN'; payload: { id: string; email: string; userRoleId: string; role: 'PARENT' | 'DOCTOR' | 'ADMIN'; } }
     | { type: 'LOGOUT' }

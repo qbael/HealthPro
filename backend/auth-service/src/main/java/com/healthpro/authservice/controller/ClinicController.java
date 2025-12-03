@@ -43,7 +43,7 @@ public class ClinicController {
         }
 
         return ResponseEntity.ok(
-                ApiResponseDTO.success(clinics, "Lấy danh sách phongf khám thành công")
+                ApiResponseDTO.success(clinics, "Lấy danh sách phòng khám thành công")
         );
     }
 

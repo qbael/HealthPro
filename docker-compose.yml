@@ -21,7 +21,7 @@
 #      - kafka-data:/var/lib/kafka/data
 #    networks:
 #      - internal
-services:
+#services:
 #  kafka:
 #    image: confluentinc/cp-kafka:latest
 #    container_name: kafka
@@ -60,7 +60,7 @@ services:
 #      - kafka
 #    networks:
 #      - internal
-
+services:
   auth-service-db:
     image: postgres:latest
     container_name: auth-service-db
@@ -108,15 +108,18 @@ services:
       context: ./backend/auth-service
       dockerfile: Dockerfile
     container_name: auth-service
+    ports:
+      - "8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://auth-service-db:5432/health_pro
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: true
       SPRING_SQL_INIT_MODE: always
-      SERVER_PORT: "8080"
+      SPRING_SQL_INIT_CONTINUE_ON_ERROR: true
+      SERVER_PORT: 8080
     depends_on:
       - auth-service-db
     networks:
@@ -127,15 +130,18 @@ services:
       context: ./backend/clinic-service
       dockerfile: Dockerfile
     container_name: clinic-service
+    ports:
+      - "8081"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://clinic-service-db:5432/health_pro
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: always
       SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: true
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_SQL_INIT_CONTINUE_ON_ERROR: true
+      SERVER_PORT: 8081
     depends_on:
       - clinic-service-db
     networks:
@@ -146,15 +152,18 @@ services:
       context: ./backend/schedule-service
       dockerfile: Dockerfile
     container_name: schedule-service
+    ports:
+      - "8082"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://schedule-service-db:5432/health_pro
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: true
       SPRING_SQL_INIT_MODE: always
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_SQL_INIT_CONTINUE_ON_ERROR: true
+      SERVER_PORT: 8082
     depends_on:
       - schedule-service-db
     networks:
@@ -165,6 +174,9 @@ services:
       context: ./backend/api-gateway
       dockerfile: Dockerfile
     container_name: api-gateway
+    environment:
+      AUTH_SERVICE_URL: http://auth-service:8080
+      SERVER_PORT: 4004
     depends_on:
       - auth-service
       - clinic-service

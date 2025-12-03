@@ -1,9 +1,9 @@
 #server:
 #  port: 4004 # Gateway listens on port 4004
 
-auth:
-  service:
-    url: http://auth-service:8080
+#auth:
+#  service:
+#    url: http://auth-service:8080
 spring:
   cloud:
     gateway:
@@ -134,9 +134,14 @@ spring:
             - Path=/api/v3/clinic-specialty-doctors/**
           filters:
             - JwtValidation
-#auth:
-#  service:
-#    url: http://localhost:8080
+
+        - id: search-service-route
+          uri: http://clinic-service:8081
+          predicates:
+            - Path=/api/v2/search/**
+          filters:
+            - StripPrefix=0
+
 #spring:
 #  cloud:
 #    gateway:
@@ -260,3 +265,10 @@ spring:
 #          - Path=/api/v1/clinics/**
 #        filters:
 #          - JwtValidation
+#
+#      - id: search-service-route
+#        uri: http://localhost:8081
+#        predicates:
+#          - Path=/api/v2/search/**
+#        filters:
+#          - StripPrefix=0

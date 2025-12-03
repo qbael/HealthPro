@@ -1,0 +1,4 @@
+### GET request to example server
+PUT http://localhost:4004/api/v3/appointments/patient?status=CANCELLED
+
+###

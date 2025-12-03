@@ -1,5 +1,5 @@
 ### GET request to example server
-POST http://localhost:4004/api/v1/appointments
+POST http://localhost:4004/api/v3/appointments
 Content-Type: application/json
 
 {
