@@ -12,9 +12,6 @@ import java.util.UUID;
 @Repository
 public interface ClinicRepository extends JpaRepository<Clinic, UUID> {
 
-    /**
-     * Lấy tất cả clinics (dùng khi type=all, không có q và specialtyId)
-     */
     @Query(value = """
         SELECT c.* FROM clinics c
         ORDER BY c.clinic_name
@@ -25,12 +22,6 @@ public interface ClinicRepository extends JpaRepository<Clinic, UUID> {
             @Param("offset") int offset
     );
 
-    /**
-     * Tìm kiếm clinic theo keyword, specialty list và specialtyId
-     * - keyword: tìm theo tên clinic, địa chỉ, mô tả
-     * - specialtyList: danh sách chuyên khoa từ mapping bệnh (VD: "Thần kinh,Da liễu")
-     * - specialtyId: lọc thêm theo 1 chuyên khoa cụ thể (optional)
-     */
     @Query(value = """
         SELECT DISTINCT c.* FROM clinics c
         LEFT JOIN clinic_specialties cs ON cs.clinic_id = c.id
@@ -52,18 +43,12 @@ public interface ClinicRepository extends JpaRepository<Clinic, UUID> {
               )
             )
           )
-          AND (
-            :specialtyId = '' 
-            OR :specialtyId IS NULL
-            OR s.id = CAST(:specialtyId AS uuid)
-          )
         ORDER BY c.clinic_name
         LIMIT :limit OFFSET :offset
         """, nativeQuery = true)
     List<Clinic> searchClinicsByKeywordAndSpecialty(
             @Param("keyword") String keyword,
             @Param("specialtyList") String specialtyList,
-            @Param("specialtyId") String specialtyId,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
