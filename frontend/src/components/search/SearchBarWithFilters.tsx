@@ -1,10 +1,8 @@
-// components/search/SearchBarWithFilters.tsx
 'use client';
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-// ĐÚNG CÁCH IMPORT SHADCN/UI
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {

@@ -1,13 +1,11 @@
-// app/search/page.tsx
 import SearchBarWithFilters from "@/components/search/SearchBarWithFilters";
 import SearchResults from "@/components/search/SearchResults";
 
 export default async function SearchPage({
-  searchParams, // ← ĐÚNG: là Promise, KHÔNG cần khai báo kiểu
+  searchParams,
 }: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
-  // PHẢI await để lấy được giá trị thật
   const params = await searchParams;
 
   return (
