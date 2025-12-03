@@ -1,10 +1,12 @@
 package com.healthpro.clinicservice.controller;
 
 import com.healthpro.clinicservice.dto.ApiResponseDTO;
+import com.healthpro.clinicservice.dto.DoctorDto;
 import com.healthpro.clinicservice.entity.Doctor;
 import com.healthpro.clinicservice.entity.DoctorSpecialty;
 import com.healthpro.clinicservice.service.DoctorService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -65,5 +67,16 @@ public class DoctorController {
                 .orElseGet(() -> ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body(ApiResponseDTO.error(404, "Lấy danh sách chuyên khoa của bác sĩ thất bại")));
+    }
+
+    @PostMapping
+    @Operation(summary = "Create a Doctor")
+    public ResponseEntity<ApiResponseDTO<Doctor>> createDoctor(@RequestBody @Valid DoctorDto doctorRequest){
+        Optional<Doctor> createdDoctor = doctorService.createDoctor(doctorRequest);
+        return createdDoctor.map(doctor -> ResponseEntity.ok().body(
+                        ApiResponseDTO.success(doctor, "Tạo bác sĩ thành công")))
+                .orElseGet(() -> ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(ApiResponseDTO.error(400, "Tạo bác sĩ thất bại")));
     }
 }

@@ -233,5 +233,10 @@ public class DoctorAvailableSlotService {
                 }
             }
         }
+        log.info("Đã tạo khung giờ hẹn cho bác sĩ với ID {} từ template chuyên khoa phòng khám với ID {}", doctorId, template.getId());
+    }
+
+    public void deleteAvailableSlotsByTemplateIdAndDoctorId(UUID id, UUID doctorId) {
+        doctorAvailableSlotRepository.deleteAllByTemplateIdAndDoctorId(id, doctorId);
     }
 }

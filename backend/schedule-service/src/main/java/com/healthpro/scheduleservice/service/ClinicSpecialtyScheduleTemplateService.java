@@ -56,6 +56,16 @@ public class ClinicSpecialtyScheduleTemplateService {
         }
     }
 
+    @Transactional
+    public void removeDoctor(UUID clinicSpecialtyId, UUID doctorId) {
+        List<ClinicSpecialtyScheduleTemplate> clinicSpecialtyScheduleTemplates =
+                clinicSpecialtyScheduleTemplateRepository.findAllByClinicSpecialtyId(clinicSpecialtyId);
+
+        for (ClinicSpecialtyScheduleTemplate template : clinicSpecialtyScheduleTemplates) {
+            doctorAvailableSlotService.deleteAvailableSlotsByTemplateIdAndDoctorId(template.getId(), doctorId);
+        }
+    }
+
     public void refixDoctorScheduleTemplatesInClinicSpecialty(UUID clinicSpecialtyId, UUID doctorId) {
         List<ClinicSpecialtyScheduleTemplate> clinicTemplates =
                 clinicSpecialtyScheduleTemplateRepository.findAllByClinicSpecialtyId(clinicSpecialtyId);

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package clinic.specialty.doctor.event;
+
+option java_multiple_files = true;
+option java_package = "com.healthpro.clinic.event";
+option java_outer_classname = "ClinicSpecialtyDoctorEventProto";
+
+message ClinicSpecialtyDoctorEvent {
+  string id = 1;
+  string clinic_specialty_id = 2;
+  string doctor_id = 3;
+  string event_type = 4;
+}

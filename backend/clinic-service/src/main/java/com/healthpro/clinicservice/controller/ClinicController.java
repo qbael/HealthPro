@@ -1,10 +1,12 @@
 package com.healthpro.clinicservice.controller;
 
 import com.healthpro.clinicservice.dto.ApiResponseDTO;
+import com.healthpro.clinicservice.dto.ClinicDto;
 import com.healthpro.clinicservice.entity.Clinic;
 import com.healthpro.clinicservice.entity.ClinicSpecialty;
 import com.healthpro.clinicservice.service.ClinicService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,5 +83,14 @@ public class ClinicController {
                         ApiResponseDTO.success(Collections.emptyList(), "Chưa có chuyên khoa nào")));
     }
 
-
+    @PostMapping
+    @Operation(summary = "Create a Clinic")
+    public ResponseEntity<ApiResponseDTO<Clinic>> createClinic(@RequestBody @Valid ClinicDto clinicRequest){
+        Optional<Clinic> createdClinic = clinicService.createClinic(clinicRequest);
+        return createdClinic.map(clinic -> ResponseEntity.ok().body(
+                        ApiResponseDTO.success(clinic, "Tạo phòng khám thành công")))
+                .orElseGet(() -> ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(ApiResponseDTO.error(400, "Tạo phòng khám thất bại")));
+    }
 }

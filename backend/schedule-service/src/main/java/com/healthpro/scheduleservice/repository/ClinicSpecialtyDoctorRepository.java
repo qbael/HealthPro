@@ -16,4 +16,6 @@ public interface ClinicSpecialtyDoctorRepository extends JpaRepository<ClinicSpe
     Optional<ClinicSpecialtyDoctor> findByDoctorId(UUID doctorId);
 
     Optional<ClinicSpecialtyDoctor> findByClinicSpecialtyIdAndDoctorId(UUID clinicSpecialtyId, UUID doctorId);
+
+    void deleteByClinicSpecialtyIdAndDoctorId(UUID clinicSpecialtyId, UUID doctorId);
 }

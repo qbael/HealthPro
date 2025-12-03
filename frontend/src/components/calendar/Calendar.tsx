@@ -185,6 +185,11 @@ export const Calendar = ({id, type, slotClickEventType, availableDates}: Calenda
             case 'DELETE_DOCTOR_SLOT':
                 handleSlotDelete(slot);
                 break;
+            case 'DELETE_CLINIC_SLOT':
+                handleSlotDelete(slot);
+                break;
+            default:
+                break;
         }
     }
 
@@ -357,6 +362,13 @@ export const Calendar = ({id, type, slotClickEventType, availableDates}: Calenda
             )}
 
             {selectedSlot && slotClickEventType === 'DELETE_DOCTOR_SLOT' && (
+                <ModalDeleteSlot
+                    slot={selectedSlot}
+                    onClose={() => onCloseModal()}
+                />
+            )}
+
+            {selectedSlot && slotClickEventType === 'DELETE_CLINIC_SLOT' && (
                 <ModalDeleteSlot
                     slot={selectedSlot}
                     onClose={() => onCloseModal()}

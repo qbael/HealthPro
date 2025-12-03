@@ -2,7 +2,7 @@ package com.healthpro.clinicservice.service;
 
 import com.healthpro.clinicservice.dto.ClinicInvitationClinicDTO;
 import com.healthpro.clinicservice.dto.ClinicInvitationDoctorDTO;
-import com.healthpro.clinicservice.dto.ClinicSpecialtyDoctorEvent;
+import com.healthpro.clinicservice.dto.ClinicSpecialtyDoctorDto;
 import com.healthpro.clinicservice.entity.ClinicInvitation;
 import com.healthpro.clinicservice.entity.ClinicSpecialty;
 import com.healthpro.clinicservice.entity.ClinicSpecialtyDoctor;
@@ -10,7 +10,6 @@ import com.healthpro.clinicservice.entity.Doctor;
 import com.healthpro.clinicservice.entity.enums.InvitationStatus;
 import com.healthpro.clinicservice.exception.ClinicSpecialtyHasNoScheduleException;
 import com.healthpro.clinicservice.exception.InvitationAlreadyAcceptedException;
-import com.healthpro.clinicservice.kafka.ClinicSpecialtyDoctorEventProducer;
 import com.healthpro.clinicservice.mapper.ClinicInvitationDTOMapper;
 import com.healthpro.clinicservice.repository.ClinicInvitationRepository;
 import com.healthpro.clinicservice.repository.ClinicSpecialtyRepository;
@@ -36,7 +35,6 @@ public class ClinicInvitationService {
     private final ClinicSpecialtyDoctorService clinicSpecialtyDoctorService;
     private final DoctorRepository doctorRepository;
     private final WebClient webClient;
-    private final ClinicSpecialtyDoctorEventProducer clinicSpecialtyDoctorEventProducer;
 
     public Page<ClinicInvitationClinicDTO> getClinicInvitationsForDoctor(UUID doctorId, Pageable pageable) {
         Page<ClinicInvitation> clinicInvitations = clinicInvitationRepository.findAllByDoctor_Id(doctorId, pageable);
@@ -55,7 +53,7 @@ public class ClinicInvitationService {
                 .orElseThrow(() -> new RuntimeException("clinicSpecialty not found"));
         Boolean scheduleExists = webClient
                 .get()
-                .uri("http://api-gateway:4004/api/v3/clinic-specialty-schedule-template/check/{id}",
+                .uri("http://schedule-service:8082/api/v3/clinic-specialty-schedule-template/check/{id}",
                         clinicSpecialty.getId())
                 .header("X-Internal-Service", "clinic-service")
                 .retrieve()
@@ -117,13 +115,20 @@ public class ClinicInvitationService {
         ClinicSpecialtyDoctor clinicSpecialtyDoctor =
                 clinicSpecialtyDoctorService.createClinicSpecialtyDoctor(clinicInvitation);
 
-        ClinicSpecialtyDoctorEvent event = ClinicSpecialtyDoctorEvent.builder()
+        ClinicSpecialtyDoctorDto clinicSpecialtyDoctorDto = ClinicSpecialtyDoctorDto.builder()
                 .id(clinicSpecialtyDoctor.getId())
                 .clinicSpecialtyId(clinicSpecialtyDoctor.getClinicSpecialty().getId())
                 .doctorId(clinicSpecialtyDoctor.getDoctor().getId())
-                .eventType(ClinicSpecialtyDoctorEvent.EventType.CREATED)
                 .build();
-        clinicSpecialtyDoctorEventProducer.sendClinicSpecialtyDoctorEvent(event);
-        log.info("Sent ClinicSpecialtyDoctor event to Kafka: {}", event);
+
+
+
+        webClient.post()
+                .uri("http://schedule-service:8082/api/v3/clinic-specialty-doctors")
+                .header("X-Internal-Service", "clinic-service")
+                .bodyValue(clinicSpecialtyDoctorDto)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
     }
 }

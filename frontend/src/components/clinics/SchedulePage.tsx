@@ -26,7 +26,7 @@ const SchedulePage = async ({ initialTemplates, clinicSpecialtyId }: any) => {
 
                 <Calendar
                     id={clinicSpecialtyId}
-                    type="DOCTOR"
+                    type="CLINIC"
                     slotClickEventType="DELETE_CLINIC_SLOT"
                     availableDates={initialDates}
                 />

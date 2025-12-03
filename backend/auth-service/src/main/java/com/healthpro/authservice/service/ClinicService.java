@@ -9,6 +9,7 @@ import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.ResourceNotFoundException;
 import com.healthpro.authservice.exception.UserNotFoundException;
+import com.healthpro.authservice.kafka.MessageProducer;
 import com.healthpro.authservice.mapper.ClinicMapper;
 import com.healthpro.authservice.repository.ClinicRepository;
 import com.healthpro.authservice.repository.UserRepository;
@@ -23,8 +24,10 @@ import java.util.UUID;
 public class ClinicService {
     private final ClinicRepository clinicRepository;
     private final UserRepository userRepository;
+    private final MessageProducer messageProducer;
 
-    public ClinicService(ClinicRepository clinicRepository, UserRepository userRepository) {
+    public ClinicService(ClinicRepository clinicRepository, UserRepository userRepository, MessageProducer messageProducer) {
+        this.messageProducer = messageProducer;
         this.clinicRepository = clinicRepository;
         this.userRepository = userRepository;
     }
@@ -71,6 +74,8 @@ public class ClinicService {
         clinic.setWeekdayCloseHour(clinicRequestDTO.getWeekdayCloseHour());
         clinic.setWeekendOpenHour(clinicRequestDTO.getWeekendOpenHour());
         clinic.setWeekendCloseHour(clinicRequestDTO.getWeekendCloseHour());
+
+        messageProducer.creatClinic(clinic);
 
         userRepository.save(user);
         clinicRepository.save(clinic);

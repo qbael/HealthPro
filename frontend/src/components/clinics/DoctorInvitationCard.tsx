@@ -8,8 +8,13 @@ import {toast} from "sonner";
 const DoctorInvitationCard = ({ invitation } : any) => {
     const handleInvitation = async () => {
         try {
-            await api.put(`v2/clinic-invitation/${invitation.id}`, JSON.stringify("CANCELLED"))
+            await api.put(`v2/clinic-invitation/${invitation.id}`, {
+                status: 'CANCELLED'
+            })
             toast.success('Hủy thành công')
+            setTimeout(() => {
+                window.location.reload()
+            }, 1000)
         }
         catch (error: any) {
             console.error(error)

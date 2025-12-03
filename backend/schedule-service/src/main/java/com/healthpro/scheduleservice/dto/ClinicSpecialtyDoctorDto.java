@@ -8,19 +8,11 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ClinicSpecialtyDoctorEvent {
+public class ClinicSpecialtyDoctorDto {
     private UUID id;
     private UUID clinicSpecialtyId;
     private UUID doctorId;
-    private Integer assignmentCount;
-    private EventType eventType;
-
-    public enum EventType {
-        CREATED,
-        UPDATED,
-        DELETED
-    }
 }
