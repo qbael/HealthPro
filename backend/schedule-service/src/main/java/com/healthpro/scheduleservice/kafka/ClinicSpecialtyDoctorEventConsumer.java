@@ -1,16 +1,20 @@
 package com.healthpro.scheduleservice.kafka;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.healthpro.clinic.event.ClinicSpecialtyDoctorEvent;
 import com.healthpro.scheduleservice.entity.ClinicSpecialtyDoctor;
-import com.healthpro.scheduleservice.dto.ClinicSpecialtyDoctorEvent;
 import com.healthpro.scheduleservice.repository.ClinicSpecialtyDoctorRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.KafkaListeners;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -19,54 +23,53 @@ public class ClinicSpecialtyDoctorEventConsumer {
 
     private final ClinicSpecialtyDoctorRepository clinicSpecialtyDoctorRepository;
 
-//    @KafkaListener(
-//            topics = "clinic-specialty-doctor-events",
-//            groupId = "schedule-service-group"
-//    )
-//    public void consumeClinicSpecialtyDoctorEvent(
-//            @Payload ClinicSpecialtyDoctorEvent event,
-//            @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
-//            @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
-//            @Header(KafkaHeaders.OFFSET) long offset,
-//            Acknowledgment ack
-//    ) {
-//        log.info("=================================================");
-//        log.info("Received message from Kafka:");
-//        log.info("Topic: {}, Partition: {}, Offset: {}", topic, partition, offset);
-//        log.info("Event: {}", event);
-//        log.info("=================================================");
-//
-//        try {
-//            switch (event.getEventType()) {
-//                case CREATED:
-//                    handleCreatedEvent(event);
-//                    break;
-//                case UPDATED:
-//                    handleUpdatedEvent(event);
-//                    break;
-//                case DELETED:
-//                    handleDeletedEvent(event);
-//                    break;
-//                default:
-//                    log.warn("Unknown event type: {}", event.getEventType());
-//            }
-//            ack.acknowledge();
-//        } catch (Exception e) {
-//            log.error("Error processing ClinicSpecialtyDoctor event: {}", e.getMessage(), e);
-//        }
-//    }
+//    @KafkaListener(topics = "clinic-specialty-doctor", groupId = "schedule-service")
+    public void consumeClinicSpecialtyDoctorEvent(
+            @Payload byte[] data,
+            @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+            @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
+            @Header(KafkaHeaders.OFFSET) long offset,
+            Acknowledgment acknowledgment
+    ) {
+        log.info("Received message from topic: {}, partition: {}, offset: {}", topic, partition, offset);
+        log.info("Received ClinicSpecialtyDoctor event message");
+        try {
+            ClinicSpecialtyDoctorEvent event = ClinicSpecialtyDoctorEvent.parseFrom(data);
+
+            log.info("Deserialized event - ID: {}, ClinicSpecialtyId: {}, DoctorId: {}, EventType: {}",
+                    event.getId(),
+                    event.getClinicSpecialtyId(),
+                    event.getDoctorId(),
+                    event.getEventType());
+
+            switch (event.getEventType()) {
+                case "CREATED" -> handleCreatedEvent(event);
+                case "UPDATED" -> handleUpdatedEvent(event);
+                case "DELETED" -> handleDeletedEvent(event);
+                default -> log.warn("Unknown event type: {}", event.getEventType());
+            }
+
+            acknowledgment.acknowledge();
+            log.info("Successfully processed and committed offset: {}", offset);
+
+        } catch (InvalidProtocolBufferException e) {
+            log.error("Failed to deserialize protobuf message at offset {}: {}", offset, e.getMessage());
+        } catch (Exception e) {
+            log.error("Error processing event at offset {}: {}", offset, e.getMessage(), e);
+        }
+    }
 
     private void handleCreatedEvent(ClinicSpecialtyDoctorEvent event) {
-        if (clinicSpecialtyDoctorRepository.existsById(event.getId())) {
+        if (clinicSpecialtyDoctorRepository.existsById(UUID.fromString(event.getId()))) {
             log.warn("ClinicSpecialtyDoctor already exists with id: {}", event.getId());
             return;
         }
 
         ClinicSpecialtyDoctor clinicSpecialtyDoctor = ClinicSpecialtyDoctor.builder()
-                .id(event.getId())
-                .clinicSpecialtyId(event.getClinicSpecialtyId())
-                .doctorId(event.getDoctorId())
-                .assignmentCount(event.getAssignmentCount() != null ? event.getAssignmentCount() : 0)
+                .id(UUID.fromString(event.getId()))
+                .clinicSpecialtyId(UUID.fromString(event.getClinicSpecialtyId()))
+                .doctorId(UUID.fromString(event.getDoctorId()))
+                .assignmentCount(0)
                 .build();
 
         clinicSpecialtyDoctorRepository.save(clinicSpecialtyDoctor);
@@ -74,23 +77,22 @@ public class ClinicSpecialtyDoctorEventConsumer {
     }
 
     private void handleUpdatedEvent(ClinicSpecialtyDoctorEvent event) {
-        clinicSpecialtyDoctorRepository.findById(event.getId())
+        clinicSpecialtyDoctorRepository.findById(UUID.fromString(event.getId()))
                 .ifPresentOrElse(
                         existing -> {
-                            existing.setAssignmentCount(event.getAssignmentCount());
+                            existing.setAssignmentCount(0);
                             clinicSpecialtyDoctorRepository.save(existing);
                             log.info("Updated ClinicSpecialtyDoctor: {}", existing);
                         },
                         () -> {
                             log.warn("ClinicSpecialtyDoctor not found with id: {}", event.getId());
-                            // Nếu không tìm thấy, có thể tạo mới
                             handleCreatedEvent(event);
                         }
                 );
     }
 
     private void handleDeletedEvent(ClinicSpecialtyDoctorEvent event) {
-        clinicSpecialtyDoctorRepository.findById(event.getId())
+        clinicSpecialtyDoctorRepository.findById(UUID.fromString(event.getId()))
                 .ifPresentOrElse(
                         existing -> {
                             clinicSpecialtyDoctorRepository.delete(existing);

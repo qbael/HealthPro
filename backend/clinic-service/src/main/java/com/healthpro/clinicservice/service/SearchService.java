@@ -65,11 +65,9 @@ public class SearchService {
         List<Doctor> doctors = new ArrayList<>();
         List<Clinic> clinics = new ArrayList<>();
 
-        // 1. Xác định specialtyList để filter
         Set<String> matchedSpecialties = findMatchedSpecialties(lowerKeyword);
         String specialtyListFromDisease = String.join(",", matchedSpecialties);
 
-        // Ưu tiên: specialty từ dropdown (nếu có) > mapping từ bệnh
         String finalSpecialtyList = "";
         if (specialty != null && !specialty.trim().isEmpty() && !"all".equalsIgnoreCase(specialty)) {
             finalSpecialtyList = specialty.trim();

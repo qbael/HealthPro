@@ -1,26 +1,25 @@
 spring:
   application:
     name: clinic-service
-  datasource:
-    url: jdbc:postgresql://localhost:5001/health_pro
-    username: root
-    password: password
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5001/health_pro
+#    username: root
+#    password: password
+#    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    hibernate:
 #      ddl-auto: update
-      ddl-auto: create
-    defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
+#    defer-datasource-initialization: true
+#  sql:
+#    init:
+#      mode: always
 #      data-locations: ""
   kafka:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
       properties:
         spring.json.add.type.headers: false
-    bootstrap-servers: localhost:9094
-server:
-  port: 8081
+#    bootstrap-servers: localhost:9094
+#server:
+#  port: 8081

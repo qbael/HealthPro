@@ -1,5 +1,6 @@
 package com.healthpro.clinicservice.service;
 
+import com.healthpro.clinicservice.dto.DoctorDto;
 import com.healthpro.clinicservice.entity.Doctor;
 import com.healthpro.clinicservice.entity.DoctorSpecialty;
 import com.healthpro.clinicservice.repository.DoctorRepository;
@@ -36,4 +37,17 @@ public class DoctorService {
         return Optional.ofNullable(doctorSpecialtyRepository.findAllByDoctor_Id(UUID.fromString(id)));
     }
 
+    public Optional<Doctor> createDoctor(DoctorDto doctorRequest) {
+        Doctor doctor = Doctor.builder()
+                .id(doctorRequest.getId())
+                .userId(doctorRequest.getUserId())
+                .address(doctorRequest.getAddress())
+                .gender(doctorRequest.getGender())
+                .bio(doctorRequest.getBio())
+                .fullName(doctorRequest.getFullName())
+                .avatarUrl(doctorRequest.getAvatarUrl())
+                .isInClinicSpecialty(false)
+                .build();
+        return Optional.of(doctorRepository.save(doctor));
+    }
 }

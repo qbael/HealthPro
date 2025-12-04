@@ -1,35 +1,30 @@
 spring:
   application:
     name: schedule-service
-  datasource:
-    url: jdbc:postgresql://localhost:5002/health_pro
-    username: root
-    password: password
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5002/health_pro
+#    username: root
+#    password: password
+#    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    hibernate:
 #      ddl-auto: update
-      ddl-auto: create
-    defer-datasource-initialization: true
-
-  sql:
-    init:
-      mode: always
+#    defer-datasource-initialization: true
+#
+#  sql:
+#    init:
+#      mode: always
 #      data-locations: ""
   kafka:
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
-        spring.json.use.type.headers: false
-        spring.json.value.default.type: com.healthpro.scheduleservice.dto.ClinicSpecialtyDoctorEvent
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
       auto-offset-reset: earliest
       enable-auto-commit: false
       group-id: schedule-service
       auto-commit-interval: 1000
-      bootstrap-servers: localhost:9094
+#      bootstrap-servers: localhost:9094
     listener:
       ack-mode: record
-server:
-  port: 8082
+#server:
+#  port: 8082

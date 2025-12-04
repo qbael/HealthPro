@@ -1,5 +1,5 @@
 ### GET request to example server
-PUT http://localhost:4004/api/v2/clinic-invitation/8317714b-baec-4a8c-ba53-0bca019977c2
+PUT http://localhost:4004/api/v2/clinic-invitation/756e63b9-f7fe-476a-b95c-fc314b060ff8
 Content-Type: application/json
 Cookie: {{jwt}}
 

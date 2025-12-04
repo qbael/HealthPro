@@ -15,12 +15,6 @@ const SignupPage = () => {
         <main className='flex justify-center'>
             <div className='relative top-5 w-1/4 border border-gray-300 shadow-sm rounded-2xl p-4 flex flex-col gap-5'>
                 <div className='flex justify-center items-center gap-2'>
-                    <Image 
-                        src='/logo.svg'
-                        alt='logo'
-                        width={48}
-                        height={48}
-                    />
                     <h1 className='text-3xl font-bold italic text-[#0079CEFF]'>HealthPro</h1>
                 </div>
                 <div className='flex items-center justify-between gap-3'>

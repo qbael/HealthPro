@@ -39,7 +39,7 @@ const ModalConfirmAppointment = ({
                 setIsLoading(true);
                 setError(null);
 
-                const response = await api.post('/v3/appointments/appointment-data', {
+                const response = await api.post('v3/appointments/appointment-data', {
                     "patientId": patientId,
                     "doctorId": doctorId,
                     "clinicSpecialtyId": clinicSpecialtyId

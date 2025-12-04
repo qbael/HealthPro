@@ -17,4 +17,5 @@ public interface ClinicSpecialtyScheduleTemplateRepository extends JpaRepository
 
     List<ClinicSpecialtyScheduleTemplate> findAllByDayOfWeek(DayOfWeek dayOfWeek);
 
+    ClinicSpecialtyScheduleTemplate findByClinicSpecialtyIdAndDayOfWeek(UUID clinicSpecialtyId, DayOfWeek dayOfWeek);
 }

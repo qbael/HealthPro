@@ -11,7 +11,6 @@ import {useRouter} from "next/navigation";
 const SpecialtyCard = ({ specialty } : any) => {
     const { user } = useAuth()
     const router = useRouter()
-    console.log(specialty)
 
     const checkClinicHasRegisteredTime = async () => {
         try {

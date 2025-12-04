@@ -8,6 +8,7 @@ import com.healthpro.authservice.entity.User;
 import com.healthpro.authservice.exception.EmailAlreadyExistsException;
 import com.healthpro.authservice.exception.ResourceNotFoundException;
 import com.healthpro.authservice.exception.UserNotFoundException;
+import com.healthpro.authservice.kafka.MessageProducer;
 import com.healthpro.authservice.mapper.DoctorMapper;
 import com.healthpro.authservice.repository.DoctorRepository;
 import com.healthpro.authservice.repository.UserRepository;
@@ -23,8 +24,10 @@ import java.util.UUID;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final UserRepository userRepository;
+    private final MessageProducer messageProducer;
 
-    public DoctorService(DoctorRepository doctorRepository, UserRepository userRepository) {
+    public DoctorService(DoctorRepository doctorRepository, UserRepository userRepository, MessageProducer messageProducer) {
+        this.messageProducer = messageProducer;
         this.doctorRepository = doctorRepository;
         this.userRepository = userRepository;
     }
@@ -67,6 +70,8 @@ public class DoctorService {
         doctor.setGender(doctorRequestDTO.getGender());
         doctor.setAddress(doctorRequestDTO.getAddress());
         doctor.setAvatarUrl(doctorRequestDTO.getAvatarUrl());
+
+        messageProducer.creatDoctor(doctor);
 
         userRepository.save(user);
         doctorRepository.save(doctor);

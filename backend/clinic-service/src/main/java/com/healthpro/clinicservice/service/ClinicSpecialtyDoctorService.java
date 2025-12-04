@@ -1,9 +1,7 @@
 package com.healthpro.clinicservice.service;
 
-import com.healthpro.clinicservice.dto.ClinicSpecialtyDoctorEvent;
 import com.healthpro.clinicservice.entity.ClinicInvitation;
 import com.healthpro.clinicservice.entity.ClinicSpecialtyDoctor;
-import com.healthpro.clinicservice.kafka.ClinicSpecialtyDoctorEventProducer;
 import com.healthpro.clinicservice.repository.ClinicSpecialtyDoctorRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
