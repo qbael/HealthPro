@@ -73,4 +73,7 @@ public class AppointmentController {
             return ResponseEntity.status(400).body(ApiResponseDto.error(400, "Tạo cuộc hẹn thất bại"));
         }
     }
+
+
+
 }
